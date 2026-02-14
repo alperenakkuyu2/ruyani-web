@@ -1,0 +1,6 @@
+# Akkuyu Labs - AdMob app-ads.txt
+# Bu dosya Google AdMob için gereklidir
+# Son güncelleme: 2024
+
+# Google AdMob
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
