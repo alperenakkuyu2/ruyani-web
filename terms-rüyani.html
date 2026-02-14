@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanım Şartları - Rüyani</title>
+    <meta name="description" content="Rüyani uygulaması kullanım şartları.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+
+<body class="pt-20 pb-20">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-18 py-4">
+                <a href="/" class="flex items-center gap-2 group">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="moon" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold gradient-text">Rüyani</span>
+                </a>
+
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="/" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Ana
+                        Sayfa</a>
+                    <a href="/ruyani.html"
+                        class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Rüyani</a>
+                </div>
+
+                <button id="menuBtn"
+                    class="md:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition-colors">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileMenu"
+            class="mobile-menu fixed top-0 right-0 w-64 h-full bg-slate-900/95 backdrop-blur-md border-l border-slate-800 md:hidden">
+            <div class="p-6">
+                <button id="closeMenu" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+                <div class="mt-12 space-y-4">
+                    <a href="/" class="block text-lg font-medium text-slate-300 hover:text-white">Ana Sayfa</a>
+                    <a href="/ruyani.html" class="block text-lg font-medium text-slate-300 hover:text-white">Rüyani</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <a href="/" class="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                Ana Sayfa
+            </a>
+        </div>
+
+        <div class="text-center mb-12">
+            <div class="w-16 h-16 rounded-2xl bg-blue-500/20 flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="file-text" class="w-8 h-8 text-blue-400"></i>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+                Kullanım Şartları
+            </h1>
+            <p class="text-slate-400">
+                Son güncelleme: 14 Şubat 2026
+            </p>
+        </div>
+
+        <div class="space-y-8">
+            <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+                <p class="text-slate-300 leading-relaxed">
+                    Bu sözleşme, Akkuyu Labs tarafından geliştirilen Rüyani mobil uygulamasının kullanım koşullarını
+                    belirler. Uygulamayı indirerek ve kullanarak bu şartları kabul etmiş sayılırsınız.
+                </p>
+            </div>
+
+            <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">1. Hizmet Kapsamı</h2>
+                <div class="text-slate-400 leading-relaxed whitespace-pre-line">
+                    Rüyani, yapay zeka destekli bir rüya tabiri uygulamasıdır. Kullanıcıların girdiği rüya metinlerine dayanarak yorumlar ve görselleştirmeler sunar. Bu hizmetler eğlence ve kişisel gelişim amaçlıdır.
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">2. Sanal Para (Altın) ve Satın Almalar</h2>
+                <div class="text-slate-400 leading-relaxed whitespace-pre-line">
+                    Uygulama içinde "Altın" olarak adlandırılan sanal para birimi kullanılmaktadır.
+
+                    • **Satın Alma:** Altınlar gerçek para karşılığında uygulama içi satın alma (In-App Purchase) yöntemiyle alınabilir.
+                    
+                    • **Kullanım:** Altınlar yalnızca uygulama içinde rüya yorumlatma ve diğer özelliklere erişim için kullanılabilir.
+                    
+                    • **İade:** Satın alınan altınların ve dijital içeriklerin iadesi mümkün değildir.
+                    
+                    • **Mülkiyet:** Altınlar kullanıcının mülkiyetinde değildir, sadece hizmetten yararlanma hakkı sağlar.
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">3. Kullanıcı Davranışları ve İçerik</h2>
+                <div class="text-slate-400 leading-relaxed whitespace-pre-line">
+                    Aşağıdaki davranışlar kesinlikle yasaktır ve hesabınızın kapatılmasına yol açabilir:
+
+                    • Yasara aykırı, nefret söylemi içeren veya şiddeti teşvik eden rüya içerikleri girmek.
+                    
+                    • Uygulamanın teknik altyapısına zarar vermeye çalışmak veya tersine mühendislik yapmak.
+                    
+                    • Hileli yöntemlerle (bot kullanımı, sistem açıkları vb.) haksız kazanç (altın) elde etmeye çalışmak.
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">4. Fikri Mülkiyet Hakları</h2>
+                <div class="text-slate-400 leading-relaxed whitespace-pre-line">
+                    • **Uygulama İçeriği:** Rüyani markası, logosu, tasarımları ve kaynak kodları Akkuyu Labs'e aittir.
+                    
+                    • **Üretilen İçerik:** Yapay zeka tarafından sizin için üretilen rüya yorumlarını kişisel amaçlarla (örneğin sosyal medyada) paylaşabilirsiniz.
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">5. Sorumluluk Sınırlaması</h2>
+                <div class="text-slate-400 leading-relaxed whitespace-pre-line">
+                    Hizmet "olduğu gibi" sunulmaktadır. Akkuyu Labs, uygulamanın kesintisiz çalışacağını veya yapay zeka yorumlarının her zaman doğru olacağını garanti etmez. Uygulama kaynaklı oluşabilecek veri kayıplarından veya teknik sorunlardan sorumlu tutulamaz.
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">6. Değişiklikler ve Fesih</h2>
+                <div class="text-slate-400 leading-relaxed whitespace-pre-line">
+                    Akkuyu Labs, bu kullanım şartlarını dilediği zaman güncelleme hakkını saklı tutar. Önemli değişiklikler uygulama üzerinden duyurulacaktır. Kurallara uymayan kullanıcıların hesapları önceden bildirimde bulunmaksızın askıya alınabilir veya silinebilir.
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">7. İletişim</h2>
+                <div class="text-slate-400 leading-relaxed whitespace-pre-line">
+                    Kullanım şartları ve diğer konular için bizimle iletişime geçebilirsiniz:
+
+                    E-posta: destek@akkuyulabs.com.tr
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 text-center text-slate-500 text-sm">
+            Bu sözleşme Türkiye Cumhuriyeti yasalarına tabidir. Yetkili mahkemeler İstanbul mahkemeleridir.
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div>
+                    <a href="/" class="flex items-center gap-2 mb-4">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-blue-500 flex items-center justify-center">
+                            <i data-lucide="moon" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold gradient-text">Rüyani</span>
+                    </a>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Yapay zeka destekli rüya tabiri ve analizi.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Hızlı Linkler</h3>
+                    <ul class="space-y-3">
+                        <li><a href="/"
+                                class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Ana
+                                Sayfa</a></li>
+                        <li><a href="/ruyani.html"
+                                class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Rüyani</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Yasal</h3>
+                    <ul class="space-y-3">
+                        <li><a href="/privacy-rüyani.html"
+                                class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Gizlilik
+                                Politikası</a></li>
+                        <li><a href="/terms-rüyani.html"
+                                class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Kullanım
+                                Şartları</a></li>
+                        <li><a href="/disclaimer-rüyani.html"
+                                class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Sorumluluk
+                                Reddi</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-slate-800 text-center">
+                <p class="text-slate-500 text-sm">
+                    © 2026 Akkuyu Labs. Tüm hakları saklıdır.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('glass', 'border-b', 'border-slate-800');
+            } else {
+                navbar.classList.remove('glass', 'border-b', 'border-slate-800');
+            }
+        });
+
+        const menuBtn = document.getElementById('menuBtn');
+        const closeMenu = document.getElementById('closeMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('open');
+        });
+
+        closeMenu.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+        });
+    </script>
+</body>
+
+</html>
