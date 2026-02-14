@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rüyani - Akkuyu Labs</title>
     <meta name="description" content="Rüyani uygulaması - Rüyalarınızı kaydedin, yorumlayın ve anlamlarını keşfedin.">
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -22,139 +23,202 @@
             }
         }
     </script>
-    
+
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
-        
-        ::selection { background: rgba(139, 92, 246, 0.3); color: #f8fafc; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        ::selection {
+            background: rgba(139, 92, 246, 0.3);
+            color: #f8fafc;
+        }
+
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
+
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
-        
-        .animate-fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .animate-float { animation: float 3s ease-in-out infinite; }
-        
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-        
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
+
         .gradient-text {
             background: linear-gradient(135deg, #6366f1, #8b5cf6, #3b82f6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .glass {
             background: rgba(30, 41, 59, 0.8);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
-        
+
         .card-hover {
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
+
         .card-hover:hover {
             transform: scale(1.02);
             border-color: rgba(139, 92, 246, 0.5);
             box-shadow: 0 20px 40px -12px rgba(139, 92, 246, 0.2);
         }
-        
+
         .btn-primary {
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
         }
-        
+
         .btn-primary:hover {
             transform: scale(1.05);
             box-shadow: 0 10px 40px -10px rgba(139, 92, 246, 0.5);
         }
-        
+
         .blur-circle {
             position: absolute;
             border-radius: 50%;
             filter: blur(100px);
             pointer-events: none;
         }
-        
+
         .reveal {
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
+
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
-        
+
         .mobile-menu {
             transform: translateX(100%);
             transition: transform 0.3s ease;
         }
-        
+
         .mobile-menu.open {
             transform: translateX(0);
         }
     </style>
 </head>
+
 <body class="pt-20">
     <!-- Navigation -->
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-18 py-4">
                 <a href="/" class="flex items-center gap-2 group">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                         <i data-lucide="code-2" class="w-5 h-5 text-white"></i>
                     </div>
                     <span class="text-xl font-bold gradient-text">Akkuyu Labs</span>
                 </a>
-                
+
                 <div class="hidden md:flex items-center gap-8">
-                    <a href="/" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Ana Sayfa</a>
-                    <a href="/borc-takip.html" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Borç Takip</a>
+                    <a href="/" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Ana
+                        Sayfa</a>
+                    <a href="/borc-takip.html"
+                        class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Borç Takip</a>
                     <a href="/ruyani.html" class="text-sm font-medium text-violet-400 relative">
                         Rüyani
-                        <span class="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-500 to-purple-500"></span>
+                        <span
+                            class="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-500 to-purple-500"></span>
                     </a>
                 </div>
-                
+
                 <div class="hidden md:block">
-                    <a href="mailto:alperen@akkuyulabs.com.tr" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-blue-500 text-white text-sm font-medium btn-primary">
+                    <a href="mailto:alperen@akkuyulabs.com.tr"
+                        class="px-6 py-2.5 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-blue-500 text-white text-sm font-medium btn-primary">
                         İletişim
                     </a>
                 </div>
-                
-                <button id="menuBtn" class="md:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition-colors">
+
+                <button id="menuBtn"
+                    class="md:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition-colors">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
             </div>
         </div>
-        
-        <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-64 h-full bg-slate-900/95 backdrop-blur-md border-l border-slate-800 md:hidden">
+
+        <div id="mobileMenu"
+            class="mobile-menu fixed top-0 right-0 w-64 h-full bg-slate-900/95 backdrop-blur-md border-l border-slate-800 md:hidden">
             <div class="p-6">
                 <button id="closeMenu" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
                 <div class="mt-12 space-y-4">
                     <a href="/" class="block text-lg font-medium text-slate-300 hover:text-white">Ana Sayfa</a>
-                    <a href="/borc-takip.html" class="block text-lg font-medium text-slate-300 hover:text-white">Borç Takip</a>
+                    <a href="/borc-takip.html" class="block text-lg font-medium text-slate-300 hover:text-white">Borç
+                        Takip</a>
                     <a href="/ruyani.html" class="block text-lg font-medium text-violet-400">Rüyani</a>
                 </div>
             </div>
@@ -166,9 +230,11 @@
         <div class="absolute inset-0">
             <div class="blur-circle top-0 right-0 w-[500px] h-[500px] bg-violet-500/10"></div>
             <div class="blur-circle bottom-0 left-0 w-[400px] h-[400px] bg-purple-500/10"></div>
-            <div class="blur-circle top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/5"></div>
+            <div
+                class="blur-circle top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/5">
+            </div>
         </div>
-        
+
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="opacity-0 animate-fade-in-up mb-8">
                 <a href="/" class="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
@@ -176,29 +242,34 @@
                     Ana Sayfa
                 </a>
             </div>
-            
+
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div class="opacity-0 animate-fade-in-up delay-100">
-                    <span class="inline-block px-4 py-2 rounded-full bg-violet-500/20 border border-violet-500/30 text-violet-400 text-sm font-medium mb-6">
+                    <span
+                        class="inline-block px-4 py-2 rounded-full bg-violet-500/20 border border-violet-500/30 text-violet-400 text-sm font-medium mb-6">
                         Yaşam Tarzı Uygulaması
                     </span>
-                    
+
                     <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
                         Rüyani
                     </h1>
-                    
+
                     <p class="text-lg text-slate-400 mb-8 leading-relaxed">
-                        Rüyalarınızın dünyasını keşfedin. Kaydedin, İslami kaynaklara göre yorumlayın, anlamlarını bulun. 
+                        Rüyalarınızın dünyasını keşfedin. Kaydedin, İslami kaynaklara göre yorumlayın, anlamlarını
+                        bulun.
                         Kişisel rüya günlüğünüz ile bilinçaltınızın mesajlarını çözümleyin.
                     </p>
-                    
+
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="https://play.google.com/store/apps/details?id=com.akkuyulabs.ruyani" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-violet-500 to-purple-500 text-white font-medium btn-primary">
-                            <i data-lucide="download" class="w-5 h-5"></i>
-                            Google Play'den İndir
+
+                        <a href="https://play.google.com/store" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center
+              hover:scale-105 transition">
+
+                            <img src="images/playstoresvg.svg" alt="Google Play" class="h-16 w-auto">
                         </a>
+
                     </div>
-                    
+
                     <div class="mt-10 flex gap-8">
                         <div>
                             <div class="text-3xl font-bold text-white">4.9</div>
@@ -214,14 +285,17 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="opacity-0 animate-fade-in-up delay-300 relative">
                     <div class="relative w-72 mx-auto">
-                        <div class="relative bg-slate-800 rounded-[3rem] border-4 border-slate-700 shadow-2xl shadow-black/50 overflow-hidden">
-                            <div class="aspect-[9/19] bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700 p-4">
+                        <div
+                            class="relative bg-slate-800 rounded-[3rem] border-4 border-slate-700 shadow-2xl shadow-black/50 overflow-hidden">
+                            <div
+                                class="aspect-[9/19] bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700 p-4">
                                 <div class="h-full bg-slate-900/90 rounded-[2rem] p-4 flex flex-col">
                                     <div class="flex items-center justify-between mb-4">
-                                        <div class="w-8 h-8 rounded-full bg-violet-500/20 flex items-center justify-center">
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-violet-500/20 flex items-center justify-center">
                                             <i data-lucide="moon" class="w-4 h-4 text-violet-400"></i>
                                         </div>
                                         <div class="text-white text-sm font-medium">Rüyani : İslami rüya tabiri</div>
@@ -256,7 +330,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="absolute top-3 left-1/2 -translate-x-1/2 w-20 h-5 bg-slate-900 rounded-full"></div>
+                            <div class="absolute top-3 left-1/2 -translate-x-1/2 w-20 h-5 bg-slate-900 rounded-full">
+                            </div>
                         </div>
                         <div class="absolute -inset-4 bg-violet-500/20 rounded-[4rem] blur-2xl -z-10"></div>
                     </div>
@@ -269,7 +344,8 @@
     <section class="py-24 bg-slate-950/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="reveal text-center mb-16">
-                <span class="inline-block px-4 py-2 rounded-full bg-slate-800/80 border border-slate-700 text-sm text-violet-400 font-medium mb-4">
+                <span
+                    class="inline-block px-4 py-2 rounded-full bg-slate-800/80 border border-slate-700 text-sm text-violet-400 font-medium mb-4">
                     ÖZELLİKLER
                 </span>
                 <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
@@ -279,54 +355,65 @@
                     Rüyani ile rüyalarınızın gizemli dünyasını keşfedin ve bilinçaltınızın mesajlarını anlamlandırın.
                 </p>
             </div>
-            
+
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="reveal card-hover bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
                     <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center mb-4">
                         <i data-lucide="book-open" class="w-6 h-6 text-violet-400"></i>
                     </div>
                     <h3 class="text-lg font-semibold text-white mb-2">Rüya Günlüğü</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">Rüyalarınızı detaylı bir şekilde kaydedin. Tarih, hisler ve detayları not alın.</p>
+                    <p class="text-slate-400 text-sm leading-relaxed">Rüyalarınızı detaylı bir şekilde kaydedin. Tarih,
+                        hisler ve detayları not alın.</p>
                 </div>
-                
-                <div class="reveal card-hover bg-slate-800/50 border border-slate-700 rounded-2xl p-6" style="transition-delay: 0.1s;">
+
+                <div class="reveal card-hover bg-slate-800/50 border border-slate-700 rounded-2xl p-6"
+                    style="transition-delay: 0.1s;">
                     <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center mb-4">
                         <i data-lucide="sparkles" class="w-6 h-6 text-violet-400"></i>
                     </div>
                     <h3 class="text-lg font-semibold text-white mb-2">Yorumlar</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">Rüya sembollerinin anlamlarını keşfedin. Kapsamlı rüya tabiri veritabanı.</p>
+                    <p class="text-slate-400 text-sm leading-relaxed">Rüya sembollerinin anlamlarını keşfedin. Kapsamlı
+                        rüya tabiri veritabanı.</p>
                 </div>
-                
-                <div class="reveal card-hover bg-slate-800/50 border border-slate-700 rounded-2xl p-6" style="transition-delay: 0.2s;">
+
+                <div class="reveal card-hover bg-slate-800/50 border border-slate-700 rounded-2xl p-6"
+                    style="transition-delay: 0.2s;">
                     <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center mb-4">
                         <i data-lucide="bar-chart-2" class="w-6 h-6 text-violet-400"></i>
                     </div>
                     <h3 class="text-lg font-semibold text-white mb-2">İstatistikler</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">Rüya alışkanlıklarınızı analiz edin. Hangi temaların sık görüldüğünü görün.</p>
+                    <p class="text-slate-400 text-sm leading-relaxed">Rüya alışkanlıklarınızı analiz edin. Hangi
+                        temaların sık görüldüğünü görün.</p>
                 </div>
-                
-                <div class="reveal card-hover bg-slate-800/50 border border-slate-700 rounded-2xl p-6" style="transition-delay: 0.3s;">
+
+                <div class="reveal card-hover bg-slate-800/50 border border-slate-700 rounded-2xl p-6"
+                    style="transition-delay: 0.3s;">
                     <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center mb-4">
                         <i data-lucide="bell" class="w-6 h-6 text-violet-400"></i>
                     </div>
                     <h3 class="text-lg font-semibold text-white mb-2">Hatırlatıcı</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">Her sabah rüya kaydetme hatırlatıcısı. Unuttuğunuz rüyalar kalmayın.</p>
+                    <p class="text-slate-400 text-sm leading-relaxed">Her sabah rüya kaydetme hatırlatıcısı. Unuttuğunuz
+                        rüyalar kalmayın.</p>
                 </div>
-                
-                <div class="reveal card-hover bg-slate-800/50 border border-slate-700 rounded-2xl p-6" style="transition-delay: 0.4s;">
+
+                <div class="reveal card-hover bg-slate-800/50 border border-slate-700 rounded-2xl p-6"
+                    style="transition-delay: 0.4s;">
                     <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center mb-4">
                         <i data-lucide="cloud" class="w-6 h-6 text-violet-400"></i>
                     </div>
                     <h3 class="text-lg font-semibold text-white mb-2">Bulut Senkronizasyonu</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">Rüyalarınızı bulutta güvenle saklayın. Cihaz değiştirseniz bile kaybolmaz.</p>
+                    <p class="text-slate-400 text-sm leading-relaxed">Rüyalarınızı bulutta güvenle saklayın. Cihaz
+                        değiştirseniz bile kaybolmaz.</p>
                 </div>
-                
-                <div class="reveal card-hover bg-slate-800/50 border border-slate-700 rounded-2xl p-6" style="transition-delay: 0.5s;">
+
+                <div class="reveal card-hover bg-slate-800/50 border border-slate-700 rounded-2xl p-6"
+                    style="transition-delay: 0.5s;">
                     <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center mb-4">
                         <i data-lucide="shield" class="w-6 h-6 text-violet-400"></i>
                     </div>
                     <h3 class="text-lg font-semibold text-white mb-2">Gizlilik</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">Rüyalarınız sadece size ait. Şifreleme ile tam gizlilik.</p>
+                    <p class="text-slate-400 text-sm leading-relaxed">Rüyalarınız sadece size ait. Şifreleme ile tam
+                        gizlilik.</p>
                 </div>
             </div>
         </div>
@@ -336,52 +423,65 @@
     <section class="py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="reveal text-center mb-16">
-                <span class="inline-block px-4 py-2 rounded-full bg-slate-800/80 border border-slate-700 text-sm text-violet-400 font-medium mb-4">
+                <span
+                    class="inline-block px-4 py-2 rounded-full bg-slate-800/80 border border-slate-700 text-sm text-violet-400 font-medium mb-4">
                     EKRAN GÖRÜNTÜLERİ
                 </span>
                 <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
                     Uygulama İçi Görünüm
                 </h2>
             </div>
-            
+
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="reveal">
-                    <div class="relative bg-slate-800 rounded-3xl border border-slate-700 overflow-hidden mb-4 aspect-[9/16] max-w-[280px] mx-auto">
-                        <div class="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-purple-700/20 flex items-center justify-center">
+                    <div
+                        class="relative bg-slate-800 rounded-3xl border border-slate-700 overflow-hidden mb-4 aspect-[9/16] max-w-[280px] mx-auto">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-purple-700/20 flex items-center justify-center">
                             <div class="text-center">
                                 <i data-lucide="book-open" class="w-16 h-16 text-violet-500/50 mx-auto mb-4"></i>
                                 <p class="text-slate-500 text-sm">Günlük</p>
                             </div>
                         </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60"></div>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60">
+                        </div>
                     </div>
                     <h3 class="text-white font-medium text-center">Günlük</h3>
                     <p class="text-slate-500 text-sm text-center">Tüm rüyalarınızın listesi</p>
                 </div>
-                
+
                 <div class="reveal" style="transition-delay: 0.15s;">
-                    <div class="relative bg-slate-800 rounded-3xl border border-slate-700 overflow-hidden mb-4 aspect-[9/16] max-w-[280px] mx-auto">
-                        <div class="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-purple-700/20 flex items-center justify-center">
+                    <div
+                        class="relative bg-slate-800 rounded-3xl border border-slate-700 overflow-hidden mb-4 aspect-[9/16] max-w-[280px] mx-auto">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-purple-700/20 flex items-center justify-center">
                             <div class="text-center">
                                 <i data-lucide="sparkles" class="w-16 h-16 text-violet-500/50 mx-auto mb-4"></i>
                                 <p class="text-slate-500 text-sm">Yorum</p>
                             </div>
                         </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60"></div>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60">
+                        </div>
                     </div>
                     <h3 class="text-white font-medium text-center">Yorum</h3>
                     <p class="text-slate-500 text-sm text-center">Detaylı rüya tabiri</p>
                 </div>
-                
+
                 <div class="reveal" style="transition-delay: 0.3s;">
-                    <div class="relative bg-slate-800 rounded-3xl border border-slate-700 overflow-hidden mb-4 aspect-[9/16] max-w-[280px] mx-auto">
-                        <div class="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-purple-700/20 flex items-center justify-center">
+                    <div
+                        class="relative bg-slate-800 rounded-3xl border border-slate-700 overflow-hidden mb-4 aspect-[9/16] max-w-[280px] mx-auto">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-purple-700/20 flex items-center justify-center">
                             <div class="text-center">
                                 <i data-lucide="bar-chart-2" class="w-16 h-16 text-violet-500/50 mx-auto mb-4"></i>
                                 <p class="text-slate-500 text-sm">İstatistik</p>
                             </div>
                         </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60"></div>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60">
+                        </div>
                     </div>
                     <h3 class="text-white font-medium text-center">İstatistik</h3>
                     <p class="text-slate-500 text-sm text-center">Rüya analiz grafikleri</p>
@@ -400,11 +500,12 @@
                 <p class="text-slate-400 mb-8 max-w-xl mx-auto">
                     Google Play Store'dan ücretsiz indirin ve rüya dünyanızın kapılarını aralayın.
                 </p>
-                <a href="https://play.google.com/store/apps/details?id=com.akkuyulabs.ruyani" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-violet-500 to-purple-500 text-white font-medium text-lg btn-primary">
-                    <i data-lucide="download" class="w-6 h-6"></i>
-                    Google Play'den İndir
+                <a href="https://play.google.com/store" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center
+              hover:scale-105 transition">
+
+                    <img src="images/playstoresvg.svg" alt="Google Play" class="h-16 w-auto">
                 </a>
-                
+
                 <div class="mt-8 flex items-center justify-center gap-6 text-slate-500 text-sm">
                     <div class="flex items-center gap-2">
                         <i data-lucide="check" class="w-4 h-4 text-violet-400"></i>
@@ -429,7 +530,8 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div>
                     <a href="/" class="flex items-center gap-2 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-blue-500 flex items-center justify-center">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-blue-500 flex items-center justify-center">
                             <i data-lucide="code-2" class="w-5 h-5 text-white"></i>
                         </div>
                         <span class="text-xl font-bold gradient-text">Akkuyu Labs</span>
@@ -438,26 +540,38 @@
                         Modern ve kullanıcı dostu mobil uygulamalar geliştiren bağımsız geliştirici.
                     </p>
                 </div>
-                
+
                 <div>
                     <h3 class="text-white font-semibold mb-4">Hızlı Linkler</h3>
                     <ul class="space-y-3">
-                        <li><a href="/" class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Ana Sayfa</a></li>
-                        <li><a href="/borc-takip.html" class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Veresiye Defteri</a></li>
-                        <li><a href="/ruyani.html" class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Rüyani</a></li>
+                        <li><a href="/"
+                                class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Ana
+                                Sayfa</a></li>
+                        <li><a href="/borc-takip.html"
+                                class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Veresiye
+                                Defteri</a></li>
+                        <li><a href="/ruyani.html"
+                                class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Rüyani</a>
+                        </li>
                     </ul>
                 </div>
-                
+
                 <div>
                     <h3 class="text-white font-semibold mb-4">Yasal</h3>
                     <ul class="space-y-3">
-                        <li><a href="/privacy-rüyani.html" class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Gizlilik Politikası</a></li>
-                        <li><a href="/terms-rüyani.html" class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Kullanım Şartları</a></li>
-                        <li><a href="/disclaimer-rüyani.html" class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Sorumluluk Reddi</a></li>
+                        <li><a href="/privacy-rüyani.html"
+                                class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Gizlilik
+                                Politikası</a></li>
+                        <li><a href="/terms-rüyani.html"
+                                class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Kullanım
+                                Şartları</a></li>
+                        <li><a href="/disclaimer-rüyani.html"
+                                class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Sorumluluk
+                                Reddi</a></li>
                     </ul>
                 </div>
             </div>
-            
+
             <div class="mt-12 pt-8 border-t border-slate-800 text-center">
                 <p class="text-slate-500 text-sm">
                     © 2024 Akkuyu Labs. Tüm hakları saklıdır.
@@ -468,7 +582,7 @@
 
     <script>
         lucide.createIcons();
-        
+
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 20) {
@@ -477,38 +591,40 @@
                 navbar.classList.remove('glass', 'border-b', 'border-slate-800');
             }
         });
-        
+
         const menuBtn = document.getElementById('menuBtn');
         const closeMenu = document.getElementById('closeMenu');
         const mobileMenu = document.getElementById('mobileMenu');
-        
+
         menuBtn.addEventListener('click', () => {
             mobileMenu.classList.add('open');
         });
-        
+
         closeMenu.addEventListener('click', () => {
             mobileMenu.classList.remove('open');
         });
-        
+
         const revealElements = document.querySelectorAll('.reveal');
-        
+
         const revealOnScroll = () => {
             revealElements.forEach((element) => {
                 const elementTop = element.getBoundingClientRect().top;
                 const windowHeight = window.innerHeight;
-                
+
                 if (elementTop < windowHeight - 100) {
                     element.classList.add('active');
                 }
             });
         };
-        
+
         window.addEventListener('scroll', revealOnScroll);
         window.addEventListener('load', revealOnScroll);
     </script>
 </body>
+
 </html>
 ntListener('load', revealOnScroll);
-    </script>
+</script>
 </body>
+
 </html>
