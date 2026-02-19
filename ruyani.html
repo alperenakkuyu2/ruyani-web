@@ -196,8 +196,7 @@
                 </div>
 
                 <div class="hidden md:block">
-                    <a href="mailto:alperen@akkuyulabs.com.tr"
-                        class="px-6 py-2.5 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-blue-500 text-white text-sm font-medium btn-primary">
+                    <a href="/cdn-cgi/l/email-protection#16777a667364737856777d7d636f637a7774653875797b386264" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-blue-500 text-white text-sm font-medium btn-primary">
                         İletişim
                     </a>
                 </div>
@@ -524,6 +523,27 @@
         </div>
     </section>
 
+    <!-- Account Deletion Section -->
+    <section class="py-16 border-t border-slate-800/50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/60 border border-slate-700 text-sm text-slate-400 mb-5">
+                    <i data-lucide="shield" class="w-3.5 h-3.5 text-violet-400"></i>
+                    Hesap Yönetimi
+                </div>
+                <h2 class="text-xl font-semibold text-white mb-3">Hesabınızı Silmek mi İstiyorsunuz?</h2>
+                <p class="text-slate-500 text-sm mb-6 max-w-md mx-auto">
+                    Hesabınızı ve tüm verilerinizi kalıcı olarak silmek için aşağıdaki butona tıklayarak talepte bulunabilirsiniz.
+                </p>
+                <a href="/delete-account-ruyani.html"
+                    class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-red-500/10 border border-red-500/25 text-red-400 text-sm font-medium hover:bg-red-500/20 hover:border-red-500/40 transition-all duration-200">
+                    <i data-lucide="user-x" class="w-4 h-4"></i>
+                    Hesap Silme İsteği Gönder
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="bg-slate-950 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -568,6 +588,10 @@
                         <li><a href="/disclaimer-rüyani.html"
                                 class="text-slate-400 hover:text-violet-400 transition-colors duration-200 text-sm">Sorumluluk
                                 Reddi</a></li>
+                        <li><a href="/delete-account-ruyani.html"
+                                class="text-slate-400 hover:text-red-400 transition-colors duration-200 text-sm flex items-center gap-1.5">
+                                <i data-lucide="user-x" class="w-3.5 h-3.5"></i>
+                                Hesap Silme</a></li>
                     </ul>
                 </div>
             </div>
@@ -580,7 +604,7 @@
         </div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         lucide.createIcons();
 
         const navbar = document.getElementById('navbar');
@@ -618,13 +642,4 @@
         };
 
         window.addEventListener('scroll', revealOnScroll);
-        window.addEventListener('load', revealOnScroll);
-    </script>
-</body>
-
-</html>
-ntListener('load', revealOnScroll);
-</script>
-</body>
-
-</html>
+        window.add

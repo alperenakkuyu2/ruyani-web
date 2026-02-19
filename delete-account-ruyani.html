@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hesap Silme İsteği - Rüyani</title>
+    <meta name="description" content="Rüyani uygulaması hesap silme isteği formu.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .blur-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .fade-in-delay { animation: fadeInUp 0.7s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .fade-in-delay2 { animation: fadeInUp 0.7s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+        .input-field {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 14px 16px;
+            width: 100%;
+            color: #f8fafc;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+        }
+
+        .input-field::placeholder { color: #64748b; }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            border: none;
+            border-radius: 12px;
+            padding: 15px 28px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px -8px rgba(220, 38, 38, 0.5);
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .delete-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .checkbox-custom {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid #475569;
+            background: transparent;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-custom:checked {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");
+        }
+
+        .success-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.95);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .success-overlay.show { display: flex; }
+
+        select.input-field option { background: #1e293b; }
+    </style>
+</head>
+
+<body class="pt-20 min-h-screen">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-18 py-4">
+                <a href="/" class="flex items-center gap-2 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="code-2" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold gradient-text">Akkuyu Labs</span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="/" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Ana Sayfa</a>
+                    <a href="/ruyani.html" class="text-sm font-medium text-violet-400 relative">
+                        Rüyani
+                        <span class="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-500 to-purple-500"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Background blurs -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="blur-circle top-0 right-0 w-[500px] h-[500px] bg-red-500/5"></div>
+        <div class="blur-circle bottom-0 left-0 w-[400px] h-[400px] bg-violet-500/8"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="relative max-w-2xl mx-auto px-4 sm:px-6 py-16">
+
+        <!-- Back link -->
+        <div class="fade-in mb-8">
+            <a href="/ruyani.html" class="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Rüyani'ye Geri Dön
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="fade-in mb-10">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-14 h-14 rounded-2xl bg-red-500/15 border border-red-500/25 flex items-center justify-center">
+                    <i data-lucide="user-x" class="w-7 h-7 text-red-400"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-white">Hesap Silme İsteği</h1>
+                    <p class="text-slate-400 text-sm mt-1">Rüyani · Akkuyu Labs</p>
+                </div>
+            </div>
+
+            <!-- Warning Banner -->
+            <div class="bg-red-500/10 border border-red-500/25 rounded-2xl p-5 flex gap-4">
+                <div class="flex-shrink-0 mt-0.5">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 text-red-400"></i>
+                </div>
+                <div>
+                    <p class="text-red-300 font-semibold text-sm mb-1">Bu işlem geri alınamaz!</p>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Hesabınız silindiğinde tüm rüya kayıtlarınız, yorumlarınız ve verileriniz kalıcı olarak silinecektir.
+                        Bu işlem tamamlandıktan sonra verilerinizi kurtarmak mümkün olmayacaktır.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- What will be deleted -->
+        <div class="fade-in-delay mb-8">
+            <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+                <h2 class="text-white font-semibold mb-4 flex items-center gap-2">
+                    <i data-lucide="trash-2" class="w-4 h-4 text-red-400"></i>
+                    Silinecek Veriler
+                </h2>
+                <ul class="space-y-3">
+                    <li class="flex items-start gap-3 text-slate-400 text-sm">
+                        <i data-lucide="x-circle" class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5"></i>
+                        Tüm rüya kayıtları ve notlarınız
+                    </li>
+                    <li class="flex items-start gap-3 text-slate-400 text-sm">
+                        <i data-lucide="x-circle" class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5"></i>
+                        Rüya yorumları ve analizleriniz
+                    </li>
+                    <li class="flex items-start gap-3 text-slate-400 text-sm">
+                        <i data-lucide="x-circle" class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5"></i>
+                        Hesap bilgileriniz ve tercihleriniz
+                    </li>
+                    <li class="flex items-start gap-3 text-slate-400 text-sm">
+                        <i data-lucide="x-circle" class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5"></i>
+                        İstatistik ve analiz verileriniz
+                    </li>
+                </ul>
+                <div class="mt-4 pt-4 border-t border-slate-700">
+                    <p class="text-slate-500 text-xs flex items-center gap-2">
+                        <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                        Hesap silme işlemi talebinizin alınmasından itibaren en geç <strong class="text-slate-300 ml-1">30 gün</strong> içinde tamamlanır.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="fade-in-delay2">
+            <div class="bg-slate-800/40 border border-slate-700 rounded-2xl p-6 sm:p-8">
+                <h2 class="text-white font-semibold mb-6">İstek Formu</h2>
+
+                <form id="deleteForm" class="space-y-5">
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">
+                            E-posta Adresi <span class="text-red-400">*</span>
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            class="input-field"
+                            placeholder="Hesabınıza kayıtlı e-posta adresinizi girin"
+                            required
+                        />
+                    </div>
+
+                    <!-- Reason -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">
+                            Silme Sebebi <span class="text-slate-500">(İsteğe bağlı)</span>
+                        </label>
+                        <select id="reason" class="input-field cursor-pointer">
+                            <option value="">Bir sebep seçin...</option>
+                            <option value="privacy">Gizlilik endişeleri</option>
+                            <option value="not-using">Uygulamayı artık kullanmıyorum</option>
+                            <option value="alternative">Başka bir uygulama kullanıyorum</option>
+                            <option value="technical">Teknik sorunlar yaşadım</option>
+                            <option value="other">Diğer</option>
+                        </select>
+                    </div>
+
+                    <!-- Additional note -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">
+                            Ek Not <span class="text-slate-500">(İsteğe bağlı)</span>
+                        </label>
+                        <textarea
+                            id="note"
+                            class="input-field resize-none"
+                            rows="3"
+                            placeholder="Bize iletmek istediğiniz başka bir şey var mı?"
+                        ></textarea>
+                    </div>
+
+                    <!-- Confirm checkbox -->
+                    <div class="flex items-start gap-3 p-4 bg-slate-900/50 rounded-xl border border-slate-700">
+                        <input type="checkbox" id="confirm" class="checkbox-custom" />
+                        <label for="confirm" class="text-sm text-slate-400 leading-relaxed cursor-pointer">
+                            Hesabımın ve tüm verilerimin <strong class="text-red-400">kalıcı olarak silineceğini</strong> anlıyor ve onaylıyorum. Bu işlemin geri alınamayacağını kabul ediyorum.
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitBtn" class="delete-btn" disabled>
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        Hesap Silme İsteği Gönder
+                    </button>
+
+                    <p class="text-center text-slate-500 text-xs">
+                        Onay e-postası belirttiğiniz adrese gönderilecektir.
+                    </p>
+                </form>
+            </div>
+        </div>
+
+        <!-- Contact info -->
+        <div class="mt-8 text-center fade-in-delay2">
+            <p class="text-slate-500 text-sm">
+                Sorularınız için <a href="mailto:info@akkuyulabs.com" class="text-violet-400 hover:text-violet-300 transition-colors">info@akkuyulabs.com</a> adresine yazabilirsiniz.
+            </p>
+        </div>
+
+    </main>
+
+    <!-- Success Overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="max-w-sm mx-auto px-6 text-center">
+            <div class="w-20 h-20 rounded-full bg-green-500/15 border border-green-500/30 flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="check" class="w-10 h-10 text-green-400"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-3">İstek Alındı</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                Hesap silme isteğiniz başarıyla alındı. E-posta adresinize bir onay maili gönderildi. İşleminiz en geç 30 gün içinde tamamlanacaktır.
+            </p>
+            <a href="/ruyani.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Ana Sayfaya Dön
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 mt-16">
+        <div class="max-w-7xl mx-auto px-4 py-8 text-center">
+            <p class="text-slate-500 text-sm">© 2024 Akkuyu Labs. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('glass', 'border-b', 'border-slate-800');
+            } else {
+                navbar.classList.remove('glass', 'border-b', 'border-slate-800');
+            }
+        });
+
+        // Enable button when checkbox is checked
+        const checkbox = document.getElementById('confirm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        checkbox.addEventListener('change', () => {
+            submitBtn.disabled = !checkbox.checked;
+        });
+
+        // Form submit
+        document.getElementById('deleteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            if (!email) return;
+
+            // Show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<svg class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Gönderiliyor...';
+
+            // Simulate submission
+            setTimeout(() => {
+                document.getElementById('successOverlay').classList.add('show');
+                lucide.createIcons();
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
