@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MonkeyD. Coffee — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0c0a;
+    --surface: #1a1410;
+    --surface2: #231c16;
+    --border: rgba(200,134,10,0.2);
+    --amber: #c8860a;
+    --gold: #e8a020;
+    --cream: #f5e6c8;
+    --muted: #9a8060;
+    --red: #c0392b;
+    --green: #27ae60;
+    --blue: #2980b9;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--cream); font-family:'Raleway',sans-serif; min-height:100vh; }
+
+  /* ── LOGIN ── */
+  #loginScreen {
+    position:fixed; inset:0; background:var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    z-index:1000; flex-direction:column; gap:24px;
+    background: radial-gradient(ellipse at center, #1e0f05 0%, #0a0705 70%);
+  }
+  .login-box {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:16px; padding:40px 36px; width:100%; max-width:380px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+  .login-logo { font-family:'Cinzel',serif; font-size:22px; color:var(--gold); text-align:center; margin-bottom:6px; }
+  .login-sub  { font-size:11px; color:var(--muted); text-align:center; letter-spacing:3px; text-transform:uppercase; margin-bottom:28px; }
+  .login-box input {
+    width:100%; padding:12px 14px; background:var(--surface2);
+    border:1px solid var(--border); border-radius:8px;
+    color:var(--cream); font-family:'Raleway',sans-serif; font-size:14px;
+    outline:none; margin-bottom:12px;
+    transition: border-color 0.2s;
+  }
+  .login-box input:focus { border-color:var(--amber); }
+  .btn-primary {
+    width:100%; padding:12px; background:var(--amber);
+    border:none; border-radius:8px; color:#0a0705;
+    font-family:'Cinzel',serif; font-size:13px; font-weight:700;
+    letter-spacing:2px; cursor:pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover  { background:var(--gold); }
+  .btn-primary:active { transform:scale(0.98); }
+  .login-err { color:#e74c3c; font-size:12px; text-align:center; margin-top:8px; display:none; }
+
+  /* ── APP SHELL ── */
+  #app { display:none; }
+  .topbar {
+    background:rgba(10,7,5,0.95); backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    position:sticky; top:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 20px; height:56px;
+  }
+  .topbar-brand { font-family:'Cinzel',serif; font-size:16px; color:var(--gold); }
+  .topbar-brand span { color:var(--muted); font-size:11px; margin-left:8px; font-family:'Raleway',sans-serif; letter-spacing:2px; }
+  .topbar-actions { display:flex; gap:10px; align-items:center; }
+
+  .btn { padding:8px 16px; border-radius:8px; border:none; cursor:pointer; font-family:'Raleway',sans-serif; font-size:13px; font-weight:600; transition:all 0.2s; }
+  .btn-save   { background:var(--green); color:#fff; }
+  .btn-save:hover { background:#2ecc71; }
+  .btn-add    { background:var(--amber); color:#0a0705; }
+  .btn-add:hover { background:var(--gold); }
+  .btn-danger { background:var(--red); color:#fff; }
+  .btn-danger:hover { background:#e74c3c; }
+  .btn-ghost  { background:var(--surface2); color:var(--cream); border:1px solid var(--border); }
+  .btn-ghost:hover { border-color:var(--amber); color:var(--amber); }
+  .btn-sm     { padding:5px 10px; font-size:11px; }
+  .btn-icon   { padding:6px 10px; font-size:14px; }
+  .btn-logout { background:none; color:var(--muted); border:1px solid rgba(154,128,96,0.3); font-size:12px; padding:6px 12px; border-radius:8px; cursor:pointer; }
+  .btn-logout:hover { color:var(--red); border-color:var(--red); }
+
+  /* ── LAYOUT ── */
+  .layout { display:flex; height:calc(100vh - 56px); }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width:220px; flex-shrink:0;
+    background:var(--surface);
+    border-right:1px solid var(--border);
+    overflow-y:auto; padding:16px 0;
+  }
+  .sidebar-title { font-size:10px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; padding:0 16px 8px; }
+  .cat-tab {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 16px; cursor:pointer;
+    border-left:2px solid transparent;
+    transition:all 0.2s; font-size:13px; color:var(--muted);
+  }
+  .cat-tab:hover { color:var(--cream); background:rgba(200,134,10,0.05); }
+  .cat-tab.active { color:var(--gold); border-left-color:var(--amber); background:rgba(200,134,10,0.08); }
+  .cat-tab .cat-badge { font-size:10px; background:rgba(200,134,10,0.15); color:var(--amber); border-radius:10px; padding:1px 7px; }
+  .sidebar-footer { padding:16px; border-top:1px solid var(--border); margin-top:16px; }
+
+  /* ── MAIN ── */
+  .main { flex:1; overflow-y:auto; padding:24px; }
+  .main-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
+  .main-title { font-family:'Cinzel',serif; font-size:18px; color:var(--gold); }
+  .main-subtitle { font-size:12px; color:var(--muted); margin-top:3px; }
+
+  /* ── SEARCH & FILTER ── */
+  .toolbar { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
+  .search-box {
+    flex:1; min-width:200px; padding:9px 14px;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:8px; color:var(--cream); font-family:'Raleway',sans-serif; font-size:13px; outline:none;
+    transition: border-color 0.2s;
+  }
+  .search-box:focus { border-color:var(--amber); }
+  .filter-select {
+    padding:9px 14px; background:var(--surface); border:1px solid var(--border);
+    border-radius:8px; color:var(--cream); font-size:13px; outline:none; cursor:pointer;
+  }
+
+  /* ── ITEMS TABLE ── */
+  .items-list { display:flex; flex-direction:column; gap:8px; }
+  .item-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:14px 16px;
+    display:flex; align-items:center; gap:14px;
+    transition:border-color 0.2s;
+  }
+  .item-card:hover { border-color:rgba(200,134,10,0.4); }
+  .item-card.unavailable { opacity:0.5; }
+
+  .item-thumb {
+    width:56px; height:56px; border-radius:8px; object-fit:cover;
+    border:1px solid var(--border); background:var(--surface2); flex-shrink:0;
+    cursor:pointer; transition:opacity 0.2s;
+  }
+  .item-thumb:hover { opacity:0.75; }
+  .item-thumb-ph {
+    width:56px; height:56px; border-radius:8px; flex-shrink:0;
+    background:var(--surface2); border:1px dashed rgba(200,134,10,0.3);
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; color:var(--muted); cursor:pointer; text-align:center; line-height:1.3;
+    transition:border-color 0.2s;
+  }
+  .item-thumb-ph:hover { border-color:var(--amber); color:var(--amber); }
+
+  .item-body { flex:1; min-width:0; }
+  .item-name-input {
+    width:100%; background:transparent; border:none; border-bottom:1px solid transparent;
+    color:var(--cream); font-family:'Raleway',sans-serif; font-size:14px; font-weight:600;
+    outline:none; padding:2px 0; transition:border-color 0.2s;
+  }
+  .item-name-input:focus { border-bottom-color:var(--amber); }
+  .item-desc-input {
+    width:100%; background:transparent; border:none; border-bottom:1px solid transparent;
+    color:var(--muted); font-family:'Raleway',sans-serif; font-size:11px;
+    outline:none; padding:2px 0; margin-top:4px; transition:border-color 0.2s;
+  }
+  .item-desc-input:focus { border-bottom-color:rgba(200,134,10,0.3); }
+  .item-subcat { font-size:10px; color:rgba(200,134,10,0.6); letter-spacing:1px; text-transform:uppercase; margin-top:4px; }
+
+  .item-prices { display:flex; gap:8px; align-items:center; flex-wrap:wrap; flex-shrink:0; }
+  .price-group { display:flex; flex-direction:column; align-items:center; gap:3px; }
+  .price-lbl-small { font-size:9px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
+  .price-input {
+    width:72px; padding:5px 8px; background:var(--surface2);
+    border:1px solid var(--border); border-radius:6px;
+    color:var(--gold); font-family:'Cinzel',serif; font-size:13px; font-weight:700;
+    outline:none; text-align:center; transition:border-color 0.2s;
+  }
+  .price-input:focus { border-color:var(--amber); }
+
+  .item-actions { display:flex; gap:6px; flex-shrink:0; align-items:center; }
+  .toggle-btn {
+    width:40px; height:22px; border-radius:11px; cursor:pointer; position:relative;
+    border:none; transition:background 0.3s; flex-shrink:0;
+  }
+  .toggle-btn.on  { background:var(--green); }
+  .toggle-btn.off { background:#555; }
+  .toggle-btn::after {
+    content:''; position:absolute; top:3px;
+    width:16px; height:16px; border-radius:50%; background:#fff;
+    transition:left 0.3s;
+  }
+  .toggle-btn.on::after  { left:21px; }
+  .toggle-btn.off::after { left:3px; }
+  .toggle-label { font-size:9px; color:var(--muted); text-align:center; }
+
+  /* ── SUBCATEGORY ── */
+  .subcat-section { margin-bottom:28px; }
+  .subcat-header {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:10px; padding-bottom:8px;
+    border-bottom:1px solid var(--border);
+  }
+  .subcat-name-input {
+    background:transparent; border:none; border-bottom:1px solid transparent;
+    color:var(--amber); font-family:'Cinzel',serif; font-size:12px;
+    letter-spacing:3px; text-transform:uppercase; outline:none;
+    transition:border-color 0.2s; padding:2px 0;
+  }
+  .subcat-name-input:focus { border-bottom-color:var(--amber); }
+
+  /* ── IMAGE MODAL ── */
+  .modal-overlay {
+    position:fixed; inset:0; background:rgba(0,0,0,0.8);
+    display:none; align-items:center; justify-content:center; z-index:500;
+  }
+  .modal-overlay.open { display:flex; }
+  .modal {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:16px; padding:28px; width:100%; max-width:460px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.7);
+  }
+  .modal-title { font-family:'Cinzel',serif; font-size:16px; color:var(--gold); margin-bottom:20px; }
+  .modal input[type="text"] {
+    width:100%; padding:10px 14px; background:var(--surface2);
+    border:1px solid var(--border); border-radius:8px;
+    color:var(--cream); font-size:13px; font-family:'Raleway',sans-serif; outline:none;
+    margin-bottom:12px; transition:border-color 0.2s;
+  }
+  .modal input[type="text"]:focus { border-color:var(--amber); }
+  .modal-preview {
+    width:100%; height:160px; object-fit:cover; border-radius:8px;
+    border:1px solid var(--border); margin-bottom:12px; display:none;
+  }
+  .modal-actions { display:flex; gap:10px; justify-content:flex-end; }
+  .modal-or { text-align:center; color:var(--muted); font-size:11px; margin:8px 0; }
+
+  /* ── ADD ITEM MODAL ── */
+  .form-group { margin-bottom:14px; }
+  .form-label { font-size:11px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; display:block; }
+  .form-input {
+    width:100%; padding:10px 14px; background:var(--surface2);
+    border:1px solid var(--border); border-radius:8px;
+    color:var(--cream); font-size:13px; font-family:'Raleway',sans-serif; outline:none;
+    transition:border-color 0.2s;
+  }
+  .form-input:focus { border-color:var(--amber); }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .form-select {
+    width:100%; padding:10px 14px; background:var(--surface2);
+    border:1px solid var(--border); border-radius:8px;
+    color:var(--cream); font-size:13px; outline:none; cursor:pointer;
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position:fixed; bottom:24px; right:24px;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:10px; padding:14px 20px;
+    font-size:13px; color:var(--cream);
+    box-shadow:0 8px 32px rgba(0,0,0,0.5);
+    transform:translateY(80px); opacity:0;
+    transition:all 0.3s; z-index:999;
+    display:flex; align-items:center; gap:10px;
+  }
+  .toast.show { transform:translateY(0); opacity:1; }
+  .toast.success { border-color:var(--green); }
+  .toast.error   { border-color:var(--red); }
+
+  /* ── DEPLOY STATUS ── */
+  .deploy-bar {
+    background:rgba(39,174,96,0.1); border:1px solid rgba(39,174,96,0.3);
+    border-radius:8px; padding:10px 16px;
+    display:flex; align-items:center; gap:10px; font-size:12px; color:#2ecc71;
+    margin-bottom:16px; display:none;
+  }
+  .deploy-bar.show { display:flex; }
+  .spin { animation:spin 1s linear infinite; display:inline-block; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* ── CATEGORY SETTINGS ── */
+  .cat-settings { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:20px; }
+  .cat-settings-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px; }
+
+  /* ── STATS ── */
+  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:24px; }
+  .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center; }
+  .stat-num { font-family:'Cinzel',serif; font-size:24px; color:var(--gold); }
+  .stat-lbl { font-size:11px; color:var(--muted); margin-top:4px; letter-spacing:1px; text-transform:uppercase; }
+
+  /* RESPONSIVE */
+  @media(max-width:640px) {
+    .sidebar { display:none; }
+    .stats-row { grid-template-columns:1fr 1fr; }
+    .item-card { flex-wrap:wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">☠️ MonkeyD. Coffee</div>
+    <div class="login-sub">Admin Panel</div>
+    <input type="text"     id="loginUser" placeholder="Kullanıcı adı" autocomplete="username">
+    <input type="password" id="loginPass" placeholder="Şifre" autocomplete="current-password">
+    <button class="btn-primary" onclick="doLogin()">Giriş Yap</button>
+    <div class="login-err" id="loginErr">Hatalı kullanıcı adı veya şifre.</div>
+    <div style="margin-top:16px;font-size:11px;color:var(--muted);text-align:center;">
+      Demo: admin / monkeyd2024
+    </div>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-brand">
+      ☕ MonkeyD. Coffee
+      <span>ADMIN</span>
+    </div>
+    <div class="topbar-actions">
+      <div id="saveStatus" style="font-size:12px;color:var(--muted);"></div>
+      <button class="btn btn-save" onclick="saveToGitHub()">💾 Kaydet & Yayınla</button>
+      <button class="btn-logout" onclick="doLogout()">Çıkış</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-title">Kategoriler</div>
+      <div id="catTabs"></div>
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost" style="width:100%;font-size:12px;" onclick="openAddCatModal()">+ Kategori Ekle</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div id="deployBar" class="deploy-bar">
+        <span class="spin">⟳</span>
+        <span id="deployMsg">GitHub'a gönderiliyor...</span>
+      </div>
+
+      <!-- OVERVIEW (default) -->
+      <div id="viewOverview">
+        <div class="main-header">
+          <div>
+            <div class="main-title">Genel Bakış</div>
+            <div class="main-subtitle">Menü özeti</div>
+          </div>
+        </div>
+        <div class="stats-row" id="statsRow"></div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
+          <div style="font-family:'Cinzel',serif;font-size:14px;color:var(--gold);margin-bottom:16px;">🚀 GitHub ile Yayınlama Ayarları</div>
+          <div class="form-group">
+            <label class="form-label">GitHub Token (Personal Access Token)</label>
+            <input type="password" class="form-input" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">GitHub Kullanıcı Adı</label>
+              <input type="text" class="form-input" id="ghUser" placeholder="kullanici-adi">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Repository Adı</label>
+              <input type="text" class="form-input" id="ghRepo" placeholder="monkeyd-coffee">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">menu.json Dosya Yolu (repoda)</label>
+            <input type="text" class="form-input" id="ghPath" placeholder="menu.json" value="menu.json">
+          </div>
+          <button class="btn btn-save" onclick="saveGhSettings()">Ayarları Kaydet</button>
+          <div style="margin-top:14px;padding:12px;background:rgba(200,134,10,0.08);border-radius:8px;font-size:11px;color:var(--muted);line-height:1.8;">
+            <strong style="color:var(--amber);">📋 Nasıl Token Alınır?</strong><br>
+            1. GitHub → Settings → Developer Settings → Personal Access Tokens → Tokens (classic)<br>
+            2. "Generate new token" → <strong>repo</strong> yetkisini seç → Oluştur<br>
+            3. Token'ı buraya yapıştır. Bir kez gösterilir, kaydet!
+          </div>
+        </div>
+      </div>
+
+      <!-- CATEGORY VIEW -->
+      <div id="viewCategory" style="display:none;">
+        <div class="main-header">
+          <div>
+            <div class="main-title" id="catViewTitle"></div>
+            <div class="main-subtitle" id="catViewSubtitle"></div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-add" onclick="openAddItemModal()">+ Ürün Ekle</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteCurrentCat()">Kategoriyi Sil</button>
+          </div>
+        </div>
+
+        <!-- Category banner/icon settings -->
+        <div class="cat-settings">
+          <div style="font-size:12px;color:var(--amber);font-family:'Cinzel',serif;letter-spacing:2px;">KATEGORİ AYARLARI</div>
+          <div class="cat-settings-grid">
+            <div class="form-group" style="margin:0;">
+              <label class="form-label">Kategori Adı</label>
+              <input type="text" class="form-input" id="catNameInput" onchange="updateCatName()">
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label class="form-label">İkon (emoji)</label>
+              <input type="text" class="form-input" id="catIconInput" onchange="updateCatIcon()" style="font-size:18px;">
+            </div>
+            <div class="form-group" style="margin:0;grid-column:span 2;">
+              <label class="form-label">Banner Görsel URL</label>
+              <input type="text" class="form-input" id="catBannerInput" onchange="updateCatBanner()" placeholder="https://...">
+            </div>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="toolbar">
+          <input type="text" class="search-box" id="searchBox" placeholder="🔍 Ürün ara..." oninput="renderItems()">
+          <select class="filter-select" id="filterAvail" onchange="renderItems()">
+            <option value="all">Tümü</option>
+            <option value="available">Aktif</option>
+            <option value="unavailable">Pasif</option>
+          </select>
+        </div>
+
+        <div id="itemsContainer"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ═══ IMAGE MODAL ═══ -->
+<div class="modal-overlay" id="imgModal">
+  <div class="modal">
+    <div class="modal-title">📷 Görsel Değiştir</div>
+    <input type="text" id="imgUrlInput" placeholder="Görsel URL'sini girin..." oninput="previewImg()">
+    <div class="modal-or">— veya —</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6;">
+      Görseli <strong style="color:var(--amber);">Cloudinary</strong>, <strong style="color:var(--amber);">ImgBB</strong> veya herhangi bir görsel hostinge yükleyip URL'sini yapıştırın.<br>
+      Unsplash örnek: <span style="color:var(--amber);">https://images.unsplash.com/photo-ID?w=140&q=75</span>
+    </div>
+    <img id="imgPreview" class="modal-preview" alt="Önizleme">
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeImgModal()">İptal</button>
+      <button class="btn btn-save" onclick="applyImg()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADD ITEM MODAL ═══ -->
+<div class="modal-overlay" id="addItemModal">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-title">➕ Yeni Ürün Ekle</div>
+    <div class="form-group">
+      <label class="form-label">Ürün Adı *</label>
+      <input type="text" class="form-input" id="newItemName" placeholder="Ürün adını girin">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Açıklama</label>
+      <input type="text" class="form-input" id="newItemDesc" placeholder="Kısa açıklama">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Alt Kategori</label>
+      <select class="form-select" id="newItemSubcat"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Fiyat Tipi</label>
+      <select class="form-select" id="newItemPriceType" onchange="togglePriceFields()">
+        <option value="single">Tek Fiyat</option>
+        <option value="dual">Sıcak / Soğuk</option>
+      </select>
+    </div>
+    <div id="singlePriceField" class="form-group">
+      <label class="form-label">Fiyat (₺)</label>
+      <input type="number" class="form-input" id="newItemPrice1" placeholder="0">
+    </div>
+    <div id="dualPriceFields" style="display:none;">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Sıcak Fiyat (₺)</label>
+          <input type="number" class="form-input" id="newItemPriceHot" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Soğuk Fiyat (₺)</label>
+          <input type="number" class="form-input" id="newItemPriceCold" placeholder="0">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Görsel URL (opsiyonel)</label>
+      <input type="text" class="form-input" id="newItemImg" placeholder="https://...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeAddItemModal()">İptal</button>
+      <button class="btn btn-add" onclick="addItem()">Ekle</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADD CATEGORY MODAL ═══ -->
+<div class="modal-overlay" id="addCatModal">
+  <div class="modal">
+    <div class="modal-title">📂 Yeni Kategori Ekle</div>
+    <div class="form-group">
+      <label class="form-label">Kategori Adı *</label>
+      <input type="text" class="form-input" id="newCatName" placeholder="örn: Smoothie">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">İkon (emoji)</label>
+        <input type="text" class="form-input" id="newCatIcon" placeholder="🥤" style="font-size:18px;">
+      </div>
+      <div class="form-group">
+        <label class="form-label">İlk Alt Kategori</label>
+        <input type="text" class="form-input" id="newCatSubcat" placeholder="(boş bırakabilirsiniz)">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="document.getElementById('addCatModal').classList.remove('open')">İptal</button>
+      <button class="btn btn-add" onclick="addCategory()">Ekle</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════
+const USERS = { admin: 'monkeyd2024', personel: 'kahve123' };
+let menuData = null;
+let currentCatIdx = null;
+let imgTargetItem = null; // { catIdx, subcatIdx, itemIdx }
+let dirty = false;
+
+// ══════════════════════════════════════
+//  LOGIN
+// ══════════════════════════════════════
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  if (USERS[u] && USERS[u] === p) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadMenu();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+document.getElementById('loginPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+function doLogout() {
+  if (dirty && !confirm('Kaydedilmemiş değişiklikler var. Çıkmak istiyor musunuz?')) return;
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+}
+
+// ══════════════════════════════════════
+//  LOAD MENU
+// ══════════════════════════════════════
+async function loadMenu() {
+  try {
+    // Try to load from menu.json (relative path)
+    const res = await fetch('menu.json?t=' + Date.now());
+    menuData = await res.json();
+  } catch(e) {
+    // Fallback: use embedded data
+    menuData = getEmbeddedMenu();
+    showToast('menu.json yüklenemedi, örnek veri kullanılıyor.', 'error');
+  }
+  loadGhSettings();
+  renderSidebar();
+  renderStats();
+  markClean();
+}
+
+function getEmbeddedMenu() {
+  return {"categories":[]};
+}
+
+// ══════════════════════════════════════
+//  GITHUB SETTINGS
+// ══════════════════════════════════════
+function saveGhSettings() {
+  localStorage.setItem('gh_token', document.getElementById('ghToken').value);
+  localStorage.setItem('gh_user',  document.getElementById('ghUser').value);
+  localStorage.setItem('gh_repo',  document.getElementById('ghRepo').value);
+  localStorage.setItem('gh_path',  document.getElementById('ghPath').value || 'menu.json');
+  showToast('GitHub ayarları kaydedildi ✓', 'success');
+}
+function loadGhSettings() {
+  document.getElementById('ghToken').value = localStorage.getItem('gh_token') || '';
+  document.getElementById('ghUser').value  = localStorage.getItem('gh_user')  || '';
+  document.getElementById('ghRepo').value  = localStorage.getItem('gh_repo')  || '';
+  document.getElementById('ghPath').value  = localStorage.getItem('gh_path')  || 'menu.json';
+}
+
+// ══════════════════════════════════════
+//  SAVE TO GITHUB
+// ══════════════════════════════════════
+async function saveToGitHub() {
+  const token = localStorage.getItem('gh_token');
+  const user  = localStorage.getItem('gh_user');
+  const repo  = localStorage.getItem('gh_repo');
+  const path  = localStorage.getItem('gh_path') || 'menu.json';
+
+  if (!token || !user || !repo) {
+    showToast('Önce GitHub ayarlarını yapın (Genel Bakış sayfası)', 'error');
+    showView('overview');
+    return;
+  }
+
+  setDeployBar(true, 'GitHub\'a gönderiliyor...');
+
+  try {
+    // Get current SHA
+    const getRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+
+    let sha = null;
+    if (getRes.ok) {
+      const existing = await getRes.json();
+      sha = existing.sha;
+    }
+
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(menuData, null, 2))));
+
+    const body = { message: '🍵 Menü güncellendi - ' + new Date().toLocaleString('tr-TR'), content };
+    if (sha) body.sha = sha;
+
+    const putRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (putRes.ok) {
+      setDeployBar(true, 'Vercel deploy başladı, ~30 saniye bekleyin...');
+      setTimeout(() => {
+        setDeployBar(false);
+        showToast('✅ Menü yayınlandı! Vercel deploy tamamlandı.', 'success');
+        markClean();
+      }, 8000);
+    } else {
+      const err = await putRes.json();
+      throw new Error(err.message || 'GitHub API hatası');
+    }
+  } catch(e) {
+    setDeployBar(false);
+    showToast('Hata: ' + e.message, 'error');
+  }
+}
+
+function setDeployBar(show, msg) {
+  const bar = document.getElementById('deployBar');
+  const msgEl = document.getElementById('deployMsg');
+  bar.classList.toggle('show', show);
+  if (msg) msgEl.textContent = msg;
+}
+
+// ══════════════════════════════════════
+//  SIDEBAR
+// ══════════════════════════════════════
+function renderSidebar() {
+  const tabs = document.getElementById('catTabs');
+  tabs.innerHTML = `
+    <div class="cat-tab ${currentCatIdx===null?'active':''}" onclick="showView('overview')">
+      📊 Genel Bakış
+    </div>`;
+  menuData.categories.forEach((cat, i) => {
+    const total = cat.subcategories.reduce((a,s)=>a+s.items.length, 0);
+    const unavail = cat.subcategories.reduce((a,s)=>a+s.items.filter(x=>!x.available).length, 0);
+    tabs.innerHTML += `
+      <div class="cat-tab ${currentCatIdx===i?'active':''}" onclick="showCat(${i})">
+        <span>${cat.icon} ${cat.label}</span>
+        <span class="cat-badge">${total}${unavail?` / <span style="color:#e74c3c">${unavail}</span>`:''}</span>
+      </div>`;
+  });
+}
+
+// ══════════════════════════════════════
+//  VIEWS
+// ══════════════════════════════════════
+function showView(v) {
+  currentCatIdx = null;
+  document.getElementById('viewOverview').style.display  = v==='overview' ? 'block' : 'none';
+  document.getElementById('viewCategory').style.display  = v==='category' ? 'block' : 'none';
+  renderSidebar();
+  if (v==='overview') renderStats();
+}
+
+function showCat(idx) {
+  currentCatIdx = idx;
+  document.getElementById('viewOverview').style.display = 'none';
+  document.getElementById('viewCategory').style.display = 'block';
+  renderSidebar();
+  renderCatSettings();
+  renderItems();
+}
+
+// ══════════════════════════════════════
+//  STATS
+// ══════════════════════════════════════
+function renderStats() {
+  let totalItems=0, unavailItems=0, cats=menuData.categories.length;
+  menuData.categories.forEach(cat => {
+    cat.subcategories.forEach(sub => {
+      sub.items.forEach(item => {
+        totalItems++;
+        if (!item.available) unavailItems++;
+      });
+    });
+  });
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${cats}</div><div class="stat-lbl">Kategori</div></div>
+    <div class="stat-card"><div class="stat-num">${totalItems}</div><div class="stat-lbl">Toplam Ürün</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--green)">${totalItems-unavailItems}</div><div class="stat-lbl">Aktif</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--red)">${unavailItems}</div><div class="stat-lbl">Pasif</div></div>`;
+}
+
+// ══════════════════════════════════════
+//  CATEGORY SETTINGS
+// ══════════════════════════════════════
+function renderCatSettings() {
+  const cat = menuData.categories[currentCatIdx];
+  document.getElementById('catViewTitle').textContent = cat.icon + ' ' + cat.label;
+  document.getElementById('catViewSubtitle').textContent = `${cat.subcategories.reduce((a,s)=>a+s.items.length,0)} ürün`;
+  document.getElementById('catNameInput').value   = cat.label;
+  document.getElementById('catIconInput').value   = cat.icon;
+  document.getElementById('catBannerInput').value = cat.banner || '';
+}
+function updateCatName()   { menuData.categories[currentCatIdx].label  = document.getElementById('catNameInput').value;   markDirty(); renderSidebar(); renderCatSettings(); }
+function updateCatIcon()   { menuData.categories[currentCatIdx].icon   = document.getElementById('catIconInput').value;   markDirty(); renderSidebar(); renderCatSettings(); }
+function updateCatBanner() { menuData.categories[currentCatIdx].banner = document.getElementById('catBannerInput').value; markDirty(); }
+
+// ══════════════════════════════════════
+//  RENDER ITEMS
+// ══════════════════════════════════════
+function renderItems() {
+  const cat     = menuData.categories[currentCatIdx];
+  const query   = (document.getElementById('searchBox')?.value || '').toLowerCase();
+  const filter  = document.getElementById('filterAvail')?.value || 'all';
+  const container = document.getElementById('itemsContainer');
+  container.innerHTML = '';
+
+  cat.subcategories.forEach((sub, si) => {
+    const visibleItems = sub.items.filter(item => {
+      const matchQuery  = !query || item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query);
+      const matchFilter = filter==='all' || (filter==='available'&&item.available) || (filter==='unavailable'&&!item.available);
+      return matchQuery && matchFilter;
+    });
+    if (visibleItems.length === 0 && query) return;
+
+    const section = document.createElement('div');
+    section.className = 'subcat-section';
+    section.innerHTML = `
+      <div class="subcat-header">
+        <input class="subcat-name-input" value="${sub.label}" placeholder="Alt kategori adı..." 
+               onchange="updateSubcatName(${si}, this.value)">
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-ghost btn-sm" onclick="addSubcatItem(${si})">+ Ürün</button>
+          ${cat.subcategories.length > 1 ? `<button class="btn btn-danger btn-sm" onclick="deleteSubcat(${si})">Sil</button>` : ''}
+        </div>
+      </div>
+      <div class="items-list" id="subcat-${si}"></div>`;
+    container.appendChild(section);
+
+    const list = document.getElementById(`subcat-${si}`);
+    sub.items.forEach((item, ii) => {
+      if (!visibleItems.includes(item)) return;
+      list.appendChild(buildItemCard(item, si, ii));
+    });
+  });
+
+  // Add subcategory button
+  const addSubcatBtn = document.createElement('button');
+  addSubcatBtn.className = 'btn btn-ghost';
+  addSubcatBtn.style = 'margin-top:8px;font-size:12px;';
+  addSubcatBtn.textContent = '+ Alt Kategori Ekle';
+  addSubcatBtn.onclick = () => addSubcategory();
+  container.appendChild(addSubcatBtn);
+}
+
+function buildItemCard(item, si, ii) {
+  const card = document.createElement('div');
+  card.className = 'item-card' + (!item.available ? ' unavailable' : '');
+  card.dataset.si = si;
+  card.dataset.ii = ii;
+
+  const imgEl = item.image
+    ? `<img class="item-thumb" src="${item.image}" alt="${item.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" onclick="openImgModal(${si},${ii})">`
+    : '';
+  const phEl = `<div class="item-thumb-ph" style="${item.image?'display:none':''}" onclick="openImgModal(${si},${ii})">📷<br>Görsel ekle</div>`;
+
+  const pricesHtml = item.prices.map((p,pi) => `
+    <div class="price-group">
+      ${p.label ? `<div class="price-lbl-small">${p.label}</div>` : ''}
+      <input class="price-input" type="number" value="${p.value}" 
+             onchange="updatePrice(${si},${ii},${pi},this.value)" title="${p.label||'Fiyat'}">
+    </div>`).join('');
+
+  card.innerHTML = `
+    ${imgEl}${phEl}
+    <div class="item-body">
+      <input class="item-name-input" value="${item.name}" onchange="updateItemField(${si},${ii},'name',this.value)">
+      <input class="item-desc-input" value="${item.desc||''}" placeholder="Açıklama..." onchange="updateItemField(${si},${ii},'desc',this.value)">
+    </div>
+    <div class="item-prices">${pricesHtml}</div>
+    <div class="item-actions">
+      <div>
+        <button class="toggle-btn ${item.available?'on':'off'}" onclick="toggleAvail(${si},${ii},this)"></button>
+        <div class="toggle-label">${item.available?'Açık':'Kapalı'}</div>
+      </div>
+      <button class="btn btn-danger btn-icon btn-sm" onclick="deleteItem(${si},${ii})" title="Sil">🗑</button>
+    </div>`;
+  return card;
+}
+
+// ══════════════════════════════════════
+//  ITEM ACTIONS
+// ══════════════════════════════════════
+function updateItemField(si, ii, field, val) {
+  menuData.categories[currentCatIdx].subcategories[si].items[ii][field] = val;
+  markDirty();
+}
+function updatePrice(si, ii, pi, val) {
+  menuData.categories[currentCatIdx].subcategories[si].items[ii].prices[pi].value = parseInt(val) || 0;
+  markDirty();
+}
+function updateSubcatName(si, val) {
+  menuData.categories[currentCatIdx].subcategories[si].label = val;
+  markDirty();
+}
+function toggleAvail(si, ii, btn) {
+  const item = menuData.categories[currentCatIdx].subcategories[si].items[ii];
+  item.available = !item.available;
+  btn.className = 'toggle-btn ' + (item.available ? 'on' : 'off');
+  btn.nextElementSibling.textContent = item.available ? 'Açık' : 'Kapalı';
+  btn.closest('.item-card').classList.toggle('unavailable', !item.available);
+  markDirty();
+  renderSidebar();
+}
+function deleteItem(si, ii) {
+  if (!confirm('Bu ürünü silmek istiyor musunuz?')) return;
+  menuData.categories[currentCatIdx].subcategories[si].items.splice(ii, 1);
+  markDirty();
+  renderItems();
+  renderSidebar();
+}
+function deleteSubcat(si) {
+  if (!confirm('Bu alt kategoriyi ve tüm ürünleri silmek istiyor musunuz?')) return;
+  menuData.categories[currentCatIdx].subcategories.splice(si, 1);
+  markDirty();
+  renderItems();
+}
+function addSubcategory() {
+  menuData.categories[currentCatIdx].subcategories.push({ label: 'Yeni Alt Kategori', items: [] });
+  markDirty();
+  renderItems();
+}
+function deleteCurrentCat() {
+  const cat = menuData.categories[currentCatIdx];
+  if (!confirm(`"${cat.label}" kategorisini silmek istiyor musunuz? Tüm ürünler silinecek!`)) return;
+  menuData.categories.splice(currentCatIdx, 1);
+  markDirty();
+  showView('overview');
+}
+
+// ══════════════════════════════════════
+//  ADD ITEM
+// ══════════════════════════════════════
+function openAddItemModal(forceSi) {
+  const cat = menuData.categories[currentCatIdx];
+  const sel = document.getElementById('newItemSubcat');
+  sel.innerHTML = cat.subcategories.map((s,i) => `<option value="${i}">${s.label || 'Alt Kategori ' + (i+1)}</option>`).join('');
+  if (forceSi !== undefined) sel.value = forceSi;
+  document.getElementById('newItemName').value  = '';
+  document.getElementById('newItemDesc').value  = '';
+  document.getElementById('newItemImg').value   = '';
+  document.getElementById('newItemPrice1').value = '';
+  document.getElementById('newItemPriceHot').value  = '';
+  document.getElementById('newItemPriceCold').value = '';
+  document.getElementById('newItemPriceType').value = 'single';
+  togglePriceFields();
+  document.getElementById('addItemModal').classList.add('open');
+}
+function addSubcatItem(si) { openAddItemModal(si); }
+function closeAddItemModal() { document.getElementById('addItemModal').classList.remove('open'); }
+function togglePriceFields() {
+  const dual = document.getElementById('newItemPriceType').value === 'dual';
+  document.getElementById('singlePriceField').style.display = dual ? 'none' : 'block';
+  document.getElementById('dualPriceFields').style.display  = dual ? 'block' : 'none';
+}
+function addItem() {
+  const name = document.getElementById('newItemName').value.trim();
+  if (!name) { showToast('Ürün adı zorunlu!', 'error'); return; }
+  const si   = parseInt(document.getElementById('newItemSubcat').value);
+  const dual = document.getElementById('newItemPriceType').value === 'dual';
+  const prices = dual
+    ? [{ label:'Sıcak', value: parseInt(document.getElementById('newItemPriceHot').value)||0  },
+       { label:'Soğuk', value: parseInt(document.getElementById('newItemPriceCold').value)||0 }]
+    : [{ label:'', value: parseInt(document.getElementById('newItemPrice1').value)||0 }];
+  const newItem = {
+    id: name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'') + '-' + Date.now(),
+    name,
+    desc:  document.getElementById('newItemDesc').value.trim(),
+    image: document.getElementById('newItemImg').value.trim(),
+    prices,
+    available: true
+  };
+  menuData.categories[currentCatIdx].subcategories[si].items.push(newItem);
+  markDirty();
+  closeAddItemModal();
+  renderItems();
+  renderSidebar();
+  showToast(`"${name}" eklendi ✓`, 'success');
+}
+
+// ══════════════════════════════════════
+//  ADD CATEGORY
+// ══════════════════════════════════════
+function openAddCatModal() { document.getElementById('addCatModal').classList.add('open'); }
+function addCategory() {
+  const name = document.getElementById('newCatName').value.trim();
+  if (!name) { showToast('Kategori adı zorunlu!', 'error'); return; }
+  const newCat = {
+    id: name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'') + '-' + Date.now(),
+    label: name,
+    icon:  document.getElementById('newCatIcon').value || '🍵',
+    banner: '',
+    subcategories: [{ label: document.getElementById('newCatSubcat').value || '', items: [] }]
+  };
+  menuData.categories.push(newCat);
+  markDirty();
+  document.getElementById('addCatModal').classList.remove('open');
+  renderSidebar();
+  showCat(menuData.categories.length - 1);
+  showToast(`"${name}" kategorisi eklendi ✓`, 'success');
+}
+
+// ══════════════════════════════════════
+//  IMAGE MODAL
+// ══════════════════════════════════════
+function openImgModal(si, ii) {
+  imgTargetItem = { si, ii };
+  const item = menuData.categories[currentCatIdx].subcategories[si].items[ii];
+  document.getElementById('imgUrlInput').value = item.image || '';
+  document.getElementById('imgPreview').style.display = item.image ? 'block' : 'none';
+  if (item.image) document.getElementById('imgPreview').src = item.image;
+  document.getElementById('imgModal').classList.add('open');
+}
+function closeImgModal() { document.getElementById('imgModal').classList.remove('open'); imgTargetItem = null; }
+function previewImg() {
+  const url = document.getElementById('imgUrlInput').value.trim();
+  const prev = document.getElementById('imgPreview');
+  if (url) { prev.src = url; prev.style.display = 'block'; }
+  else      { prev.style.display = 'none'; }
+}
+function applyImg() {
+  if (!imgTargetItem) return;
+  const url = document.getElementById('imgUrlInput').value.trim();
+  menuData.categories[currentCatIdx].subcategories[imgTargetItem.si].items[imgTargetItem.ii].image = url;
+  markDirty();
+  closeImgModal();
+  renderItems();
+  showToast('Görsel güncellendi ✓', 'success');
+}
+
+// ══════════════════════════════════════
+//  DIRTY / CLEAN
+// ══════════════════════════════════════
+function markDirty() {
+  dirty = true;
+  document.getElementById('saveStatus').textContent = '● Kaydedilmemiş değişiklikler';
+  document.getElementById('saveStatus').style.color = '#e8a020';
+}
+function markClean() {
+  dirty = false;
+  document.getElementById('saveStatus').textContent = '';
+}
+
+// ══════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => { if(e.target===overlay) overlay.classList.remove('open'); });
+});
+
+// Warn before leaving with unsaved changes
+window.addEventListener('beforeunload', e => {
+  if (dirty) { e.preventDefault(); e.returnValue = ''; }
+});
+</script>
+</body>
+</html>
