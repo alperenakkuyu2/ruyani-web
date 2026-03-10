@@ -368,32 +368,37 @@
           </div>
         </div>
         <div class="stats-row" id="statsRow"></div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
-          <div style="font-family:'Cinzel',serif;font-size:14px;color:var(--gold);margin-bottom:16px;">🚀 GitHub ile Yayınlama Ayarları</div>
-          <div class="form-group">
-            <label class="form-label">GitHub Token (Personal Access Token)</label>
-            <input type="password" class="form-input" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+          <div onclick="toggleGhSettings()" style="padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;transition:background 0.2s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='transparent'">
+            <span style="font-family:'Cinzel',serif;font-size:14px;color:var(--gold);">🚀 GitHub ile Yayınlama Ayarları</span>
+            <span id="ghSettingsArrow" style="color:var(--muted);font-size:12px;transition:transform 0.3s;">▶</span>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">GitHub Kullanıcı Adı</label>
-              <input type="text" class="form-input" id="ghUser" placeholder="kullanici-adi">
+          <div id="ghSettingsBody" style="display:none;padding:0 20px 20px;border-top:1px solid var(--border);">
+            <div class="form-group" style="margin-top:16px;">
+              <label class="form-label">GitHub Token (Personal Access Token)</label>
+              <input type="password" class="form-input" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">GitHub Kullanıcı Adı</label>
+                <input type="text" class="form-input" id="ghUser" placeholder="kullanici-adi">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Repository Adı</label>
+                <input type="text" class="form-input" id="ghRepo" placeholder="monkeyd-coffee">
+              </div>
             </div>
             <div class="form-group">
-              <label class="form-label">Repository Adı</label>
-              <input type="text" class="form-input" id="ghRepo" placeholder="monkeyd-coffee">
+              <label class="form-label">menu.json Dosya Yolu (repoda)</label>
+              <input type="text" class="form-input" id="ghPath" placeholder="menu.json" value="menu.json">
             </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">menu.json Dosya Yolu (repoda)</label>
-            <input type="text" class="form-input" id="ghPath" placeholder="menu.json" value="menu.json">
-          </div>
-          <button class="btn btn-save" onclick="saveGhSettings()">Ayarları Kaydet</button>
-          <div style="margin-top:14px;padding:12px;background:rgba(200,134,10,0.08);border-radius:8px;font-size:11px;color:var(--muted);line-height:1.8;">
-            <strong style="color:var(--amber);">📋 Nasıl Token Alınır?</strong><br>
-            1. GitHub → Settings → Developer Settings → Personal Access Tokens → Tokens (classic)<br>
-            2. "Generate new token" → <strong>repo</strong> yetkisini seç → Oluştur<br>
-            3. Token'ı buraya yapıştır. Bir kez gösterilir, kaydet!
+            <button class="btn btn-save" onclick="saveGhSettings()">Ayarları Kaydet</button>
+            <div style="margin-top:14px;padding:12px;background:rgba(200,134,10,0.08);border-radius:8px;font-size:11px;color:var(--muted);line-height:1.8;">
+              <strong style="color:var(--amber);">📋 Nasıl Token Alınır?</strong><br>
+              1. GitHub → Settings → Developer Settings → Personal Access Tokens → Tokens (classic)<br>
+              2. "Generate new token" → <strong>repo</strong> yetkisini seç → Oluştur<br>
+              3. Token'ı buraya yapıştır. Bir kez gösterilir, kaydet!
+            </div>
           </div>
         </div>
       </div>
@@ -602,6 +607,14 @@ function getEmbeddedMenu() {
 // ══════════════════════════════════════
 //  GITHUB SETTINGS
 // ══════════════════════════════════════
+function toggleGhSettings() {
+  const body = document.getElementById('ghSettingsBody');
+  const arrow = document.getElementById('ghSettingsArrow');
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(90deg)';
+}
 function saveGhSettings() {
   localStorage.setItem('gh_token', document.getElementById('ghToken').value);
   localStorage.setItem('gh_user',  document.getElementById('ghUser').value);
