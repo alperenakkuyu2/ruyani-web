@@ -9,405 +9,45 @@
         {
           "label": "Klasikler",
           "items": [
-            {
-              "id": "espresso",
-              "name": "Espresso",
-              "desc": "Yoğun & saf",
-              "image": "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 200
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 170
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "ekstra-shot",
-              "name": "Ekstra Shot Espresso",
-              "desc": "+1 shot eklentisi",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 50
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "turk-kahvesi",
-              "name": "Türk Kahvesi",
-              "desc": "Geleneksel, köpüklü",
-              "image": "https://images.unsplash.com/photo-1572286258217-215cf8e95bc4?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 140
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "double-turk",
-              "name": "Double Türk Kahvesi",
-              "desc": "Çift porsiyon",
-              "image": "https://images.unsplash.com/photo-1572286258217-215cf8e95bc4?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 160
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "filtre",
-              "name": "Filtre Kahve",
-              "desc": "Pour over tarzı",
-              "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 170
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 190
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "americano",
-              "name": "Americano",
-              "desc": "Espresso + su",
-              "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 180
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 200
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "cortado",
-              "name": "Cortado",
-              "desc": "Espresso & az süt",
-              "image": "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 180
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "espresso-macchiato",
-              "name": "Espresso Macchiato",
-              "desc": "Espresso + süt köpüğü",
-              "image": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 160
-                }
-              ],
-              "available": true
-            }
+            { "id": "espresso", "name": "Espresso", "desc": "Yoğun & saf", "image": "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"Sıcak","value":150},{"label":"Soğuk","value":170}], "available": true },
+            { "id": "ekstra-shot", "name": "Ekstra Shot Espresso", "desc": "+1 shot eklentisi", "image": "", "prices": [{"label":"","value":50}], "available": true },
+            { "id": "turk-kahvesi", "name": "Türk Kahvesi", "desc": "Geleneksel, köpüklü", "image": "https://images.unsplash.com/photo-1572286258217-215cf8e95bc4?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":140}], "available": true },
+            { "id": "double-turk", "name": "Double Türk Kahvesi", "desc": "Çift porsiyon", "image": "https://images.unsplash.com/photo-1572286258217-215cf8e95bc4?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":160}], "available": true },
+            { "id": "filtre", "name": "Filtre Kahve", "desc": "Pour over tarzı", "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"Sıcak","value":170},{"label":"Soğuk","value":190}], "available": true },
+            { "id": "americano", "name": "Americano", "desc": "Espresso + su", "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"Sıcak","value":180},{"label":"Soğuk","value":200}], "available": true },
+            { "id": "cortado", "name": "Cortado", "desc": "Espresso & az süt", "image": "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":180}], "available": true },
+            { "id": "espresso-macchiato", "name": "Espresso Macchiato", "desc": "Espresso + süt köpüğü", "image": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":160}], "available": true }
           ]
         },
         {
           "label": "Sütlü Kahveler",
           "items": [
-            {
-              "id": "latte",
-              "name": "Latte",
-              "desc": "Espresso & buharlı süt",
-              "image": "https://images.unsplash.com/photo-1593443320739-77f74939d0da?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 190
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 210
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "cappucino",
-              "name": "Cappucino",
-              "desc": "Klasik İtalyan köpüğü",
-              "image": "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 190
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 210
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "flat-white",
-              "name": "Flat White",
-              "desc": "Yoğun & kadifemsi",
-              "image": "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 170
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 190
-                }
-              ],
-              "available": true
-            }
+            { "id": "latte", "name": "Latte", "desc": "Espresso & buharlı süt", "image": "https://images.unsplash.com/photo-1593443320739-77f74939d0da?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"Sıcak","value":190},{"label":"Soğuk","value":210}], "available": true },
+            { "id": "cappucino", "name": "Cappucino", "desc": "Klasik İtalyan köpüğü", "image": "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"Sıcak","value":190},{"label":"Soğuk","value":210}], "available": true },
+            { "id": "flat-white", "name": "Flat White", "desc": "Yoğun & kadifemsi", "image": "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"Sıcak","value":170},{"label":"Soğuk","value":190}], "available": true }
           ]
         },
         {
           "label": "Özel Tatlar",
           "items": [
-            {
-              "id": "mocha",
-              "name": "Mocha",
-              "desc": "Çikolata & espresso",
-              "image": "https://images.unsplash.com/photo-1518291344630-4857135fb581?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 195
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 215
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "white-mocha",
-              "name": "White Mocha",
-              "desc": "Beyaz çikolata aroması",
-              "image": "https://images.unsplash.com/photo-1553909489-cd47e0907980?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 195
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 215
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "caramel-macchiato",
-              "name": "Caramel Macchiato",
-              "desc": "Karamel sosu & süt",
-              "image": "https://images.unsplash.com/photo-1592663527359-cf6642f54cff?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 200
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 220
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "almond-latte",
-              "name": "Roasted Almond Latte",
-              "desc": "Kavrulmuş badem",
-              "image": "",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 190
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 210
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "coconut-latte",
-              "name": "Coconut Latte",
-              "desc": "Tropikal hindistan cevizi",
-              "image": "",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 190
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 210
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "hazelnut-latte",
-              "name": "Hazelnut Latte",
-              "desc": "Fındık şurubu",
-              "image": "https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 190
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 210
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "banana-latte",
-              "name": "Banana Cream Latte",
-              "desc": "Muz & krema",
-              "image": "",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 190
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 210
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "caramel-latte",
-              "name": "Caramel Latte",
-              "desc": "Tatlı karamel denizi",
-              "image": "https://images.unsplash.com/photo-1592663527359-cf6642f54cff?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 190
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 210
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "vanilla-latte",
-              "name": "Vanilla Latte",
-              "desc": "Vanilya aroması",
-              "image": "",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 190
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 210
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "toffee-latte",
-              "name": "Toffee Nut Latte",
-              "desc": "Toffee & fındık",
-              "image": "",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 190
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 210
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "pumpkin-latte",
-              "name": "Pumpkin Spice Latte",
-              "desc": "Sonbahar baharatları",
-              "image": "https://images.unsplash.com/photo-1506619216599-9d16d0903dfd?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 190
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 210
-                }
-              ],
-              "available": true
-            }
+            { "id": "mocha", "name": "Mocha", "desc": "Çikolata & espresso", "image": "https://images.unsplash.com/photo-1518291344630-4857135fb581?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"Sıcak","value":195},{"label":"Soğuk","value":215}], "available": true },
+            { "id": "white-mocha", "name": "White Mocha", "desc": "Beyaz çikolata aroması", "image": "https://images.unsplash.com/photo-1553909489-cd47e0907980?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"Sıcak","value":195},{"label":"Soğuk","value":215}], "available": true },
+            { "id": "caramel-macchiato", "name": "Caramel Macchiato", "desc": "Karamel sosu & süt", "image": "https://images.unsplash.com/photo-1592663527359-cf6642f54cff?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"Sıcak","value":200},{"label":"Soğuk","value":220}], "available": true },
+            { "id": "almond-latte", "name": "Roasted Almond Latte", "desc": "Kavrulmuş badem", "image": "", "prices": [{"label":"Sıcak","value":190},{"label":"Soğuk","value":210}], "available": true },
+            { "id": "coconut-latte", "name": "Coconut Latte", "desc": "Tropikal hindistan cevizi", "image": "", "prices": [{"label":"Sıcak","value":190},{"label":"Soğuk","value":210}], "available": true },
+            { "id": "hazelnut-latte", "name": "Hazelnut Latte", "desc": "Fındık şurubu", "image": "https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"Sıcak","value":190},{"label":"Soğuk","value":210}], "available": true },
+            { "id": "banana-latte", "name": "Banana Cream Latte", "desc": "Muz & krema", "image": "", "prices": [{"label":"Sıcak","value":190},{"label":"Soğuk","value":210}], "available": true },
+            { "id": "caramel-latte", "name": "Caramel Latte", "desc": "Tatlı karamel denizi", "image": "https://images.unsplash.com/photo-1592663527359-cf6642f54cff?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"Sıcak","value":190},{"label":"Soğuk","value":210}], "available": true },
+            { "id": "vanilla-latte", "name": "Vanilla Latte", "desc": "Vanilya aroması", "image": "", "prices": [{"label":"Sıcak","value":190},{"label":"Soğuk","value":210}], "available": true },
+            { "id": "toffee-latte", "name": "Toffee Nut Latte", "desc": "Toffee & fındık", "image": "", "prices": [{"label":"Sıcak","value":190},{"label":"Soğuk","value":210}], "available": true },
+            { "id": "pumpkin-latte", "name": "Pumpkin Spice Latte", "desc": "Sonbahar baharatları", "image": "https://images.unsplash.com/photo-1506619216599-9d16d0903dfd?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"Sıcak","value":190},{"label":"Soğuk","value":210}], "available": true }
           ]
         },
         {
           "label": "Özel Demleme",
           "items": [
-            {
-              "id": "cold-brew",
-              "name": "Cold Brew",
-              "desc": "Soğuk demleme, 12 saat",
-              "image": "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 200
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "v60",
-              "name": "V60",
-              "desc": "Single origin, hassas demleme",
-              "image": "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "Sıcak",
-                  "value": 220
-                },
-                {
-                  "label": "Soğuk",
-                  "value": 240
-                }
-              ],
-              "available": true
-            }
+            { "id": "cold-brew", "name": "Cold Brew", "desc": "Soğuk demleme, 12 saat", "image": "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":200}], "available": true },
+            { "id": "v60", "name": "V60", "desc": "Single origin, hassas demleme", "image": "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"Sıcak","value":220},{"label":"Soğuk","value":240}], "available": true }
           ]
         }
       ]
@@ -421,58 +61,10 @@
         {
           "label": "",
           "items": [
-            {
-              "id": "chai-latte",
-              "name": "Chai Tea Latte",
-              "desc": "Baharatlı Hint çayı",
-              "image": "https://images.unsplash.com/photo-1562547256-2c5ee93b60b7?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 200
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "sicak-cikolata",
-              "name": "Sıcak Çikolata",
-              "desc": "Kadifemsi bitter çikolata",
-              "image": "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 210
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "beyaz-cikolata",
-              "name": "Sıcak Beyaz Çikolata",
-              "desc": "Tatlı beyaz çikolata",
-              "image": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 195
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "salep",
-              "name": "Salep",
-              "desc": "Geleneksel Türk içeceği",
-              "image": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 200
-                }
-              ],
-              "available": true
-            }
+            { "id": "chai-latte", "name": "Chai Tea Latte", "desc": "Baharatlı Hint çayı", "image": "https://images.unsplash.com/photo-1562547256-2c5ee93b60b7?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":200}], "available": true },
+            { "id": "sicak-cikolata", "name": "Sıcak Çikolata", "desc": "Kadifemsi bitter çikolata", "image": "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":210}], "available": true },
+            { "id": "beyaz-cikolata", "name": "Sıcak Beyaz Çikolata", "desc": "Tatlı beyaz çikolata", "image": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":195}], "available": true },
+            { "id": "salep", "name": "Salep", "desc": "Geleneksel Türk içeceği", "image": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":200}], "available": true }
           ]
         }
       ]
@@ -486,141 +78,21 @@
         {
           "label": "",
           "items": [
-            {
-              "id": "cay",
-              "name": "Çay",
-              "desc": "Demlik çay, sade",
-              "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 70
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "kupa-cay",
-              "name": "Kupa Çay",
-              "desc": "Büyük kupa",
-              "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 100
-                }
-              ],
-              "available": true
-            }
+            { "id": "cay", "name": "Çay", "desc": "Demlik çay, sade", "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":70}], "available": true },
+            { "id": "kupa-cay", "name": "Kupa Çay", "desc": "Büyük kupa", "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":100}], "available": true }
           ]
         },
         {
           "label": "Bitki & Meyve Çayları",
           "items": [
-            {
-              "id": "kis-cayi",
-              "name": "Kış Çayı",
-              "desc": "Tarçın & karanfil",
-              "image": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 170
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "yesil-cay",
-              "name": "Yeşil Çay",
-              "desc": "Antioksidan zengini",
-              "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 170
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "papatya",
-              "name": "Papatya Çayı",
-              "desc": "Sakinleştirici, çiçeksi",
-              "image": "https://images.unsplash.com/photo-1585577659261-3c5a234025e7?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 170
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "hibiscus",
-              "name": "Hibiscus Çayı",
-              "desc": "Ekşimsi, parlak kırmızı",
-              "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 170
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "elma-tarcin",
-              "name": "Elma - Tarçın",
-              "desc": "Sıcak & baharatlı",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 170
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "orman-meyveli",
-              "name": "Kırmızı Orman Meyveli",
-              "desc": "Yoğun meyveli karışım",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 170
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "tropikal",
-              "name": "Tropikal Meyveli",
-              "desc": "Egzotik adaların aroması",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 170
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "cilek-bogurtlen",
-              "name": "Çilek - Böğürtlen",
-              "desc": "Tatlı & ekşi denge",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 170
-                }
-              ],
-              "available": true
-            }
+            { "id": "kis-cayi", "name": "Kış Çayı", "desc": "Tarçın & karanfil", "image": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":170}], "available": true },
+            { "id": "yesil-cay", "name": "Yeşil Çay", "desc": "Antioksidan zengini", "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":170}], "available": true },
+            { "id": "papatya", "name": "Papatya Çayı", "desc": "Sakinleştirici, çiçeksi", "image": "https://images.unsplash.com/photo-1585577659261-3c5a234025e7?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":170}], "available": true },
+            { "id": "hibiscus", "name": "Hibiscus Çayı", "desc": "Ekşimsi, parlak kırmızı", "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":170}], "available": true },
+            { "id": "elma-tarcin", "name": "Elma - Tarçın", "desc": "Sıcak & baharatlı", "image": "", "prices": [{"label":"","value":170}], "available": true },
+            { "id": "orman-meyveli", "name": "Kırmızı Orman Meyveli", "desc": "Yoğun meyveli karışım", "image": "", "prices": [{"label":"","value":170}], "available": true },
+            { "id": "tropikal", "name": "Tropikal Meyveli", "desc": "Egzotik adaların aroması", "image": "", "prices": [{"label":"","value":170}], "available": true },
+            { "id": "cilek-bogurtlen", "name": "Çilek - Böğürtlen", "desc": "Tatlı & ekşi denge", "image": "", "prices": [{"label":"","value":170}], "available": true }
           ]
         }
       ]
@@ -634,123 +106,15 @@
         {
           "label": "",
           "items": [
-            {
-              "id": "matcha-tea",
-              "name": "Matcha Tea",
-              "desc": "Saf Japon yeşil çayı",
-              "image": "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 190
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "matcha-latte",
-              "name": "Matcha Latte",
-              "desc": "Sütlü & kremamsı",
-              "image": "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 200
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "iced-matcha",
-              "name": "Iced Matcha Latte",
-              "desc": "Buzlu & ferahlatıcı",
-              "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 210
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "oat-matcha",
-              "name": "Oat Matcha Latte",
-              "desc": "Yulaf sütü ile",
-              "image": "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 230
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "iced-oat-matcha",
-              "name": "Iced Oat Matcha Latte",
-              "desc": "Yulaf sütlü, buzlu",
-              "image": "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 240
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "strawberry-matcha",
-              "name": "Strawberry Matcha",
-              "desc": "Çilek & matcha katmanları",
-              "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 230
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "iced-strawberry-matcha",
-              "name": "Iced Strawberry Matcha",
-              "desc": "Buzlu çilek & matcha",
-              "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 240
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "oat-strawberry-matcha",
-              "name": "Oat Strawberry Matcha",
-              "desc": "Yulaf + çilek + matcha",
-              "image": "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 250
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "iced-oat-strawberry-matcha",
-              "name": "Iced Oat Strawberry Matcha",
-              "desc": "Tam paket, buzlu",
-              "image": "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 260
-                }
-              ],
-              "available": true
-            }
+            { "id": "matcha-tea", "name": "Matcha Tea", "desc": "Saf Japon yeşil çayı", "image": "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":190}], "available": true },
+            { "id": "matcha-latte", "name": "Matcha Latte", "desc": "Sütlü & kremamsı", "image": "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":200}], "available": true },
+            { "id": "iced-matcha", "name": "Iced Matcha Latte", "desc": "Buzlu & ferahlatıcı", "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":210}], "available": true },
+            { "id": "oat-matcha", "name": "Oat Matcha Latte", "desc": "Yulaf sütü ile", "image": "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":230}], "available": true },
+            { "id": "iced-oat-matcha", "name": "Iced Oat Matcha Latte", "desc": "Yulaf sütlü, buzlu", "image": "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":240}], "available": true },
+            { "id": "strawberry-matcha", "name": "Strawberry Matcha", "desc": "Çilek & matcha katmanları", "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":230}], "available": true },
+            { "id": "iced-strawberry-matcha", "name": "Iced Strawberry Matcha", "desc": "Buzlu çilek & matcha", "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":240}], "available": true },
+            { "id": "oat-strawberry-matcha", "name": "Oat Strawberry Matcha", "desc": "Yulaf + çilek + matcha", "image": "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":250}], "available": true },
+            { "id": "iced-oat-strawberry-matcha", "name": "Iced Oat Strawberry Matcha", "desc": "Tam paket, buzlu", "image": "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":260}], "available": true }
           ]
         }
       ]
@@ -764,71 +128,11 @@
         {
           "label": "",
           "items": [
-            {
-              "id": "bubble-yaban",
-              "name": "Yaban Mersini",
-              "desc": "Blueberry & tapioca pearls",
-              "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 210
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "bubble-cilek",
-              "name": "Çilek",
-              "desc": "Tatlı çilek & pearls",
-              "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 220
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "bubble-mango",
-              "name": "Mango",
-              "desc": "Tropikal mango tapioca",
-              "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 220
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "bubble-karamel",
-              "name": "Karamel",
-              "desc": "Toffee & karamel pearls",
-              "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 230
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "bubble-cikolata",
-              "name": "Çikolata",
-              "desc": "Çikolatalı tapioca",
-              "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 210
-                }
-              ],
-              "available": true
-            }
+            { "id": "bubble-yaban", "name": "Yaban Mersini", "desc": "Blueberry & tapioca pearls", "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":210}], "available": true },
+            { "id": "bubble-cilek", "name": "Çilek", "desc": "Tatlı çilek & pearls", "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":220}], "available": true },
+            { "id": "bubble-mango", "name": "Mango", "desc": "Tropikal mango tapioca", "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":220}], "available": true },
+            { "id": "bubble-karamel", "name": "Karamel", "desc": "Toffee & karamel pearls", "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":230}], "available": true },
+            { "id": "bubble-cikolata", "name": "Çikolata", "desc": "Çikolatalı tapioca", "image": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":210}], "available": true }
           ]
         }
       ]
@@ -842,123 +146,15 @@
         {
           "label": "",
           "items": [
-            {
-              "id": "shake-cilek",
-              "name": "Çilekli",
-              "desc": "Taze çilek kreması",
-              "image": "https://images.unsplash.com/photo-1553530979-7ee52a2670c4?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 250
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "shake-cikolata",
-              "name": "Çikolatalı",
-              "desc": "Zengin çikolata",
-              "image": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 250
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "shake-karamel",
-              "name": "Karamelli",
-              "desc": "Karamel sosu ile",
-              "image": "https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 250
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "shake-muz",
-              "name": "Muz",
-              "desc": "",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 250
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "shake-kavun",
-              "name": "Kavun",
-              "desc": "",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 250
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "shake-karpuz",
-              "name": "Karpuz",
-              "desc": "",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 250
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "shake-mango",
-              "name": "Mango",
-              "desc": "",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 250
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "shake-yesil-elma",
-              "name": "Yeşil Elma",
-              "desc": "",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 250
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "shake-ananas",
-              "name": "Ananas",
-              "desc": "",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 250
-                }
-              ],
-              "available": true
-            }
+            { "id": "shake-cilek", "name": "Çilekli", "desc": "Taze çilek kreması", "image": "https://images.unsplash.com/photo-1553530979-7ee52a2670c4?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":250}], "available": true },
+            { "id": "shake-cikolata", "name": "Çikolatalı", "desc": "Zengin çikolata", "image": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":250}], "available": true },
+            { "id": "shake-karamel", "name": "Karamelli", "desc": "Karamel sosu ile", "image": "https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":250}], "available": true },
+            { "id": "shake-muz", "name": "Muz", "desc": "", "image": "", "prices": [{"label":"","value":250}], "available": true },
+            { "id": "shake-kavun", "name": "Kavun", "desc": "", "image": "", "prices": [{"label":"","value":250}], "available": true },
+            { "id": "shake-karpuz", "name": "Karpuz", "desc": "", "image": "", "prices": [{"label":"","value":250}], "available": true },
+            { "id": "shake-mango", "name": "Mango", "desc": "", "image": "", "prices": [{"label":"","value":250}], "available": true },
+            { "id": "shake-yesil-elma", "name": "Yeşil Elma", "desc": "", "image": "", "prices": [{"label":"","value":250}], "available": true },
+            { "id": "shake-ananas", "name": "Ananas", "desc": "", "image": "", "prices": [{"label":"","value":250}], "available": true }
           ]
         }
       ]
@@ -972,136 +168,16 @@
         {
           "label": "",
           "items": [
-            {
-              "id": "frozen-cilek",
-              "name": "Çilekli",
-              "desc": "Buz gibi çilek karışımı",
-              "image": "https://images.unsplash.com/photo-1553530979-7ee52a2670c4?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 240
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "frozen-orman",
-              "name": "Orman Meyveli",
-              "desc": "Yaban meyveleri karışımı",
-              "image": "https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 240
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "frozen-mango",
-              "name": "Mango",
-              "desc": "Tropikal mango buz",
-              "image": "https://images.unsplash.com/photo-1564671165093-20688ff1fffa?w=140&q=75&auto=format&fit=crop",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 240
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "frozen-carkifelek",
-              "name": "Çarkıfelek",
-              "desc": "",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 240
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "frozen-yaban",
-              "name": "Yaban Mersini",
-              "desc": "",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 240
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "frozen-kavun",
-              "name": "Kavun",
-              "desc": "",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 240
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "frozen-karpuz",
-              "name": "Karpuz",
-              "desc": "",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 240
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "frozen-yesil-elma",
-              "name": "Yeşil Elma",
-              "desc": "",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 240
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "frozen-ananas",
-              "name": "Ananas",
-              "desc": "",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 240
-                }
-              ],
-              "available": true
-            },
-            {
-              "id": "frozen-seftali",
-              "name": "Şeftali",
-              "desc": "",
-              "image": "",
-              "prices": [
-                {
-                  "label": "",
-                  "value": 240
-                }
-              ],
-              "available": true
-            }
+            { "id": "frozen-cilek", "name": "Çilekli", "desc": "Buz gibi çilek karışımı", "image": "https://images.unsplash.com/photo-1553530979-7ee52a2670c4?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":240}], "available": true },
+            { "id": "frozen-orman", "name": "Orman Meyveli", "desc": "Yaban meyveleri karışımı", "image": "https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":240}], "available": true },
+            { "id": "frozen-mango", "name": "Mango", "desc": "Tropikal mango buz", "image": "https://images.unsplash.com/photo-1564671165093-20688ff1fffa?w=140&q=75&auto=format&fit=crop", "prices": [{"label":"","value":240}], "available": true },
+            { "id": "frozen-carkifelek", "name": "Çarkıfelek", "desc": "", "image": "", "prices": [{"label":"","value":240}], "available": true },
+            { "id": "frozen-yaban", "name": "Yaban Mersini", "desc": "", "image": "", "prices": [{"label":"","value":240}], "available": true },
+            { "id": "frozen-kavun", "name": "Kavun", "desc": "", "image": "", "prices": [{"label":"","value":240}], "available": true },
+            { "id": "frozen-karpuz", "name": "Karpuz", "desc": "", "image": "", "prices": [{"label":"","value":240}], "available": true },
+            { "id": "frozen-yesil-elma", "name": "Yeşil Elma", "desc": "", "image": "", "prices": [{"label":"","value":240}], "available": true },
+            { "id": "frozen-ananas", "name": "Ananas", "desc": "", "image": "", "prices": [{"label":"","value":240}], "available": true },
+            { "id": "frozen-seftali", "name": "Şeftali", "desc": "", "image": "", "prices": [{"label":"","value":240}], "available": true }
           ]
         }
       ]

@@ -79,6 +79,8 @@
   .btn-ghost:hover { border-color:var(--amber); color:var(--amber); }
   .btn-sm     { padding:5px 10px; font-size:11px; }
   .btn-icon   { padding:6px 10px; font-size:14px; }
+  .btn-menu   { display: none; background: none; border: none; color: var(--cream); font-size: 20px; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+  .btn-menu:hover { background: var(--surface2); }
   .btn-logout { background:none; color:var(--muted); border:1px solid rgba(154,128,96,0.3); font-size:12px; padding:6px 12px; border-radius:8px; cursor:pointer; }
   .btn-logout:hover { color:var(--red); border-color:var(--red); }
 
@@ -288,7 +290,18 @@
 
   /* RESPONSIVE */
   @media(max-width:640px) {
-    .sidebar { display:none; }
+    .sidebar {
+      position: fixed; left: -240px; top: 56px; bottom: 0; z-index: 200; width: 240px;
+      transition: left 0.3s ease; box-shadow: 4px 0 16px rgba(0,0,0,0.5);
+      background: var(--surface); display: block;
+    }
+    .sidebar.open { left: 0; }
+    .sidebar-overlay {
+      position: fixed; inset: 0; top: 56px; z-index: 199;
+      background: rgba(0,0,0,0.6); display: none;
+    }
+    .sidebar-overlay.open { display: block; }
+    .btn-menu { display: inline-block; }
     .stats-row { grid-template-columns:1fr 1fr; }
     .item-card { flex-wrap:wrap; }
   }
@@ -306,7 +319,7 @@
     <button class="btn-primary" onclick="doLogin()">Giriş Yap</button>
     <div class="login-err" id="loginErr">Hatalı kullanıcı adı veya şifre.</div>
     <div style="margin-top:16px;font-size:11px;color:var(--muted);text-align:center;">
-      Demo: admin / monkeyd2024
+      Açık: admin / admin
     </div>
   </div>
 </div>
@@ -314,9 +327,12 @@
 <!-- ═══ APP ═══ -->
 <div id="app">
   <div class="topbar">
-    <div class="topbar-brand">
-      ☕ MonkeyD. Coffee
-      <span>ADMIN</span>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button class="btn-menu" id="btnMenu" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-brand">
+        ☕ MonkeyD. Coffee
+        <span>ADMIN</span>
+      </div>
     </div>
     <div class="topbar-actions">
       <div id="saveStatus" style="font-size:12px;color:var(--muted);"></div>
@@ -326,6 +342,7 @@
   </div>
 
   <div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-title">Kategoriler</div>
@@ -529,7 +546,7 @@
 // ══════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════
-const USERS = { admin: 'monkeyd2024', personel: 'kahve123' };
+const USERS = { admin: 'admin', personel: 'kahve123' };
 let menuData = null;
 let currentCatIdx = null;
 let imgTargetItem = null; // { catIdx, subcatIdx, itemIdx }
@@ -688,6 +705,22 @@ function renderSidebar() {
 }
 
 // ══════════════════════════════════════
+//  SIDEBAR TOGGLE (MOBILE)
+// ══════════════════════════════════════
+function toggleSidebar(forceClose = false) {
+  const sb = document.querySelector('.sidebar');
+  const ov = document.getElementById('sidebarOverlay');
+  if (!sb || !ov) return;
+  if (forceClose === true) {
+    sb.classList.remove('open');
+    ov.classList.remove('open');
+  } else {
+    sb.classList.toggle('open');
+    ov.classList.toggle('open');
+  }
+}
+
+// ══════════════════════════════════════
 //  VIEWS
 // ══════════════════════════════════════
 function showView(v) {
@@ -696,6 +729,7 @@ function showView(v) {
   document.getElementById('viewCategory').style.display  = v==='category' ? 'block' : 'none';
   renderSidebar();
   if (v==='overview') renderStats();
+  toggleSidebar(true);
 }
 
 function showCat(idx) {
@@ -705,6 +739,7 @@ function showCat(idx) {
   renderSidebar();
   renderCatSettings();
   renderItems();
+  toggleSidebar(true);
 }
 
 // ══════════════════════════════════════
