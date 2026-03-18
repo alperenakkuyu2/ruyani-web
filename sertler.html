@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sertler Soğutma – Teknik Servis | Tarsus/Mersin</title>
+  <meta name="description" content="Tarsus ve çevresinde klima, beyaz eşya teknik servisi. Arçelik, Beko, Samsung, LG, Bosch ve daha fazlası için uzman servis."/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ivory:     #F5F0E8;
+      --ivory-2:   #EDE8DC;
+      --anthracite:#2C2C2C;
+      --anthracite-light: #3D3D3D;
+      --ice:       #4A9EBF;
+      --ice-light: #6BB8D4;
+      --ice-dark:  #357A96;
+      --white:     #FFFFFF;
+      --text-dark: #1A1A1A;
+      --text-mid:  #555555;
+      --text-light:#888888;
+      --shadow:    0 4px 24px rgba(0,0,0,0.10);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.14);
+      --radius:    14px;
+      --radius-sm: 8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--ivory);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ───────── NAVBAR ───────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(245,240,232,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(74,158,191,0.15);
+      padding: 0 5%;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: var(--shadow); }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .nav-logo-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--ice), var(--ice-dark));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 20px;
+    }
+    .nav-logo-text { line-height: 1.2; }
+    .nav-logo-text span:first-child {
+      display: block;
+      font-weight: 800;
+      font-size: 17px;
+      color: var(--anthracite);
+      letter-spacing: -.3px;
+    }
+    .nav-logo-text span:last-child {
+      display: block;
+      font-size: 11px;
+      color: var(--ice);
+      font-weight: 500;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--anthracite-light);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--ice); }
+
+    .nav-cta {
+      background: var(--ice);
+      color: white !important;
+      padding: 9px 20px;
+      border-radius: 50px;
+      font-weight: 600 !important;
+      font-size: 14px !important;
+      transition: background .2s, transform .15s !important;
+    }
+    .nav-cta:hover { background: var(--ice-dark) !important; transform: translateY(-1px); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+    }
+    .hamburger span {
+      display: block;
+      width: 25px; height: 2px;
+      background: var(--anthracite);
+      border-radius: 2px;
+      transition: .3s;
+    }
+
+    /* ───────── MOBILE MENU ───────── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0;
+      background: var(--ivory);
+      border-bottom: 2px solid var(--ice);
+      z-index: 999;
+      padding: 24px 5%;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--anthracite);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--ivory-2);
+    }
+
+    /* ───────── HERO ───────── */
+    #hero {
+      min-height: 100vh;
+      padding-top: 72px;
+      background:
+        linear-gradient(160deg, rgba(74,158,191,0.07) 0%, rgba(44,44,44,0.04) 60%),
+        var(--ivory);
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-pattern {
+      position: absolute;
+      right: -100px; top: 50%;
+      transform: translateY(-50%);
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(74,158,191,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 5%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(74,158,191,0.12);
+      border: 1px solid rgba(74,158,191,0.3);
+      color: var(--ice-dark);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+      letter-spacing: .3px;
+    }
+
+    .hero-title {
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--anthracite);
+      margin-bottom: 16px;
+    }
+    .hero-title .accent { color: var(--ice); }
+
+    .hero-slogan {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 460px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--ice);
+      color: white;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 15px;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 16px rgba(74,158,191,0.35);
+    }
+    .btn-primary:hover {
+      background: var(--ice-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(74,158,191,0.45);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--anthracite);
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 15px;
+      border: 2px solid var(--anthracite);
+      transition: all .2s;
+    }
+    .btn-secondary:hover {
+      background: var(--anthracite);
+      color: white;
+    }
+
+    /* Hero Stats */
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--ivory-2);
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--ice);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-light);
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* Hero Image */
+    .hero-image-wrap {
+      position: relative;
+    }
+    .hero-image-card {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--anthracite);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+    .hero-image-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+    }
+    .hero-image-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 24px;
+      background: linear-gradient(to top, rgba(30,30,30,0.85), transparent);
+      color: white;
+    }
+    .hero-image-overlay p { font-size: 13px; opacity: .8; margin-bottom: 4px; }
+    .hero-image-overlay strong { font-size: 16px; font-weight: 700; }
+
+    .hero-float-badge {
+      position: absolute;
+      top: -16px; right: -16px;
+      background: var(--ice);
+      color: white;
+      border-radius: 50%;
+      width: 90px; height: 90px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(74,158,191,0.5);
+      line-height: 1.3;
+      padding: 8px;
+    }
+
+    /* ───────── SECTION COMMON ───────── */
+    section { padding: 100px 5%; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .section-tag {
+      display: inline-block;
+      background: rgba(74,158,191,0.12);
+      color: var(--ice-dark);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(26px, 3.5vw, 40px);
+      font-weight: 800;
+      color: var(--anthracite);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 16px;
+      color: var(--text-mid);
+      max-width: 580px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ───────── HİZMETLER ───────── */
+    #hizmetler { background: var(--white); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .service-card {
+      background: var(--ivory);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      border: 1px solid var(--ivory-2);
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--ice), var(--ice-light));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s;
+    }
+    .service-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: rgba(74,158,191,0.2); }
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-icon {
+      width: 60px; height: 60px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(74,158,191,0.15), rgba(74,158,191,0.05));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+    .service-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--anthracite);
+      margin-bottom: 12px;
+    }
+    .service-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .service-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-mid);
+      font-weight: 500;
+    }
+    .service-list li::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--ice);
+      flex-shrink: 0;
+    }
+
+    /* Orijinal parça banner */
+    .original-banner {
+      margin-top: 40px;
+      background: linear-gradient(135deg, var(--anthracite), var(--anthracite-light));
+      border-radius: var(--radius);
+      padding: 28px 36px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: white;
+    }
+    .original-banner-icon {
+      width: 56px; height: 56px;
+      background: rgba(74,158,191,0.25);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+      color: var(--ice-light);
+    }
+    .original-banner h4 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .original-banner p { font-size: 14px; opacity: .75; line-height: 1.6; }
+
+    /* ───────── MARKALAR ───────── */
+    #markalar { background: var(--ivory); }
+
+    .brands-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .brand-card {
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      padding: 20px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--ivory-2);
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      aspect-ratio: 2/1;
+    }
+    .brand-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: rgba(74,158,191,0.3);
+    }
+    .brand-card img {
+      max-width: 100%;
+      max-height: 48px;
+      object-fit: contain;
+      filter: grayscale(30%);
+      transition: filter .2s;
+    }
+    .brand-card:hover img { filter: grayscale(0%); }
+
+    /* Placeholder text logo */
+    .brand-text {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--anthracite);
+      letter-spacing: -.5px;
+    }
+
+    /* ───────── NEDEN BİZ ───────── */
+    #neden-biz { background: var(--white); }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .why-card {
+      text-align: center;
+      padding: 36px 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--ivory-2);
+      background: var(--ivory);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .why-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+
+    .why-icon {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--ice), var(--ice-dark));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      color: white;
+      margin: 0 auto 20px;
+      box-shadow: 0 6px 20px rgba(74,158,191,0.3);
+    }
+    .why-title { font-size: 16px; font-weight: 700; color: var(--anthracite); margin-bottom: 10px; }
+    .why-desc { font-size: 14px; color: var(--text-mid); line-height: 1.65; }
+
+    /* Köy servisi banner */
+    .village-banner {
+      margin-top: 48px;
+      background: linear-gradient(135deg, rgba(74,158,191,0.1), rgba(74,158,191,0.04));
+      border: 1px solid rgba(74,158,191,0.25);
+      border-radius: var(--radius);
+      padding: 28px 36px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .village-banner i { font-size: 32px; color: var(--ice); flex-shrink: 0; }
+    .village-banner h4 { font-size: 17px; font-weight: 700; color: var(--anthracite); margin-bottom: 6px; }
+    .village-banner p { font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+
+    /* ───────── İŞ YERİ FOTOĞRAFI ───────── */
+    #isyeri { background: var(--anthracite); padding: 80px 5%; }
+
+    .workplace-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .workplace-text h2 {
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 800;
+      color: white;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .workplace-text p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .workplace-features {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .workplace-feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .workplace-feature i { color: var(--ice-light); font-size: 16px; width: 20px; }
+
+    .workplace-photo {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 50px rgba(0,0,0,0.4);
+      aspect-ratio: 4/3;
+      background: var(--anthracite-light);
+      position: relative;
+    }
+    .workplace-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .photo-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: rgba(255,255,255,0.3);
+    }
+    .photo-placeholder i { font-size: 52px; }
+    .photo-placeholder p { font-size: 14px; font-weight: 500; }
+
+    /* ───────── KONVERSİYON BANDI ───────── */
+    .cta-band {
+      background: linear-gradient(135deg, var(--ice-dark), var(--ice));
+      padding: 56px 5%;
+      text-align: center;
+    }
+    .cta-band h2 {
+      font-size: clamp(22px, 3vw, 34px);
+      font-weight: 800;
+      color: white;
+      margin-bottom: 12px;
+    }
+    .cta-band p {
+      color: rgba(255,255,255,0.8);
+      font-size: 16px;
+      margin-bottom: 32px;
+    }
+    .cta-band-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-white {
+      background: white;
+      color: var(--ice-dark);
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(0,0,0,0.2); }
+    .btn-outline-white {
+      background: transparent;
+      color: white;
+      text-decoration: none;
+      padding: 13px 32px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 2px solid rgba(255,255,255,0.6);
+      transition: all .2s;
+    }
+    .btn-outline-white:hover { background: rgba(255,255,255,0.15); border-color: white; }
+
+    /* ───────── İLETİŞİM & HARİTA ───────── */
+    #iletisim { background: var(--ivory); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 24px;
+      border: 1px solid var(--ivory-2);
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      transition: box-shadow .2s;
+    }
+    .contact-card:hover { box-shadow: var(--shadow); }
+    .contact-card-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--ice), var(--ice-dark));
+      display: flex; align-items: center; justify-content: center;
+      color: white;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .contact-card h4 { font-size: 13px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 4px; }
+    .contact-card p { font-size: 15px; font-weight: 600; color: var(--anthracite); line-height: 1.5; }
+    .contact-card a { color: var(--anthracite); text-decoration: none; }
+    .contact-card a:hover { color: var(--ice); }
+
+    .map-wrap {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--ivory-2);
+    }
+    .map-wrap iframe {
+      width: 100%;
+      height: 420px;
+      border: none;
+      display: block;
+    }
+
+    /* ───────── FOOTER ───────── */
+    footer {
+      background: var(--anthracite);
+      color: white;
+      padding: 60px 5% 32px;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-brand p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.7;
+      margin-top: 16px;
+      max-width: 320px;
+    }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .footer-logo-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--ice), var(--ice-dark));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .footer-logo-text span:first-child {
+      display: block;
+      font-weight: 800;
+      font-size: 17px;
+      color: white;
+    }
+    .footer-logo-text span:last-child {
+      display: block;
+      font-size: 11px;
+      color: var(--ice-light);
+      font-weight: 500;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+    .footer-col h5 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--ice-light);
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li { font-size: 14px; color: rgba(255,255,255,0.6); }
+    .footer-col ul li a { color: rgba(255,255,255,0.6); text-decoration: none; transition: color .2s; }
+    .footer-col ul li a:hover { color: var(--ice-light); }
+
+    .footer-bottom {
+      padding-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-bottom p { font-size: 13px; color: rgba(255,255,255,0.4); }
+
+    /* ───────── FLOATING BUTTONS ───────── */
+    .float-btns {
+      position: fixed;
+      right: 24px; bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 998;
+    }
+    .float-btn {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .float-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(0,0,0,0.25); }
+    .float-wa { background: #25D366; color: white; }
+    .float-phone { background: var(--ice); color: white; }
+
+    /* ───────── RESPONSIVE ───────── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+      }
+      .hero-slogan { margin: 0 auto 36px; }
+      .hero-actions { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .hero-float-badge { top: -10px; right: -10px; width: 70px; height: 70px; font-size: 10px; }
+
+      .workplace-inner { grid-template-columns: 1fr; }
+      .workplace-photo { order: -1; }
+
+      .contact-grid { grid-template-columns: 1fr; }
+
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .footer-brand { grid-column: 1 / -1; }
+
+      .original-banner { flex-direction: column; text-align: center; }
+      .village-banner { flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      section { padding: 70px 5%; }
+      .brands-grid { grid-template-columns: repeat(3, 1fr); }
+      .footer-top { grid-template-columns: 1fr; }
+      .hero-stats { gap: 24px; }
+      .float-btns { right: 16px; bottom: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-icon"><i class="fa-solid fa-snowflake"></i></div>
+    <div class="nav-logo-text">
+      <span>Sertler Soğutma</span>
+      <span>Teknik Servis</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#hizmetler">Hizmetler</a></li>
+    <li><a href="#markalar">Markalar</a></li>
+    <li><a href="#neden-biz">Neden Biz?</a></li>
+    <li><a href="#iletisim">İletişim</a></li>
+    <li><a href="tel:+905305753253" class="nav-cta"><i class="fa-solid fa-phone"></i> 0530 575 32 53</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#hizmetler" onclick="toggleMenu()">Hizmetler</a>
+  <a href="#markalar" onclick="toggleMenu()">Markalar</a>
+  <a href="#neden-biz" onclick="toggleMenu()">Neden Biz?</a>
+  <a href="#iletisim" onclick="toggleMenu()">İletişim</a>
+  <a href="tel:+905305753253" style="color:var(--ice);font-weight:700;"><i class="fa-solid fa-phone"></i> 0530 575 32 53</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="fa-solid fa-location-dot"></i>
+        Tarsus / Mersin
+      </div>
+      <h1 class="hero-title">
+        Beyaz Eşya &<br/>
+        <span class="accent">Klima Servis</span><br/>
+        Uzmanınız
+      </h1>
+      <p class="hero-slogan">
+        Her Arızaya Hızlı Çözüm, Her Markaya Uzman Servis.<br/>
+        Orijinal yedek parça güvencesiyle Tarsus ve çevresinde hizmetinizdeyiz.
+      </p>
+      <div class="hero-actions">
+        <a href="tel:+905305753253" class="btn-primary">
+          <i class="fa-solid fa-phone"></i> Hemen Ara
+        </a>
+        <a href="https://wa.me/905305753253" target="_blank" class="btn-secondary">
+          <i class="fa-brands fa-whatsapp"></i> WhatsApp
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">10+</div>
+          <div class="stat-label">Marka Desteği</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">4</div>
+          <div class="stat-label">Hizmet Kategorisi</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">%100</div>
+          <div class="stat-label">Orijinal Parça</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image-wrap">
+      <div class="hero-image-card">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Teknik servis"/>
+        <div class="hero-image-overlay">
+          <p>Profesyonel Ekip</p>
+          <strong>Sertler Soğutma Teknik Servis</strong>
+        </div>
+      </div>
+      <div class="hero-float-badge">
+        <i class="fa-solid fa-shield-halved" style="font-size:18px;margin-bottom:4px;"></i>
+        Orijinal<br/>Parça
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HİZMETLER -->
+<section id="hizmetler">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Hizmetlerimiz</div>
+      <h2 class="section-title">Her Cihaz İçin<br/>Uzman Çözüm</h2>
+      <p class="section-desc">Klimadan buzdolabına, çamaşır makinesinden derin dondurucuya kadar tüm beyaz eşya ve soğutma sistemlerinizde yanınızdayız.</p>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-icon">❄️</div>
+        <div class="service-title">Klima Servisi</div>
+        <ul class="service-list">
+          <li>Klima Bakımı</li>
+          <li>Klima Montajı</li>
+          <li>Arıza Tespiti & Onarım</li>
+          <li>Gaz Dolumu</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🫧</div>
+        <div class="service-title">Çamaşır & Bulaşık Makinesi</div>
+        <ul class="service-list">
+          <li>Arıza Tespiti</li>
+          <li>Tamir & Onarım</li>
+          <li>Yedek Parça Değişimi</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🧊</div>
+        <div class="service-title">Buzdolabı & Derin Dondurucu</div>
+        <ul class="service-list">
+          <li>Arıza Tespiti</li>
+          <li>Tamir & Onarım</li>
+          <li>Soğutma Sistemi Bakımı</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <div class="service-title">Orijinal Yedek Parça</div>
+        <ul class="service-list">
+          <li>100% Orijinal Parça Kullanımı</li>
+          <li>Tüm Markalar İçin Stok</li>
+          <li>Garantili Montaj</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="original-banner">
+      <div class="original-banner-icon"><i class="fa-solid fa-certificate"></i></div>
+      <div>
+        <h4>Orijinal Yedek Parça Güvencesi</h4>
+        <p>Tüm onarımlarımızda yalnızca orijinal ve lisanslı yedek parçalar kullanılmaktadır. Cihazınızın performansı ve ömrü için en doğru tercih.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKALAR -->
+<section id="markalar">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Desteklenen Markalar</div>
+      <h2 class="section-title">Her Markaya<br/>Uzman Servis</h2>
+      <p class="section-desc">Türkiye'nin ve dünyanın önde gelen beyaz eşya ve klima markalarına yetkili servis kalitesinde hizmet veriyoruz.</p>
+    </div>
+    <div class="brands-grid">
+      <!-- Arçelik -->
+      <div class="brand-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Arcelik_logo.svg/320px-Arcelik_logo.svg.png" alt="Arçelik" onerror="this.style.display='none';this.parentNode.querySelector('.brand-text').style.display='block'"/>
+        <span class="brand-text" style="display:none">Arçelik</span>
+      </div>
+      <!-- Beko -->
+      <div class="brand-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Beko_logo.svg/320px-Beko_logo.svg.png" alt="Beko" onerror="this.style.display='none';this.parentNode.querySelector('.brand-text').style.display='block'"/>
+        <span class="brand-text" style="display:none">Beko</span>
+      </div>
+      <!-- Altus -->
+      <div class="brand-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Altus_logo.svg/320px-Altus_logo.svg.png" alt="Altus" onerror="this.style.display='none';this.parentNode.querySelector('.brand-text').style.display='block'"/>
+        <span class="brand-text" style="display:none">Altus</span>
+      </div>
+      <!-- Vestel -->
+      <div class="brand-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Vestel_logo.svg/320px-Vestel_logo.svg.png" alt="Vestel" onerror="this.style.display='none';this.parentNode.querySelector('.brand-text').style.display='block'"/>
+        <span class="brand-text" style="display:none">Vestel</span>
+      </div>
+      <!-- Samsung -->
+      <div class="brand-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Samsung_Logo.svg/320px-Samsung_Logo.svg.png" alt="Samsung" onerror="this.style.display='none';this.parentNode.querySelector('.brand-text').style.display='block'"/>
+        <span class="brand-text" style="display:none">Samsung</span>
+      </div>
+      <!-- LG -->
+      <div class="brand-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/LG_logo_%282015%29.svg/240px-LG_logo_%282015%29.svg.png" alt="LG" onerror="this.style.display='none';this.parentNode.querySelector('.brand-text').style.display='block'"/>
+        <span class="brand-text" style="display:none">LG</span>
+      </div>
+      <!-- Bosch -->
+      <div class="brand-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bosch-logo.svg/320px-Bosch-logo.svg.png" alt="Bosch" onerror="this.style.display='none';this.parentNode.querySelector('.brand-text').style.display='block'"/>
+        <span class="brand-text" style="display:none">Bosch</span>
+      </div>
+      <!-- Siemens -->
+      <div class="brand-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Siemens-logo.svg/320px-Siemens-logo.svg.png" alt="Siemens" onerror="this.style.display='none';this.parentNode.querySelector('.brand-text').style.display='block'"/>
+        <span class="brand-text" style="display:none">Siemens</span>
+      </div>
+      <!-- SEG -->
+      <div class="brand-card">
+        <span class="brand-text">SEG</span>
+      </div>
+      <!-- Profilo -->
+      <div class="brand-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Profilo_logo.svg/320px-Profilo_logo.svg.png" alt="Profilo" onerror="this.style.display='none';this.parentNode.querySelector('.brand-text').style.display='block'"/>
+        <span class="brand-text" style="display:none">Profilo</span>
+      </div>
+      <!-- Uğur -->
+      <div class="brand-card">
+        <span class="brand-text">Uğur</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEDEN BİZ -->
+<section id="neden-biz">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Neden Biz?</div>
+      <h2 class="section-title">Güvenilir Servis,<br/>Hızlı Çözüm</h2>
+      <p class="section-desc">Sertler Soğutma olarak müşteri memnuniyetini her şeyin önünde tutuyoruz.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon"><i class="fa-solid fa-bolt"></i></div>
+        <div class="why-title">Hızlı Müdahale</div>
+        <p class="why-desc">Arızanızı en kısa sürede gideriyoruz. Bekletmeden, ertelemeden hızlı servis.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fa-solid fa-gear"></i></div>
+        <div class="why-title">Orijinal Parça</div>
+        <p class="why-desc">Tüm onarımlarda yalnızca orijinal ve garantili yedek parça kullanıyoruz.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fa-solid fa-user-tie"></i></div>
+        <div class="why-title">Uzman Ekip</div>
+        <p class="why-desc">Alanında deneyimli teknik ekibimiz tüm marka ve modellerde çözüm üretir.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fa-solid fa-handshake"></i></div>
+        <div class="why-title">Dürüst Fiyatlandırma</div>
+        <p class="why-desc">Şeffaf ve adil fiyat politikasıyla sürpriz fatura yok, güvenli hizmet var.</p>
+      </div>
+    </div>
+
+    <div class="village-banner">
+      <i class="fa-solid fa-road"></i>
+      <div>
+        <h4>Tarsus ve Çevre Köylere Haftada 1–2 Kez Servis</h4>
+        <p>Tarsus ilçe merkezinin yanı sıra çevre köy ve beldelere de düzenli servis turlarımız mevcuttur. Uzakta olduğunuz için endişelenmeyin, biz yanınıza geliyoruz.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- İŞ YERİ FOTOĞRAFI -->
+<section id="isyeri">
+  <div class="workplace-inner">
+    <div class="workplace-text">
+      <h2>İş Yerimizi<br/>Tanıyın</h2>
+      <p>Modern ekipmanlarla donatılmış atölyemiz ve deneyimli teknik kadromuzla Tarsus'un güvenilir teknik servis noktasıyız.</p>
+      <div class="workplace-features">
+        <div class="workplace-feature"><i class="fa-solid fa-location-dot"></i> Reşadiye Mah. 3005 Sokak No:5, Tarsus/Mersin</div>
+        <div class="workplace-feature"><i class="fa-solid fa-phone"></i> 0530 575 32 53</div>
+        <div class="workplace-feature"><i class="fa-solid fa-toolbox"></i> Profesyonel teknik ekipman</div>
+        <div class="workplace-feature"><i class="fa-solid fa-boxes-stacked"></i> Orijinal yedek parça deposu</div>
+        <div class="workplace-feature"><i class="fa-solid fa-map-location-dot"></i> Tarsus merkez + köy servisi</div>
+      </div>
+    </div>
+    <div class="workplace-photo">
+      <!-- GERÇEK FOTOĞRAF BURAYA EKLENECEK -->
+      <div class="photo-placeholder">
+        <i class="fa-solid fa-store"></i>
+        <p>İş yeri fotoğrafı eklenecek</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <h2>Cihazınız Arızalandı mı?</h2>
+  <p>Hemen bizi arayın veya WhatsApp'tan mesaj gönderin, en kısa sürede yanınızda olalım.</p>
+  <div class="cta-band-actions">
+    <a href="tel:+905305753253" class="btn-white"><i class="fa-solid fa-phone"></i> 0530 575 32 53</a>
+    <a href="https://wa.me/905305753253" target="_blank" class="btn-outline-white"><i class="fa-brands fa-whatsapp"></i> WhatsApp ile Yaz</a>
+  </div>
+</div>
+
+<!-- İLETİŞİM & HARİTA -->
+<section id="iletisim">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">İletişim</div>
+      <h2 class="section-title">Bize Ulaşın</h2>
+      <p class="section-desc">Arızanız için bizi arayabilir, WhatsApp'tan mesaj gönderebilir veya iş yerimize uğrayabilirsiniz.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fa-solid fa-phone"></i></div>
+          <div>
+            <h4>Telefon</h4>
+            <p><a href="tel:+905305753253">0530 575 32 53</a></p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <div>
+            <h4>WhatsApp</h4>
+            <p><a href="https://wa.me/905305753253" target="_blank">WhatsApp'tan Mesaj Gönder</a></p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div>
+            <h4>Adres</h4>
+            <p>Reşadiye Mah. 3005 Sokak No:5<br/>Tarsus / Mersin</p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fa-solid fa-road"></i></div>
+          <div>
+            <h4>Servis Bölgesi</h4>
+            <p>Tarsus merkez ve çevre köyler<br/><small style="color:var(--text-light);font-size:13px;">Köy servisi haftada 1–2 gün</small></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-wrap">
+        <iframe
+          src="https://maps.google.com/maps?q=Reşadiye+Mah.+3005+Sokak+No+5+Tarsus+Mersin&output=embed&z=15"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Sertler Soğutma Konumu">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-icon"><i class="fa-solid fa-snowflake" style="color:white;font-size:20px;"></i></div>
+          <div class="footer-logo-text">
+            <span>Sertler Soğutma</span>
+            <span>Teknik Servis</span>
+          </div>
+        </div>
+        <p>Her Arızaya Hızlı Çözüm, Her Markaya Uzman Servis. Tarsus ve çevresinde beyaz eşya ile klima tamirinde güvenilir adresiniz.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Hizmetler</h5>
+        <ul>
+          <li>Klima Bakım & Montaj</li>
+          <li>Klima Arıza & Gaz Dolumu</li>
+          <li>Çamaşır Makinesi Tamiri</li>
+          <li>Bulaşık Makinesi Tamiri</li>
+          <li>Buzdolabı Tamiri</li>
+          <li>Derin Dondurucu Tamiri</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>İletişim</h5>
+        <ul>
+          <li><a href="tel:+905305753253">0530 575 32 53</a></li>
+          <li><a href="https://wa.me/905305753253" target="_blank">WhatsApp</a></li>
+          <li>Reşadiye Mah. 3005 Sokak No:5</li>
+          <li>Tarsus / Mersin</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 Sertler Soğutma Teknik Servis. Tüm hakları saklıdır.</p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.3);">Tarsus / Mersin</p>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<div class="float-btns">
+  <a href="https://wa.me/905305753253" target="_blank" class="float-btn float-wa" title="WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+  <a href="tel:+905305753253" class="float-btn float-phone" title="Ara">
+    <i class="fa-solid fa-phone"></i>
+  </a>
+</div>
+
+<script>
+  // Navbar scroll efekti
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Hamburger menü
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('open');
+  }
+
+  // Dışarı tıklayınca kapat
+  document.addEventListener('click', (e) => {
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.getElementById('hamburger');
+    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+      menu.classList.remove('open');
+    }
+  });
+
+  // Scroll animasyonu
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.service-card, .why-card, .brand-card, .contact-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity .5s ease, transform .5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
