@@ -96,9 +96,16 @@ select.input-field{cursor:pointer}
         <div><label class="text-xs text-slate-400 mb-1 block">Ev Sahibi</label><select class="input-field" id="macEv"></select></div>
         <div><label class="text-xs text-slate-400 mb-1 block">Deplasman</label><select class="input-field" id="macDep"></select></div>
       </div>
-      <div class="grid grid-cols-2 gap-3 mb-4">
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
         <div><label class="text-xs text-slate-400 mb-1 block">Ev Skoru</label><input type="number" min="0" class="input-field" id="macEvSkor" value="0"></div>
         <div><label class="text-xs text-slate-400 mb-1 block">Dep. Skoru</label><input type="number" min="0" class="input-field" id="macDepSkor" value="0"></div>
+        <div class="col-span-2 sm:col-span-1"><label class="text-xs text-slate-400 mb-1 block">Maç Durumu</label>
+          <select class="input-field" id="macDurum">
+            <option value="oynandi">Normal (Oynandı)</option>
+            <option value="ertelendi">Ertelendi</option>
+            <option value="iptal">İptal Edildi</option>
+          </select>
+        </div>
       </div>
       <button class="btn btn-green w-full" id="btnKaydet" onclick="macKaydet()">💾 Maçı Kaydet</button>
     </div>
@@ -119,9 +126,17 @@ select.input-field{cursor:pointer}
   <div class="glass p-6 w-full max-w-sm mx-4">
     <h3 class="font-bold text-white mb-4">✏️ Maç Düzenle</h3>
     <input type="hidden" id="editMacId">
-    <div class="grid grid-cols-2 gap-3 mb-4">
+    <div class="grid grid-cols-2 gap-3 mb-3">
       <div><label class="text-xs text-slate-400 mb-1 block" id="editEvLabel">Ev Sahibi</label><input type="number" min="0" class="input-field" id="editEvSkor"></div>
       <div><label class="text-xs text-slate-400 mb-1 block" id="editDepLabel">Deplasman</label><input type="number" min="0" class="input-field" id="editDepSkor"></div>
+    </div>
+    <div class="mb-4">
+      <label class="text-xs text-slate-400 mb-1 block">Maç Durumu</label>
+      <select class="input-field" id="editMacDurum">
+        <option value="oynandi">Normal (Oynandı)</option>
+        <option value="ertelendi">Ertelendi</option>
+        <option value="iptal">İptal Edildi</option>
+      </select>
     </div>
     <div class="flex gap-2">
       <button class="btn btn-ghost flex-1" onclick="closeEditModal()">İptal</button>

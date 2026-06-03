@@ -191,6 +191,7 @@ async function macKaydet() {
   const depAd = document.getElementById('macDep').value;
   const evSkor = parseInt(document.getElementById('macEvSkor').value) || 0;
   const depSkor = parseInt(document.getElementById('macDepSkor').value) || 0;
+  const durum = document.getElementById('macDurum').value;
 
   if (!evAd || !depAd) return showToast('Takım seçiniz!','error');
   if (evAd === depAd) return showToast('Aynı takım seçilemez!','error');
@@ -200,9 +201,9 @@ async function macKaydet() {
 
   try {
     if (USE_FIREBASE) {
-      await firebaseMacKaydet(hafta, grup, evAd, depAd, evSkor, depSkor);
+      await firebaseMacKaydet(hafta, grup, evAd, depAd, evSkor, depSkor, durum);
     } else {
-      mockMacKaydet(hafta, grup, evAd, depAd, evSkor, depSkor);
+      mockMacKaydet(hafta, grup, evAd, depAd, evSkor, depSkor, durum);
     }
     showToast('Maç başarıyla kaydedildi!','success');
     document.getElementById('macEvSkor').value = '0';
@@ -213,7 +214,7 @@ async function macKaydet() {
   btn.disabled = false; btn.textContent = '💾 Maçı Kaydet';
 }
 
-async function firebaseMacKaydet(hafta, grup, evAd, depAd, evSkor, depSkor) {
+async function firebaseMacKaydet(hafta, grup, evAd, depAd, evSkor, depSkor, durum) {
   const evTakim = Object.values(takimlar).find(t => t.ad === evAd && t.grup === grup);
   const depTakim = Object.values(takimlar).find(t => t.ad === depAd && t.grup === grup);
   if (!evTakim || !depTakim) throw new Error('Takımlar bulunamadı');
@@ -226,40 +227,43 @@ async function firebaseMacKaydet(hafta, grup, evAd, depAd, evSkor, depSkor) {
   batch.set(macRef, {
     grup, hafta, evSahibiId: evTakim.id, evSahibiAd: evAd,
     deplasmanId: depTakim.id, deplasmanAd: depAd,
-    evSahibiSkor: evSkor, deplasmanSkor: depSkor,
+    evSahibiSkor: evSkor, deplasmanSkor: depSkor, durum: durum || 'oynandi',
     olusturmaTarihi: firebase.firestore.FieldValue.serverTimestamp()
   });
 
-  // Takım istatistiklerini güncelle
-  const evRef = db.collection('takimlar').doc(evTakim.id);
-  const depRef = db.collection('takimlar').doc(depTakim.id);
-  const evUp = { o: inc(1), ag: inc(evSkor), yg: inc(depSkor), av: inc(evSkor - depSkor) };
-  const depUp = { o: inc(1), ag: inc(depSkor), yg: inc(evSkor), av: inc(depSkor - evSkor) };
+  // Sadece maç oynanmışsa istatistikleri güncelle
+  if (!durum || durum === 'oynandi') {
+    const evRef = db.collection('takimlar').doc(evTakim.id);
+    const depRef = db.collection('takimlar').doc(depTakim.id);
+    const evUp = { o: inc(1), ag: inc(evSkor), yg: inc(depSkor), av: inc(evSkor - depSkor) };
+    const depUp = { o: inc(1), ag: inc(depSkor), yg: inc(evSkor), av: inc(depSkor - evSkor) };
 
-  if (evSkor > depSkor) { evUp.g = inc(1); evUp.p = inc(3); depUp.m = inc(1); }
-  else if (evSkor < depSkor) { depUp.g = inc(1); depUp.p = inc(3); evUp.m = inc(1); }
-  else { evUp.b = inc(1); evUp.p = inc(1); depUp.b = inc(1); depUp.p = inc(1); }
+    if (evSkor > depSkor) { evUp.g = inc(1); evUp.p = inc(3); depUp.m = inc(1); }
+    else if (evSkor < depSkor) { depUp.g = inc(1); depUp.p = inc(3); evUp.m = inc(1); }
+    else { evUp.b = inc(1); evUp.p = inc(1); depUp.b = inc(1); depUp.p = inc(1); }
 
-  batch.update(evRef, evUp);
-  batch.update(depRef, depUp);
+    batch.update(evRef, evUp);
+    batch.update(depRef, depUp);
+  }
   await batch.commit();
 }
 
-function mockMacKaydet(hafta, grup, evAd, depAd, evSkor, depSkor) {
+function mockMacKaydet(hafta, grup, evAd, depAd, evSkor, depSkor, durum) {
   const ev = Object.values(takimlar).find(t => t.ad === evAd);
   const dep = Object.values(takimlar).find(t => t.ad === depAd);
   if (!ev || !dep) throw new Error('Takım bulunamadı');
 
   const macId = 'mac_' + Date.now();
-  const mac = { id: macId, grup, hafta, evSahibiId: ev.id, evSahibiAd: evAd, deplasmanId: dep.id, deplasmanAd: depAd, evSahibiSkor: evSkor, deplasmanSkor: depSkor, olusturmaTarihi: new Date() };
+  const mac = { id: macId, grup, hafta, evSahibiId: ev.id, evSahibiAd: evAd, deplasmanId: dep.id, deplasmanAd: depAd, evSahibiSkor: evSkor, deplasmanSkor: depSkor, durum: durum || 'oynandi', olusturmaTarihi: new Date() };
   maclar.unshift(mac);
 
-  // İstatistik güncelle
-  ev.o++; ev.ag += evSkor; ev.yg += depSkor; ev.av = ev.ag - ev.yg;
-  dep.o++; dep.ag += depSkor; dep.yg += evSkor; dep.av = dep.ag - dep.yg;
-  if (evSkor > depSkor) { ev.g++; ev.p += 3; dep.m++; }
-  else if (evSkor < depSkor) { dep.g++; dep.p += 3; ev.m++; }
-  else { ev.b++; ev.p += 1; dep.b++; dep.p += 1; }
+  if (!durum || durum === 'oynandi') {
+    ev.o++; ev.ag += evSkor; ev.yg += depSkor; ev.av = ev.ag - ev.yg;
+    dep.o++; dep.ag += depSkor; dep.yg += evSkor; dep.av = dep.ag - dep.yg;
+    if (evSkor > depSkor) { ev.g++; ev.p += 3; dep.m++; }
+    else if (evSkor < depSkor) { dep.g++; dep.p += 3; ev.m++; }
+    else { ev.b++; ev.p += 1; dep.b++; dep.p += 1; }
+  }
 
   renderMacListesi();
   renderStats();
@@ -276,6 +280,7 @@ function openEditModal(macId) {
   document.getElementById('editDepSkor').value = mac.deplasmanSkor;
   document.getElementById('editEvLabel').textContent = mac.evSahibiAd;
   document.getElementById('editDepLabel').textContent = mac.deplasmanAd;
+  document.getElementById('editMacDurum').value = mac.durum || 'oynandi';
   document.getElementById('editModal').classList.remove('hidden');
 }
 
@@ -285,87 +290,94 @@ async function macGuncelle() {
   const macId = document.getElementById('editMacId').value;
   const yeniEvSkor = parseInt(document.getElementById('editEvSkor').value) || 0;
   const yeniDepSkor = parseInt(document.getElementById('editDepSkor').value) || 0;
+  const yeniDurum = document.getElementById('editMacDurum').value;
   const mac = maclar.find(m => m.id === macId);
   if (!mac) return;
 
   try {
     if (USE_FIREBASE) {
-      await firebaseMacGuncelle(mac, yeniEvSkor, yeniDepSkor);
+      await firebaseMacGuncelle(mac, yeniEvSkor, yeniDepSkor, yeniDurum);
     } else {
-      mockMacGuncelle(mac, yeniEvSkor, yeniDepSkor);
+      mockMacGuncelle(mac, yeniEvSkor, yeniDepSkor, yeniDurum);
     }
     showToast('Maç güncellendi!','success');
     closeEditModal();
   } catch(e) { showToast('Hata: ' + e.message,'error'); }
 }
 
-async function firebaseMacGuncelle(mac, yeniEvSkor, yeniDepSkor) {
+async function firebaseMacGuncelle(mac, yeniEvSkor, yeniDepSkor, yeniDurum) {
   const batch = db.batch();
-  const inc = firebase.firestore.FieldValue.increment;
   const evRef = db.collection('takimlar').doc(mac.evSahibiId);
   const depRef = db.collection('takimlar').doc(mac.deplasmanId);
 
-  // Eski etkiyi geri al
-  const evGeri = { o: inc(-1), ag: inc(-mac.evSahibiSkor), yg: inc(-mac.deplasmanSkor), av: inc(-(mac.evSahibiSkor - mac.deplasmanSkor)) };
-  const depGeri = { o: inc(-1), ag: inc(-mac.deplasmanSkor), yg: inc(-mac.evSahibiSkor), av: inc(-(mac.deplasmanSkor - mac.evSahibiSkor)) };
-  if (mac.evSahibiSkor > mac.deplasmanSkor) { evGeri.g = inc(-1); evGeri.p = inc(-3); depGeri.m = inc(-1); }
-  else if (mac.evSahibiSkor < mac.deplasmanSkor) { depGeri.g = inc(-1); depGeri.p = inc(-3); evGeri.m = inc(-1); }
-  else { evGeri.b = inc(-1); evGeri.p = inc(-1); depGeri.b = inc(-1); depGeri.p = inc(-1); }
+  // Delta hesaplayacağız (Yeni Değer - Eski Değer)
+  let dEvO=0, dEvG=0, dEvB=0, dEvM=0, dEvAg=0, dEvYg=0, dEvP=0;
+  let dDepO=0, dDepG=0, dDepB=0, dDepM=0, dDepAg=0, dDepYg=0, dDepP=0;
 
-  // Yeni etkiyi uygula
-  const evYeni = { o: inc(1), ag: inc(yeniEvSkor), yg: inc(yeniDepSkor), av: inc(yeniEvSkor - yeniDepSkor) };
-  const depYeni = { o: inc(1), ag: inc(yeniDepSkor), yg: inc(yeniEvSkor), av: inc(yeniDepSkor - yeniEvSkor) };
-  if (yeniEvSkor > yeniDepSkor) { evYeni.g = inc(1); evYeni.p = inc(3); depYeni.m = inc(1); }
-  else if (yeniEvSkor < yeniDepSkor) { depYeni.g = inc(1); depYeni.p = inc(3); evYeni.m = inc(1); }
-  else { evYeni.b = inc(1); evYeni.p = inc(1); depYeni.b = inc(1); depYeni.p = inc(1); }
+  // 1. Eski etkiyi çıkar
+  if (!mac.durum || mac.durum === 'oynandi') {
+    dEvO -= 1; dEvAg -= mac.evSahibiSkor; dEvYg -= mac.deplasmanSkor;
+    dDepO -= 1; dDepAg -= mac.deplasmanSkor; dDepYg -= mac.evSahibiSkor;
+    if (mac.evSahibiSkor > mac.deplasmanSkor) { dEvG -= 1; dEvP -= 3; dDepM -= 1; }
+    else if (mac.evSahibiSkor < mac.deplasmanSkor) { dDepG -= 1; dDepP -= 3; dEvM -= 1; }
+    else { dEvB -= 1; dEvP -= 1; dDepB -= 1; dDepP -= 1; }
+  }
 
-  // Birleştir
-  const mergeEv = mergeIncrements(evGeri, evYeni);
-  const mergeDep = mergeIncrements(depGeri, depYeni);
+  // 2. Yeni etkiyi ekle
+  if (yeniDurum === 'oynandi') {
+    dEvO += 1; dEvAg += yeniEvSkor; dEvYg += yeniDepSkor;
+    dDepO += 1; dDepAg += yeniDepSkor; dDepYg += yeniEvSkor;
+    if (yeniEvSkor > yeniDepSkor) { dEvG += 1; dEvP += 3; dDepM += 1; }
+    else if (yeniEvSkor < yeniDepSkor) { dDepG += 1; dDepP += 3; dEvM += 1; }
+    else { dEvB += 1; dEvP += 1; dDepB += 1; dDepP += 1; }
+  }
 
-  batch.update(evRef, mergeEv);
-  batch.update(depRef, mergeDep);
-  batch.update(db.collection('maclar').doc(mac.id), { evSahibiSkor: yeniEvSkor, deplasmanSkor: yeniDepSkor });
+  const inc = firebase.firestore.FieldValue.increment;
+  
+  if (dEvO !== 0 || dEvAg !== 0 || dEvYg !== 0) {
+    batch.update(evRef, {
+      o: inc(dEvO), g: inc(dEvG), b: inc(dEvB), m: inc(dEvM),
+      ag: inc(dEvAg), yg: inc(dEvYg), av: inc(dEvAg - dEvYg), p: inc(dEvP)
+    });
+  }
+  if (dDepO !== 0 || dDepAg !== 0 || dDepYg !== 0) {
+    batch.update(depRef, {
+      o: inc(dDepO), g: inc(dDepG), b: inc(dDepB), m: inc(dDepM),
+      ag: inc(dDepAg), yg: inc(dDepYg), av: inc(dDepAg - dDepYg), p: inc(dDepP)
+    });
+  }
+
+  batch.update(db.collection('maclar').doc(mac.id), { evSahibiSkor: yeniEvSkor, deplasmanSkor: yeniDepSkor, durum: yeniDurum });
   await batch.commit();
 }
 
-function mergeIncrements(obj1, obj2) {
-  // This is handled by Firestore increment - just apply both updates sequentially
-  // For batch, we need to combine. Since both use increment, we combine the values
-  const result = {};
-  const keys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);
-  const inc = firebase.firestore.FieldValue.increment;
-  keys.forEach(k => {
-    // Extract increment values - this is complex with FieldValue
-    // Simpler approach: apply both sets of updates separately
-  });
-  // Actually, Firestore batch allows multiple updates to same doc
-  return { ...obj1, ...obj2 }; // This won't work with FieldValue
-}
-
-function mockMacGuncelle(mac, yeniEvSkor, yeniDepSkor) {
+function mockMacGuncelle(mac, yeniEvSkor, yeniDepSkor, yeniDurum) {
   const ev = Object.values(takimlar).find(t => t.ad === mac.evSahibiAd);
   const dep = Object.values(takimlar).find(t => t.ad === mac.deplasmanAd);
   if (!ev || !dep) return;
 
   // Eski etkiyi geri al
-  ev.o--; ev.ag -= mac.evSahibiSkor; ev.yg -= mac.deplasmanSkor;
-  dep.o--; dep.ag -= mac.deplasmanSkor; dep.yg -= mac.evSahibiSkor;
-  if (mac.evSahibiSkor > mac.deplasmanSkor) { ev.g--; ev.p -= 3; dep.m--; }
-  else if (mac.evSahibiSkor < mac.deplasmanSkor) { dep.g--; dep.p -= 3; ev.m--; }
-  else { ev.b--; ev.p -= 1; dep.b--; dep.p -= 1; }
+  if (!mac.durum || mac.durum === 'oynandi') {
+    ev.o--; ev.ag -= mac.evSahibiSkor; ev.yg -= mac.deplasmanSkor;
+    dep.o--; dep.ag -= mac.deplasmanSkor; dep.yg -= mac.evSahibiSkor;
+    if (mac.evSahibiSkor > mac.deplasmanSkor) { ev.g--; ev.p -= 3; dep.m--; }
+    else if (mac.evSahibiSkor < mac.deplasmanSkor) { dep.g--; dep.p -= 3; ev.m--; }
+    else { ev.b--; ev.p -= 1; dep.b--; dep.p -= 1; }
+  }
 
   // Yeni etkiyi uygula
-  ev.o++; ev.ag += yeniEvSkor; ev.yg += yeniDepSkor;
-  dep.o++; dep.ag += yeniDepSkor; dep.yg += yeniEvSkor;
-  if (yeniEvSkor > yeniDepSkor) { ev.g++; ev.p += 3; dep.m++; }
-  else if (yeniEvSkor < yeniDepSkor) { dep.g++; dep.p += 3; ev.m++; }
-  else { ev.b++; ev.p += 1; dep.b++; dep.p += 1; }
+  if (yeniDurum === 'oynandi') {
+    ev.o++; ev.ag += yeniEvSkor; ev.yg += yeniDepSkor;
+    dep.o++; dep.ag += yeniDepSkor; dep.yg += yeniEvSkor;
+    if (yeniEvSkor > yeniDepSkor) { ev.g++; ev.p += 3; dep.m++; }
+    else if (yeniEvSkor < yeniDepSkor) { dep.g++; dep.p += 3; ev.m++; }
+    else { ev.b++; ev.p += 1; dep.b++; dep.p += 1; }
+  }
 
   ev.av = ev.ag - ev.yg; dep.av = dep.ag - dep.yg;
-
   mac.evSahibiSkor = yeniEvSkor;
   mac.deplasmanSkor = yeniDepSkor;
+  mac.durum = yeniDurum;
   renderMacListesi();
   renderStats();
 }
@@ -390,18 +402,20 @@ async function macSil(macId) {
 
 async function firebaseMacSil(mac) {
   const batch = db.batch();
-  const inc = firebase.firestore.FieldValue.increment;
-  const evRef = db.collection('takimlar').doc(mac.evSahibiId);
-  const depRef = db.collection('takimlar').doc(mac.deplasmanId);
+  if (!mac.durum || mac.durum === 'oynandi') {
+    const inc = firebase.firestore.FieldValue.increment;
+    const evRef = db.collection('takimlar').doc(mac.evSahibiId);
+    const depRef = db.collection('takimlar').doc(mac.deplasmanId);
 
-  const evUp = { o: inc(-1), ag: inc(-mac.evSahibiSkor), yg: inc(-mac.deplasmanSkor), av: inc(-(mac.evSahibiSkor - mac.deplasmanSkor)) };
-  const depUp = { o: inc(-1), ag: inc(-mac.deplasmanSkor), yg: inc(-mac.evSahibiSkor), av: inc(-(mac.deplasmanSkor - mac.evSahibiSkor)) };
-  if (mac.evSahibiSkor > mac.deplasmanSkor) { evUp.g = inc(-1); evUp.p = inc(-3); depUp.m = inc(-1); }
-  else if (mac.evSahibiSkor < mac.deplasmanSkor) { depUp.g = inc(-1); depUp.p = inc(-3); evUp.m = inc(-1); }
-  else { evUp.b = inc(-1); evUp.p = inc(-1); depUp.b = inc(-1); depUp.p = inc(-1); }
+    const evUp = { o: inc(-1), ag: inc(-mac.evSahibiSkor), yg: inc(-mac.deplasmanSkor), av: inc(-(mac.evSahibiSkor - mac.deplasmanSkor)) };
+    const depUp = { o: inc(-1), ag: inc(-mac.deplasmanSkor), yg: inc(-mac.evSahibiSkor), av: inc(-(mac.deplasmanSkor - mac.evSahibiSkor)) };
+    if (mac.evSahibiSkor > mac.deplasmanSkor) { evUp.g = inc(-1); evUp.p = inc(-3); depUp.m = inc(-1); }
+    else if (mac.evSahibiSkor < mac.deplasmanSkor) { depUp.g = inc(-1); depUp.p = inc(-3); evUp.m = inc(-1); }
+    else { evUp.b = inc(-1); evUp.p = inc(-1); depUp.b = inc(-1); depUp.p = inc(-1); }
 
-  batch.update(evRef, evUp);
-  batch.update(depRef, depUp);
+    batch.update(evRef, evUp);
+    batch.update(depRef, depUp);
+  }
   batch.delete(db.collection('maclar').doc(mac.id));
   await batch.commit();
 }
@@ -409,7 +423,7 @@ async function firebaseMacSil(mac) {
 function mockMacSil(mac) {
   const ev = Object.values(takimlar).find(t => t.ad === mac.evSahibiAd);
   const dep = Object.values(takimlar).find(t => t.ad === mac.deplasmanAd);
-  if (ev && dep) {
+  if (ev && dep && (!mac.durum || mac.durum === 'oynandi')) {
     ev.o--; ev.ag -= mac.evSahibiSkor; ev.yg -= mac.deplasmanSkor;
     dep.o--; dep.ag -= mac.deplasmanSkor; dep.yg -= mac.evSahibiSkor;
     if (mac.evSahibiSkor > mac.deplasmanSkor) { ev.g--; ev.p -= 3; dep.m--; }
@@ -470,9 +484,11 @@ function renderMacListesi() {
           <span class="text-xs text-emerald-400 font-bold flex-shrink-0">H${m.hafta}</span>
           <span class="text-xs text-slate-500 flex-shrink-0">${m.grup}</span>
           <span class="text-sm text-slate-300 truncate">
-            <span class="${m.evSahibiSkor > m.deplasmanSkor ? 'font-bold text-white' : ''}">${m.evSahibiAd}</span>
-            <span class="text-emerald-400 font-bold mx-1">${m.evSahibiSkor}-${m.deplasmanSkor}</span>
-            <span class="${m.deplasmanSkor > m.evSahibiSkor ? 'font-bold text-white' : ''}">${m.deplasmanAd}</span>
+            <span class="${(!m.durum || m.durum === 'oynandi') && m.evSahibiSkor > m.deplasmanSkor ? 'font-bold text-white' : ''}">${m.evSahibiAd}</span>
+            ${m.durum === 'iptal' ? '<span class="text-red-400 font-bold mx-2 text-[10px] px-1.5 py-0.5 border border-red-400/30 rounded bg-red-400/10">İPTAL</span>' : 
+              m.durum === 'ertelendi' ? '<span class="text-amber-400 font-bold mx-2 text-[10px] px-1.5 py-0.5 border border-amber-400/30 rounded bg-amber-400/10">ERT.</span>' :
+              `<span class="text-emerald-400 font-bold mx-1">${m.evSahibiSkor}-${m.deplasmanSkor}</span>`}
+            <span class="${(!m.durum || m.durum === 'oynandi') && m.deplasmanSkor > m.evSahibiSkor ? 'font-bold text-white' : ''}">${m.deplasmanAd}</span>
           </span>
         </div>
         <div class="flex gap-1 flex-shrink-0">
