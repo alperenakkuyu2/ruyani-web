@@ -194,7 +194,7 @@ async function macKaydet() {
   const durum = document.getElementById('macDurum').value;
 
   if (!evAd || !depAd) return showToast('Takım seçiniz!','error');
-  if (evAd === depAd) return showToast('Aynı takım seçilemez!','error');
+  if (evAd === depAd && durum !== 'bay') return showToast('Aynı takım seçilemez!','error');
 
   const btn = document.getElementById('btnKaydet');
   btn.disabled = true; btn.textContent = '⏳ Kaydediliyor...';
