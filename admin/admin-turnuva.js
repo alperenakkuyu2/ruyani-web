@@ -16,7 +16,7 @@ const USE_FIREBASE = FIREBASE_CONFIG.apiKey !== "";
 // ═══════════════════════════════════════
 const GRUPLAR = {
   'A': ['BEYLİCE','ÇİRİŞTEPE','İNKÖY','KARADİKEN','KÖSELERLİ','OLUKKOYAĞI','YEŞİLKUYU'],
-  'B': ['AĞZIDELİK','ALİBEYLİ','GÖLEK','HACIHAMZALI','KARADİRLİK','KUZOLUK'],
+  'B': ['AĞZIDELİK','ALİBEYLİ','GÜLEK','HACIHAMZALI','KARADİRLİK','KUZOLUK'],
   'C': ['ALİEFENDİOĞLU','EGEMEN','KIZILÇUKUR','SARIKOYAK','TOPAKLI','YANIKKIŞLA','YEŞİLTEPE'],
   'D': ['ATALAR','ÇAKIRLI','ÇAVDARLI FK','ÇAVUŞLU','KEFELİ','TAŞÇILI'],
   'E': ['AKARSU','CİNKÖY','GÖÇÜK','SARIKAVAK','SIRAKÖY','TAŞKUYU','TEPEKÖY'],
