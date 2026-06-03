@@ -481,12 +481,13 @@ function renderMacListesi() {
     <div class="match-item fade-in" style="animation-delay:${i * 30}ms">
       <div class="flex items-center justify-between gap-2">
         <div class="flex items-center gap-2 flex-1 min-w-0">
-          <span class="text-xs text-emerald-400 font-bold flex-shrink-0">H${m.hafta}</span>
-          <span class="text-xs text-slate-500 flex-shrink-0">${m.grup}</span>
+          <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-700 text-slate-300 flex-shrink-0">${m.hafta}. Hafta</span>
+          <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex-shrink-0">${m.grup} Grubu</span>
           <span class="text-sm text-slate-300 truncate">
             <span class="${(!m.durum || m.durum === 'oynandi') && m.evSahibiSkor > m.deplasmanSkor ? 'font-bold text-white' : ''}">${m.evSahibiAd}</span>
             ${m.durum === 'iptal' ? '<span class="text-red-400 font-bold mx-2 text-[10px] px-1.5 py-0.5 border border-red-400/30 rounded bg-red-400/10">İPTAL</span>' : 
               m.durum === 'ertelendi' ? '<span class="text-amber-400 font-bold mx-2 text-[10px] px-1.5 py-0.5 border border-amber-400/30 rounded bg-amber-400/10">ERT.</span>' :
+              m.durum === 'bay' ? '<span class="text-indigo-400 font-bold mx-2 text-[10px] px-1.5 py-0.5 border border-indigo-400/30 rounded bg-indigo-400/10">BAY GEÇTİ</span>' :
               `<span class="text-emerald-400 font-bold mx-1">${m.evSahibiSkor}-${m.deplasmanSkor}</span>`}
             <span class="${(!m.durum || m.durum === 'oynandi') && m.deplasmanSkor > m.evSahibiSkor ? 'font-bold text-white' : ''}">${m.deplasmanAd}</span>
           </span>
