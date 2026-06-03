@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turnuva Admin Paneli</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0f172a;color:#f8fafc;min-height:100vh}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+.glass{background:rgba(30,41,59,0.7);backdrop-filter:blur(12px);border:1px solid rgba(51,65,85,0.6);border-radius:16px}
+.input-field{width:100%;padding:10px 14px;background:#1e293b;border:1px solid #334155;border-radius:10px;color:#f8fafc;font-family:'Inter';font-size:14px;outline:none;transition:border-color 0.2s}
+.input-field:focus{border-color:#10b981}
+select.input-field{cursor:pointer}
+.btn{padding:10px 20px;border-radius:10px;border:none;font-family:'Inter';font-weight:600;font-size:14px;cursor:pointer;transition:all 0.2s}
+.btn-green{background:linear-gradient(135deg,#059669,#10b981);color:#fff}
+.btn-green:hover{box-shadow:0 4px 20px -4px rgba(16,185,129,0.4);transform:translateY(-1px)}
+.btn-red{background:#dc2626;color:#fff}.btn-red:hover{background:#ef4444}
+.btn-ghost{background:#1e293b;color:#94a3b8;border:1px solid #334155}.btn-ghost:hover{border-color:#10b981;color:#10b981}
+.toast{position:fixed;bottom:24px;right:24px;padding:14px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:999;transform:translateY(80px);opacity:0;transition:all 0.3s}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:#065f46;border:1px solid #10b981;color:#d1fae5}
+.toast.error{background:#7f1d1d;border:1px solid #dc2626;color:#fecaca}
+.match-item{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:12px 16px;transition:border-color 0.2s}
+.match-item:hover{border-color:rgba(16,185,129,0.3)}
+.stat-card{background:rgba(30,41,59,0.7);border:1px solid rgba(51,65,85,0.6);border-radius:14px;padding:20px;text-align:center}
+.stat-num{font-size:28px;font-weight:800;background:linear-gradient(135deg,#10b981,#6ee7b7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-lbl{font-size:11px;color:#94a3b8;margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn 0.3s ease forwards}
+</style>
+</head>
+<body>
+<!-- LOGIN -->
+<div id="loginScreen" class="fixed inset-0 flex items-center justify-center z-50" style="background:radial-gradient(ellipse at center,#1e293b 0%,#0f172a 70%)">
+  <div class="glass p-8 w-full max-w-sm mx-4">
+    <div class="text-center mb-6">
+      <img src="images/tarsus-logo.png" alt="Logo" class="w-16 h-16 mx-auto mb-3">
+      <h1 class="text-lg font-bold text-white">Turnuva Admin</h1>
+      <p class="text-xs text-slate-400 mt-1">Yönetim Paneli Girişi</p>
+    </div>
+    <input type="email" id="loginEmail" class="input-field mb-3" placeholder="E-posta adresi">
+    <input type="password" id="loginPass" class="input-field mb-4" placeholder="Şifre">
+    <button class="btn btn-green w-full" onclick="doLogin()">Giriş Yap</button>
+    <div id="loginErr" class="text-red-400 text-xs text-center mt-3 hidden"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" class="hidden">
+  <!-- TOPBAR -->
+  <header class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 px-4 py-3">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-lg">⚽</span>
+        <span class="font-bold text-white text-sm">Turnuva Admin</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-slate-400 hidden sm:inline" id="userEmail"></span>
+        <button class="btn-ghost btn text-xs py-1.5 px-3" onclick="doLogout()">Çıkış</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+    <!-- STATS -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="statsRow"></div>
+
+    <!-- HAFTA YÖNETİMİ -->
+    <div class="glass p-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2"><i data-lucide="settings" class="w-4 h-4 text-emerald-400"></i><span class="text-sm font-bold">Aktif Hafta</span></div>
+        <div class="flex items-center gap-2">
+          <button class="btn btn-ghost text-xs py-1 px-2" onclick="aktifHaftaDegistir(-1)">−</button>
+          <span class="text-lg font-bold text-emerald-400 min-w-[40px] text-center" id="aktifHaftaLabel">1</span>
+          <button class="btn btn-ghost text-xs py-1 px-2" onclick="aktifHaftaDegistir(1)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAÇ EKLE -->
+    <div class="glass p-5">
+      <div class="flex items-center gap-2 mb-4"><i data-lucide="plus-circle" class="w-4 h-4 text-emerald-400"></i><span class="text-sm font-bold">Yeni Maç Ekle</span></div>
+      <div class="grid grid-cols-2 gap-3 mb-3">
+        <div><label class="text-xs text-slate-400 mb-1 block">Hafta</label><select class="input-field" id="macHafta"></select></div>
+        <div><label class="text-xs text-slate-400 mb-1 block">Grup</label><select class="input-field" id="macGrup" onchange="grupSecildi()"></select></div>
+      </div>
+      <div class="grid grid-cols-2 gap-3 mb-3">
+        <div><label class="text-xs text-slate-400 mb-1 block">Ev Sahibi</label><select class="input-field" id="macEv"></select></div>
+        <div><label class="text-xs text-slate-400 mb-1 block">Deplasman</label><select class="input-field" id="macDep"></select></div>
+      </div>
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div><label class="text-xs text-slate-400 mb-1 block">Ev Skoru</label><input type="number" min="0" class="input-field" id="macEvSkor" value="0"></div>
+        <div><label class="text-xs text-slate-400 mb-1 block">Dep. Skoru</label><input type="number" min="0" class="input-field" id="macDepSkor" value="0"></div>
+      </div>
+      <button class="btn btn-green w-full" id="btnKaydet" onclick="macKaydet()">💾 Maçı Kaydet</button>
+    </div>
+
+    <!-- MAÇ LİSTESİ -->
+    <div class="glass p-5">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2"><i data-lucide="list" class="w-4 h-4 text-emerald-400"></i><span class="text-sm font-bold">Kayıtlı Maçlar</span></div>
+        <select class="input-field w-auto text-xs py-1.5" id="filtrGrup" onchange="renderMacListesi()"><option value="all">Tüm Gruplar</option></select>
+      </div>
+      <div class="space-y-2" id="macListesi"></div>
+    </div>
+  </main>
+</div>
+
+<!-- DÜZENLEME MODAL -->
+<div id="editModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
+  <div class="glass p-6 w-full max-w-sm mx-4">
+    <h3 class="font-bold text-white mb-4">✏️ Maç Düzenle</h3>
+    <input type="hidden" id="editMacId">
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      <div><label class="text-xs text-slate-400 mb-1 block" id="editEvLabel">Ev Sahibi</label><input type="number" min="0" class="input-field" id="editEvSkor"></div>
+      <div><label class="text-xs text-slate-400 mb-1 block" id="editDepLabel">Deplasman</label><input type="number" min="0" class="input-field" id="editDepSkor"></div>
+    </div>
+    <div class="flex gap-2">
+      <button class="btn btn-ghost flex-1" onclick="closeEditModal()">İptal</button>
+      <button class="btn btn-green flex-1" onclick="macGuncelle()">Güncelle</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="admin-turnuva.js"></script>
+</body>
+</html>
