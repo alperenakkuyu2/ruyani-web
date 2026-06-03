@@ -46,20 +46,21 @@
 
         /* Header BG */
         .header-bg {
-            background: linear-gradient(135deg, #064e3b 0%, #0f172a 50%, #1e1b4b 100%);
+            background: #ffffff;
             position: relative;
             overflow: hidden;
+            border-bottom: 1px solid #e2e8f0;
         }
         .header-bg::before {
             content: '';
             position: absolute; inset: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(16,185,129,0.15) 0%, transparent 60%),
-                        radial-gradient(circle at 70% 50%, rgba(99,102,241,0.1) 0%, transparent 60%);
+            background: radial-gradient(circle at 30% 50%, rgba(16,185,129,0.08) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 50%, rgba(99,102,241,0.05) 0%, transparent 60%);
         }
         .header-bg::after {
             content: '';
             position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
-            background: linear-gradient(to top, #0f172a, transparent);
+            background: linear-gradient(to top, #f8fafc, transparent);
         }
 
         /* Tabs scroll */
@@ -208,14 +209,14 @@
             <div class="flex justify-center mb-4">
                 <img src="/images/tarsus-logo.png" alt="Tarsus Belediyesi" class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-lg">
             </div>
-            <h1 class="text-xl sm:text-2xl md:text-3xl font-900 text-white tracking-tight mb-1">
+            <h1 class="text-xl sm:text-2xl md:text-3xl font-900 text-slate-900 tracking-tight mb-1">
                 TARSUS KÖYLER ARASI
             </h1>
-            <h2 class="text-lg sm:text-xl md:text-2xl font-800 mb-3" style="background:linear-gradient(90deg,#10b981,#6ee7b7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">
+            <h2 class="text-lg sm:text-xl md:text-2xl font-800 mb-3" style="background:linear-gradient(90deg,#059669,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">
                 FUTBOL TURNUVASI
             </h2>
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm text-slate-300">
-                <i data-lucide="trophy" class="w-4 h-4 text-amber-400"></i>
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-sm text-slate-600 font-medium shadow-sm">
+                <i data-lucide="trophy" class="w-4 h-4 text-amber-500"></i>
                 <span>2026 Puan Durumu</span>
             </div>
         </div>
