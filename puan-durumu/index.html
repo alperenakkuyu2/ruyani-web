@@ -8,14 +8,17 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'],
+                        roboto: ['Roboto', 'sans-serif']
+                    }
                 }
             }
         }
@@ -30,17 +33,16 @@
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', sans-serif;
-            background: #0f172a;
-            color: #f8fafc;
+            background: #f8fafc;
+            color: #0f172a;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar { width:6px; height:6px; }
         ::-webkit-scrollbar-track { background:transparent; }
-        ::-webkit-scrollbar-thumb { background:#334155; border-radius:3px; }
-        ::-webkit-scrollbar-thumb:hover { background:#475569; }
+        ::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:3px; }
+        ::-webkit-scrollbar-thumb:hover { background:#94a3b8; }
 
         /* Header BG */
         .header-bg {
@@ -74,15 +76,16 @@
             font-weight: 700;
             font-size: 14px;
             letter-spacing: 0.5px;
-            border: 1.5px solid #334155;
-            background: rgba(30,41,59,0.6);
-            color: #94a3b8;
+            border: 1.5px solid #e2e8f0;
+            background: #ffffff;
+            color: #64748b;
             cursor: pointer;
             transition: all 0.25s ease;
             white-space: nowrap;
             flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
-        .tab-btn:hover { border-color: #10b981; color: #d1fae5; }
+        .tab-btn:hover { border-color: #10b981; color: #0f172a; }
         .tab-btn.active {
             background: linear-gradient(135deg, #059669, #10b981);
             color: #fff;
@@ -92,10 +95,10 @@
 
         /* Glass card */
         .glass-card {
-            background: rgba(30,41,59,0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(51,65,85,0.6);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
 
         /* Table */
@@ -110,35 +113,36 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #94a3b8;
-            border-bottom: 1px solid rgba(51,65,85,0.8);
+            color: #64748b;
+            border-bottom: 1px solid #e2e8f0;
             text-align: center;
             white-space: nowrap;
         }
         .standings-table thead th:nth-child(2) { text-align: left; }
         .standings-table tbody tr {
             transition: background 0.2s;
-            border-bottom: 1px solid rgba(51,65,85,0.3);
+            border-bottom: 1px solid #f1f5f9;
         }
-        .standings-table tbody tr:hover { background: rgba(16,185,129,0.06); }
+        .standings-table tbody tr:hover { background: #f8fafc; }
         .standings-table tbody tr:last-child { border-bottom: none; }
         .standings-table tbody td {
             padding: 12px 8px;
             font-size: 13px;
             text-align: center;
-            color: #cbd5e1;
+            color: #475569;
             letter-spacing: -0.5px;
         }
         .standings-table tbody td:nth-child(2) {
             text-align: left;
-            font-weight: 600;
-            color: #f1f5f9;
+            font-weight: 700;
+            color: #0f172a;
             white-space: nowrap;
+            font-family: 'Roboto', sans-serif;
             letter-spacing: normal;
         }
         .standings-table tbody td:last-child {
             font-weight: 800;
-            color: #fff;
+            color: #0f172a;
             font-size: 14px;
         }
 
@@ -154,7 +158,7 @@
         }
         .rank-1 { background: linear-gradient(135deg, #059669, #10b981); color: #fff; }
         .rank-2, .rank-3 { background: linear-gradient(135deg, #d97706, #f59e0b); color: #fff; }
-        .rank-other { background: rgba(51,65,85,0.5); color: #94a3b8; }
+        .rank-other { background: #e2e8f0; color: #64748b; }
 
         /* Row highlights */
         .row-qualified { background: rgba(16,185,129,0.08); }
@@ -162,21 +166,21 @@
 
         /* Match card */
         .match-card {
-            background: rgba(30,41,59,0.5);
-            border: 1px solid rgba(51,65,85,0.5);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 14px 16px;
             transition: all 0.2s;
         }
-        .match-card:hover { border-color: rgba(16,185,129,0.3); background: rgba(30,41,59,0.7); }
+        .match-card:hover { border-color: #cbd5e1; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 
         /* Week nav */
         .week-btn {
             width: 36px; height: 36px;
             border-radius: 10px;
-            border: 1px solid #334155;
-            background: rgba(30,41,59,0.6);
-            color: #94a3b8;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #64748b;
             cursor: pointer;
             transition: all 0.2s;
             display: flex; align-items: center; justify-content: center;
@@ -225,9 +229,9 @@
 
         <!-- STANDINGS TABLE -->
         <section class="glass-card overflow-hidden mb-6" id="standingsSection">
-            <div class="px-4 py-3 border-b border-slate-700/50 flex items-center gap-2">
-                <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-400"></i>
-                <h3 class="text-sm font-bold text-white" id="standingsTitle">A Grubu Puan Durumu</h3>
+            <div class="px-4 py-3 border-b border-slate-200 flex items-center gap-2">
+                <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-500"></i>
+                <h3 class="text-sm font-bold text-slate-800" id="standingsTitle">A Grubu Puan Durumu</h3>
             </div>
             <div class="overflow-x-auto">
                 <table class="standings-table">
@@ -248,26 +252,26 @@
         <div class="flex flex-wrap gap-x-6 gap-y-2 px-2 mb-4">
             <div class="flex items-center gap-2">
                 <span class="rank-badge rank-1" style="width:14px;height:14px;font-size:0;border-radius:4px;"></span>
-                <span class="text-xs text-slate-400">Grup Birincisi — Son 16'ya direkt katılım</span>
+                <span class="text-xs text-slate-600 font-medium">Grup Birincisi — Son 16'ya direkt katılım</span>
             </div>
             <div class="flex items-center gap-2">
                 <span class="rank-badge rank-2" style="width:14px;height:14px;font-size:0;border-radius:4px;"></span>
-                <span class="text-xs text-slate-400">2. ve 3. — Çapraz eşleşme ile Playoff</span>
+                <span class="text-xs text-slate-600 font-medium">2. ve 3. — Çapraz eşleşme ile Playoff</span>
             </div>
         </div>
 
         <!-- MATCH RESULTS -->
         <section class="glass-card overflow-hidden" id="matchesSection">
-            <div class="px-4 py-3 border-b border-slate-700/50 flex items-center justify-between">
+            <div class="px-4 py-3 border-b border-slate-200 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <i data-lucide="calendar" class="w-4 h-4 text-emerald-400"></i>
-                    <h3 class="text-sm font-bold text-white" id="matchesTitle">Maç Sonuçları</h3>
+                    <i data-lucide="calendar" class="w-4 h-4 text-emerald-500"></i>
+                    <h3 class="text-sm font-bold text-slate-800" id="matchesTitle">Maç Sonuçları</h3>
                 </div>
                 <div class="flex items-center gap-3">
                     <button class="week-btn" id="prevWeek" onclick="haftaDegistir(-1)">
                         <i data-lucide="chevron-left" class="w-4 h-4"></i>
                     </button>
-                    <span class="text-sm font-bold text-white min-w-[80px] text-center" id="weekLabel">1. Hafta</span>
+                    <span class="text-sm font-bold text-slate-800 min-w-[80px] text-center" id="weekLabel">1. Hafta</span>
                     <button class="week-btn" id="nextWeek" onclick="haftaDegistir(1)">
                         <i data-lucide="chevron-right" class="w-4 h-4"></i>
                     </button>
@@ -278,27 +282,27 @@
 
         <!-- GOL KRALLIĞI (COMING SOON) -->
         <section class="glass-card overflow-hidden mt-6 relative" style="min-height: 160px;">
-            <div class="px-4 py-3 border-b border-slate-700/50 flex items-center gap-2">
-                <i data-lucide="medal" class="w-4 h-4 text-amber-400"></i>
-                <h3 class="text-sm font-bold text-white">Gol Krallığı</h3>
+            <div class="px-4 py-3 border-b border-slate-200 flex items-center gap-2">
+                <i data-lucide="medal" class="w-4 h-4 text-amber-500"></i>
+                <h3 class="text-sm font-bold text-slate-800">Gol Krallığı</h3>
             </div>
-            <div class="absolute inset-0 top-11 flex flex-col items-center justify-center" style="background: radial-gradient(circle at center, rgba(30,41,59,0.4) 0%, rgba(15,23,42,0.6) 100%);">
-                <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 mb-2 shadow-[0_0_15px_rgba(245,158,11,0.15)]">
+            <div class="absolute inset-0 top-11 flex flex-col items-center justify-center" style="background: radial-gradient(circle at center, rgba(255,255,255,0.7) 0%, rgba(248,250,252,0.9) 100%);">
+                <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-amber-100 border border-amber-200 text-amber-600 mb-2">
                     <i data-lucide="timer" class="w-4 h-4 animate-pulse"></i>
                     <span class="text-sm font-bold tracking-widest">ÇOK YAKINDA!</span>
                 </div>
-                <p class="text-xs text-slate-400">Turnuvanın en çok gol atan oyuncuları burada listelenecek.</p>
+                <p class="text-xs font-medium text-slate-500">Turnuvanın en çok gol atan oyuncuları burada listelenecek.</p>
             </div>
         </section>
 
     </main>
 
     <!-- ========== FOOTER ========== -->
-    <footer class="border-t border-slate-800 py-8">
+    <footer class="border-t border-slate-200 py-8">
         <div class="max-w-4xl mx-auto px-4 text-center">
             <div class="flex items-center justify-center gap-3 mb-3">
-                <img src="/images/tarsus-logo.png" alt="Tarsus" class="w-8 h-8 opacity-60">
-                <span class="text-slate-500 text-xs">×</span>
+                <img src="/images/tarsus-logo.png" alt="Tarsus" class="w-8 h-8 opacity-40">
+                <span class="text-slate-400 text-xs">×</span>
                 <span class="text-sm font-bold" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Akkuyu Labs</span>
             </div>
             <p class="text-slate-500 text-xs">© 2026 Tüm hakları saklıdır.</p>
@@ -502,27 +506,27 @@
             
             let skorHtml = '';
             if (m.durum === 'iptal') {
-                skorHtml = '<span class="text-[10px] sm:text-xs font-bold text-red-400 bg-red-400/10 border border-red-400/30 px-2 py-0.5 rounded">İPTAL EDİLDİ</span>';
+                skorHtml = '<span class="text-[10px] sm:text-xs font-bold text-red-600 bg-red-100 border border-red-200 px-2 py-0.5 rounded">İPTAL EDİLDİ</span>';
             } else if (m.durum === 'ertelendi') {
-                skorHtml = '<span class="text-[10px] sm:text-xs font-bold text-amber-400 bg-amber-400/10 border border-amber-400/30 px-2 py-0.5 rounded">ERTELENDİ</span>';
+                skorHtml = '<span class="text-[10px] sm:text-xs font-bold text-amber-600 bg-amber-100 border border-amber-200 px-2 py-0.5 rounded">ERTELENDİ</span>';
             } else {
                 skorHtml = `
-                    <span class="text-lg font-900 ${evKazandi?'text-emerald-400':'text-white'}">${m.evSahibiSkor}</span>
-                    <span class="text-slate-600 text-xs">—</span>
-                    <span class="text-lg font-900 ${depKazandi?'text-emerald-400':'text-white'}">${m.deplasmanSkor}</span>
+                    <span class="text-lg font-900 ${evKazandi?'text-emerald-500':'text-slate-800'}">${m.evSahibiSkor}</span>
+                    <span class="text-slate-400 text-xs">—</span>
+                    <span class="text-lg font-900 ${depKazandi?'text-emerald-500':'text-slate-800'}">${m.deplasmanSkor}</span>
                 `;
             }
 
             return `<div class="match-card fade-in" style="animation-delay:${i*60}ms">
                 <div class="flex items-center justify-between gap-2">
                     <div class="flex-1 text-right">
-                        <span class="text-sm ${evKazandi?'font-bold text-white':'text-slate-400'}">${m.evSahibiAd}</span>
+                        <span class="text-sm font-roboto ${evKazandi?'font-bold text-slate-900':'text-slate-500'}">${m.evSahibiAd}</span>
                     </div>
                     <div class="flex items-center gap-2 px-3 flex-shrink-0">
                         ${skorHtml}
                     </div>
                     <div class="flex-1 text-left">
-                        <span class="text-sm ${depKazandi?'font-bold text-white':'text-slate-400'}">${m.deplasmanAd}</span>
+                        <span class="text-sm font-roboto ${depKazandi?'font-bold text-slate-900':'text-slate-500'}">${m.deplasmanAd}</span>
                     </div>
                 </div>
             </div>`;
