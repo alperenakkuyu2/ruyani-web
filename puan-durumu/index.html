@@ -510,6 +510,8 @@
                 skorHtml = '<span class="text-[10px] sm:text-xs font-bold text-red-600 bg-red-100 border border-red-200 px-2 py-0.5 rounded">İPTAL EDİLDİ</span>';
             } else if (m.durum === 'ertelendi') {
                 skorHtml = '<span class="text-[10px] sm:text-xs font-bold text-amber-600 bg-amber-100 border border-amber-200 px-2 py-0.5 rounded">ERTELENDİ</span>';
+            } else if (m.durum === 'bay') {
+                skorHtml = '<span class="text-[10px] sm:text-xs font-bold text-indigo-600 bg-indigo-100 border border-indigo-200 px-2 py-0.5 rounded">BAY GEÇTİ</span>';
             } else {
                 skorHtml = `
                     <span class="text-lg font-900 ${evKazandi?'text-emerald-500':'text-slate-800'}">${m.evSahibiSkor}</span>
