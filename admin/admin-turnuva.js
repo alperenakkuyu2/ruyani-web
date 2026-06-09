@@ -208,6 +208,11 @@ async function macKaydet() {
     showToast('Maç başarıyla kaydedildi!','success');
     document.getElementById('macEvSkor').value = '0';
     document.getElementById('macDepSkor').value = '0';
+    
+    // Otomatik BAY kontrolü için kısa bir gecikme ile çağırıyoruz (Snapshot için)
+    setTimeout(() => {
+      eksikBaylariTamamla(false);
+    }, 500);
   } catch(e) {
     showToast('Hata: ' + e.message,'error');
   }
@@ -267,6 +272,69 @@ function mockMacKaydet(hafta, grup, evAd, depAd, evSkor, depSkor, durum) {
 
   renderMacListesi();
   renderStats();
+}
+
+// ═══════════════════════════════════════
+//  OTOMATİK BAY KONTROLÜ
+// ═══════════════════════════════════════
+async function eksikBaylariTamamla(isManualClick = true) {
+  let eklenenBaySayisi = 0;
+  
+  if (isManualClick) {
+    const btn = document.querySelector('button[onclick="eksikBaylariTamamla(true)"]');
+    if (btn) btn.innerHTML = '<i data-lucide="loader" class="w-3 h-3 text-amber-400 animate-spin"></i> <span class="hidden sm:inline">Taranıyor...</span>';
+  }
+
+  for (const [grup, takimAdlari] of Object.entries(GRUPLAR)) {
+    if (takimAdlari.length !== 7) continue; // Sadece 7 takımlı gruplar
+
+    for (let h = 1; h <= toplamHafta; h++) {
+      const haftaninMaclari = maclar.filter(m => m.grup === grup && m.hafta === h);
+      const bayVarMi = haftaninMaclari.some(m => m.durum === 'bay');
+      
+      if (!bayVarMi) {
+        const normalMaclar = haftaninMaclari.filter(m => m.durum !== 'bay' && m.durum !== 'iptal');
+        
+        // 3 normal maç girilmişse (6 takım oynadı), 1 takım boşta (BAY)
+        if (normalMaclar.length === 3) {
+          const oynayanTakimlar = new Set();
+          normalMaclar.forEach(m => {
+            oynayanTakimlar.add(m.evSahibiAd);
+            oynayanTakimlar.add(m.deplasmanAd);
+          });
+          
+          const bayTakimAd = takimAdlari.find(t => !oynayanTakimlar.has(t));
+          
+          if (bayTakimAd) {
+            try {
+              if (USE_FIREBASE) {
+                await firebaseMacKaydet(h, grup, bayTakimAd, bayTakimAd, 0, 0, 'bay');
+              } else {
+                mockMacKaydet(h, grup, bayTakimAd, bayTakimAd, 0, 0, 'bay');
+              }
+              eklenenBaySayisi++;
+            } catch (err) {
+              console.error("BAY ekleme hatası:", err);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (isManualClick) {
+    const btn = document.querySelector('button[onclick="eksikBaylariTamamla(true)"]');
+    if (btn) {
+      btn.innerHTML = '<i data-lucide="zap" class="w-3 h-3 text-amber-400"></i> <span class="hidden sm:inline">Eksik BAY\'ları Tamamla</span>';
+      lucide.createIcons();
+    }
+    
+    if (eklenenBaySayisi > 0) {
+      showToast(`${eklenenBaySayisi} adet eksik BAY durumu otomatik eklendi!`, 'success');
+    } else {
+      showToast('Eksik BAY durumu bulunamadı. Her şey tamam!', 'success');
+    }
+  }
 }
 
 // ═══════════════════════════════════════

@@ -115,7 +115,12 @@ select.input-field{cursor:pointer}
     <div class="glass p-5">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-2"><i data-lucide="list" class="w-4 h-4 text-emerald-400"></i><span class="text-sm font-bold">Kayıtlı Maçlar</span></div>
-        <select class="input-field w-auto text-xs py-1.5" id="filtrGrup" onchange="renderMacListesi()"><option value="all">Tüm Gruplar</option></select>
+        <div class="flex items-center gap-2">
+          <button class="btn btn-ghost text-xs py-1.5 px-3 flex items-center gap-1" onclick="eksikBaylariTamamla(true)" title="Eksik BAY'ları tespit edip otomatik ekler">
+            <i data-lucide="zap" class="w-3 h-3 text-amber-400"></i> <span class="hidden sm:inline">Eksik BAY'ları Tamamla</span>
+          </button>
+          <select class="input-field w-auto text-xs py-1.5" id="filtrGrup" onchange="renderMacListesi()"><option value="all">Tüm Gruplar</option></select>
+        </div>
       </div>
       <div class="space-y-2" id="macListesi"></div>
     </div>
