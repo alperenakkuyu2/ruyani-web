@@ -227,13 +227,8 @@
     <!-- ========== MAIN ========== -->
     <main class="max-w-4xl mx-auto px-4 -mt-4 relative z-20 pb-12">
 
-        <!-- GROUP TABS + DİSİPLİN BUTONU -->
-        <div class="flex items-center gap-3 py-4 mb-6">
-            <nav class="tabs-scroll flex gap-2 flex-1" id="groupTabs"></nav>
-            <button onclick="openCezaModal()" class="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 font-bold text-xs shadow-sm hover:bg-red-500 hover:text-white transition-all" title="Disiplin Kurulu">
-                <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Disiplin Kurulu</span><span class="sm:hidden">🟥</span>
-            </button>
-        </div>
+        <!-- GROUP TABS -->
+        <nav class="tabs-scroll flex gap-2 py-4 mb-6" id="groupTabs"></nav>
 
         <!-- STANDINGS TABLE -->
         <section class="glass-card overflow-hidden mb-6" id="standingsSection">
@@ -292,6 +287,13 @@
             </div>
             <div class="p-4 space-y-2" id="matchResults"></div>
         </section>
+
+        <!-- DİSİPLİN KURULU BUTONU -->
+        <div class="mt-6">
+            <button onclick="openCezaModal()" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-600 font-bold text-sm shadow-sm hover:bg-red-500 hover:text-white hover:border-red-500 transition-all">
+                <i data-lucide="shield-alert" class="w-4 h-4"></i> Disiplin Kurulu — Cezalı Oyuncular
+            </button>
+        </div>
 
         <!-- GOL KRALLIĞI (COMING SOON) -->
         <section class="glass-card overflow-hidden mt-6 relative" style="min-height: 160px;">
