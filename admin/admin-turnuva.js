@@ -642,3 +642,79 @@ async function checkAndSeedDatabase() {
     console.error("Seed hatası:", err);
   }
 }
+
+// ═══════════════════════════════════════
+//  DİSİPLİN (CEZALAR) İŞLEMLERİ
+// ═══════════════════════════════════════
+function cezaTakimlariDoldur() {
+  const grup = document.getElementById('cezaGrup').value;
+  const takimAdlari = GRUPLAR[grup] || [];
+  const sec = document.getElementById('cezaTakim');
+  sec.innerHTML = '<option value="">Takım Seç</option>' + takimAdlari.map(a => `<option value="${a}">${a}</option>`).join('');
+}
+
+async function cezaEkle() {
+  const hafta = parseInt(document.getElementById('cezaHafta').value) || 1;
+  const grup = document.getElementById('cezaGrup').value;
+  const takim = document.getElementById('cezaTakim').value;
+  const isim = document.getElementById('cezaOyuncu').value.trim().toUpperCase();
+  const gorev = document.getElementById('cezaGorev').value;
+  const cezaMiktar = document.getElementById('cezaMiktar').value.trim().toUpperCase();
+
+  if (!takim || !isim || !cezaMiktar) return showToast('Lütfen takım, oyuncu adı ve ceza miktarını girin!','error');
+
+  try {
+    if (USE_FIREBASE) {
+      await db.collection('cezalar').add({
+        hafta, grup, takim, isim, gorev, ceza: cezaMiktar,
+        olusturmaTarihi: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } else {
+      cezalar.push({ id: 'mock_'+Date.now(), hafta, grup, takim, isim, gorev, ceza: cezaMiktar });
+      renderCezaListesi();
+    }
+    showToast('Cezalı oyuncu eklendi!','success');
+    document.getElementById('cezaOyuncu').value = '';
+    document.getElementById('cezaMiktar').value = '';
+  } catch(e) {
+    showToast('Hata: ' + e.message,'error');
+  }
+}
+
+async function cezaSil(id) {
+  if (!confirm('Bu cezayı listeden silmek istediğinize emin misiniz?')) return;
+  try {
+    if (USE_FIREBASE) {
+      await db.collection('cezalar').doc(id).delete();
+    } else {
+      cezalar = cezalar.filter(c => c.id !== id);
+      renderCezaListesi();
+    }
+    showToast('Ceza silindi.','success');
+  } catch(e) {
+    showToast('Hata: ' + e.message,'error');
+  }
+}
+
+function renderCezaListesi() {
+  const container = document.getElementById('cezaListesi');
+  if (!container) return;
+  if (cezalar.length === 0) {
+    container.innerHTML = '<p class="text-slate-500 text-sm text-center py-6">Henüz kayıtlı disiplin cezası yok.</p>';
+    return;
+  }
+  container.innerHTML = cezalar.map((c, i) => `
+    <div class="match-item fade-in" style="animation-delay:${i * 20}ms">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2 flex-1 min-w-0">
+          <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20 flex-shrink-0">${c.hafta}. Hafta</span>
+          <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-700 text-slate-300 flex-shrink-0">${c.takim}</span>
+          <span class="text-sm font-bold text-white truncate">${c.isim} <span class="text-xs font-normal text-slate-400">(${c.gorev})</span></span>
+          <span class="text-xs font-bold text-red-400 ml-auto bg-red-900/40 px-2 py-0.5 rounded">${c.ceza}</span>
+        </div>
+        <div class="flex gap-1 flex-shrink-0">
+          <button onclick="cezaSil('${c.id}')" class="p-1 rounded-lg hover:bg-slate-700 text-slate-400 hover:text-red-400 transition-colors" title="Sil">🗑️</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
