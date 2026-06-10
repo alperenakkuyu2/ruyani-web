@@ -31,6 +31,7 @@ const GRUPLAR = {
 let db = null, auth = null;
 let takimlar = {};
 let maclar = [];
+let cezalar = [];
 let aktifHafta = 1;
 let toplamHafta = 6;
 
@@ -144,6 +145,12 @@ function listenFirebase() {
     renderMacListesi();
     renderStats();
   });
+
+  db.collection('cezalar').orderBy('olusturmaTarihi','desc').onSnapshot(snap => {
+    cezalar = [];
+    snap.forEach(d => { cezalar.push({ id: d.id, ...d.data() }); });
+    renderCezaListesi();
+  });
 }
 
 // ═══════════════════════════════════════
@@ -170,6 +177,7 @@ function populateForm() {
   document.getElementById('aktifHaftaLabel').textContent = aktifHafta;
 
   grupSecildi();
+  cezaTakimlariDoldur();
 }
 
 function grupSecildi() {
@@ -605,7 +613,30 @@ async function checkAndSeedDatabase() {
       });
       
       await batch.commit();
-      showToast('Kurulum tamamlandı! Takımlar veritabanına eklendi.', 'success');
+      showToast('Kurulum tamamlandı!', 'success');
+    }
+
+    // 1. Hafta Cezalılarını Ekle (Eğer boşsa)
+    const cezaSnap = await db.collection('cezalar').limit(1).get();
+    if (cezaSnap.empty) {
+      const ilkHaftaCezalar = [
+        { takim: 'OLUKKOYAĞI', isim: 'BATUHAN ŞAHİN', gorev: 'SPORCU', ceza: '1 MAÇ', hafta: 1, grup: 'A' },
+        { takim: 'YEŞİLTEPE', isim: 'MEHMET CAN DAĞ', gorev: 'SPORCU', ceza: '2 MAÇ', hafta: 1, grup: 'C' },
+        { takim: 'AKARSU', isim: 'CUMALİ GÜÇLÜ', gorev: 'SPORCU', ceza: '2 MAÇ', hafta: 1, grup: 'E' },
+        { takim: 'AKARSU', isim: 'AHMET ELMACI', gorev: 'YÖNETİCİ', ceza: '2 MAÇ', hafta: 1, grup: 'E' },
+        { takim: 'MEŞELİK', isim: 'ADNAN KUTLU', gorev: 'ANTRENÖR', ceza: '2 MAÇ', hafta: 1, grup: 'F' },
+        { takim: 'BOĞAZPINAR', isim: 'MEHMET ŞEN', gorev: 'SPORCU', ceza: '1 MAÇ', hafta: 1, grup: 'G' },
+        { takim: 'SEBİL FK', isim: 'OĞUZHAN SARIKAVAK', gorev: 'SPORCU', ceza: '2 MAÇ', hafta: 1, grup: 'H' },
+        { takim: 'ALİFAKI', isim: 'CANER KAYA', gorev: 'SPORCU', ceza: '2 MAÇ', hafta: 1, grup: 'H' },
+        { takim: 'KULAK', isim: 'CİHAN TATAR', gorev: 'ANTRENÖR', ceza: '2 MAÇ', hafta: 1, grup: 'F' }
+      ];
+      const batch2 = db.batch();
+      ilkHaftaCezalar.forEach(c => {
+        const ref = db.collection('cezalar').doc();
+        batch2.set(ref, { ...c, olusturmaTarihi: firebase.firestore.FieldValue.serverTimestamp() });
+      });
+      await batch2.commit();
+      console.log('1. Hafta cezaları yüklendi.');
     }
   } catch (err) {
     console.error("Seed hatası:", err);

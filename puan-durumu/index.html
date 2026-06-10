@@ -227,6 +227,13 @@
     <!-- ========== MAIN ========== -->
     <main class="max-w-4xl mx-auto px-4 -mt-4 relative z-20 pb-12">
 
+        <!-- CEZALI OYUNCULAR BUTONU -->
+        <div class="mb-2">
+            <button onclick="openCezaModal()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 font-bold shadow-sm hover:bg-red-500 hover:text-white transition-all">
+                <i data-lucide="shield-alert" class="w-4 h-4"></i> Disiplin Kurulu (Cezalılar)
+            </button>
+        </div>
+
         <!-- GROUP TABS -->
         <nav class="tabs-scroll flex gap-2 py-4 mb-6" id="groupTabs"></nav>
 
@@ -348,6 +355,21 @@
         </div>
     </div>
 
+    <!-- CEZALAR MODAL -->
+    <div id="cezaModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 w-[90%] max-w-lg transform scale-95 transition-transform duration-300 max-h-[85vh] overflow-hidden flex flex-col" id="cezaModalContent">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i data-lucide="shield-alert" class="w-5 h-5 text-red-500"></i> Disiplin Kurulu</h3>
+                <button onclick="closeCezaModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <p class="text-sm text-slate-500 mb-4">Turnuva boyunca kart gören ve ceza alan oyuncuların/yöneticilerin listesidir.</p>
+            
+            <div class="overflow-y-auto pr-2 space-y-3" id="cezaModalList">
+                <!-- Javascript will fill this -->
+            </div>
+        </div>
+    </div>
+
     <!-- HIDDEN EXPORT CONTAINER -->
     <div id="exportWrapper" style="position:fixed; left:-9999px; top:0; z-index:-1; opacity:0; pointer-events:none;">
         <div id="exportTemplate" style="width: 1080px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #f8fafc; font-family: 'Inter', sans-serif; position: relative; overflow: hidden; padding: 60px;">
@@ -445,6 +467,7 @@
     let userChangedWeek = false;
     let takimlar = {};
     let maclar = [];
+    let cezalar = [];
     let unsubTakimlar = null;
     let unsubMaclar = null;
     let db = null;
@@ -498,6 +521,14 @@
                 maclar.push({ id: doc.id, ...doc.data() });
             });
             renderMacSonuclari();
+        });
+        // Cezaları dinle
+        db.collection('cezalar').orderBy('olusturmaTarihi','desc').onSnapshot(snapshot => {
+            cezalar = [];
+            snapshot.forEach(doc => {
+                cezalar.push({ id: doc.id, ...doc.data() });
+            });
+            renderCezaModal();
         });
     }
 
@@ -658,6 +689,58 @@
     function renderAll() {
         renderPuanTablosu();
         renderMacSonuclari();
+    }
+
+    // ═══════════════════════════════════════
+    //  CEZALAR MODAL İŞLEMLERİ
+    // ═══════════════════════════════════════
+    function openCezaModal() {
+        renderCezaModal();
+        const m = document.getElementById('cezaModal');
+        const c = document.getElementById('cezaModalContent');
+        m.classList.remove('hidden');
+        setTimeout(() => {
+            m.classList.remove('opacity-0');
+            c.classList.remove('scale-95');
+        }, 10);
+    }
+
+    function closeCezaModal() {
+        const m = document.getElementById('cezaModal');
+        const c = document.getElementById('cezaModalContent');
+        m.classList.add('opacity-0');
+        c.classList.add('scale-95');
+        setTimeout(() => {
+            m.classList.add('hidden');
+        }, 300);
+    }
+
+    function renderCezaModal() {
+        const container = document.getElementById('cezaModalList');
+        if (!container) return;
+        
+        if (cezalar.length === 0) {
+            container.innerHTML = `<div class="text-center py-8 text-slate-500 text-sm">Henüz kayıtlı disiplin cezası bulunmuyor.</div>`;
+            return;
+        }
+
+        container.innerHTML = cezalar.map(c => `
+            <div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50 hover:border-red-200 transition-colors">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center text-red-500 flex-shrink-0">
+                        <i data-lucide="user-x" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-800 text-sm">${c.isim} <span class="font-normal text-xs text-slate-500">(${c.gorev})</span></div>
+                        <div class="text-xs text-slate-500">${c.hafta}. Hafta • ${c.takim}</div>
+                    </div>
+                </div>
+                <div class="bg-red-500 text-white font-bold text-xs px-2.5 py-1 rounded-lg shadow-sm whitespace-nowrap">
+                    ${c.ceza}
+                </div>
+            </div>
+        `).join('');
+        lucide.createIcons();
     }
 
     // ═══════════════════════════════════════

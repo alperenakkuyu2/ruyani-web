@@ -124,6 +124,59 @@ select.input-field{cursor:pointer}
       </div>
       <div class="space-y-2" id="macListesi"></div>
     </div>
+    </div>
+
+    <!-- CEZALAR / DİSİPLİN -->
+    <div class="glass p-5 mt-6">
+      <div class="flex items-center gap-2 mb-4"><i data-lucide="shield-alert" class="w-4 h-4 text-red-500"></i><span class="text-sm font-bold">Disiplin Kurulu (Cezalılar)</span></div>
+      
+      <!-- Ceza Ekleme Formu -->
+      <div class="grid grid-cols-2 sm:grid-cols-6 gap-3 mb-4 bg-slate-800/30 p-3 rounded-xl border border-slate-700">
+        <div class="col-span-2 sm:col-span-1">
+          <label class="text-xs text-slate-400 mb-1 block">Hafta</label>
+          <input type="number" min="1" class="input-field" id="cezaHafta" value="1">
+        </div>
+        <div class="col-span-2 sm:col-span-1">
+          <label class="text-xs text-slate-400 mb-1 block">Grup</label>
+          <select class="input-field" id="cezaGrup" onchange="cezaTakimlariDoldur()">
+            <option value="A">A Grubu</option>
+            <option value="B">B Grubu</option>
+            <option value="C">C Grubu</option>
+            <option value="D">D Grubu</option>
+            <option value="E">E Grubu</option>
+            <option value="F">F Grubu</option>
+            <option value="G">G Grubu</option>
+            <option value="H">H Grubu</option>
+          </select>
+        </div>
+        <div class="col-span-2 sm:col-span-1">
+          <label class="text-xs text-slate-400 mb-1 block">Takım</label>
+          <select class="input-field" id="cezaTakim"></select>
+        </div>
+        <div class="col-span-2 sm:col-span-1">
+          <label class="text-xs text-slate-400 mb-1 block">Ad Soyad</label>
+          <input type="text" class="input-field" id="cezaOyuncu" placeholder="Örn: ALİ YILMAZ">
+        </div>
+        <div class="col-span-1 sm:col-span-1">
+          <label class="text-xs text-slate-400 mb-1 block">Görevi</label>
+          <select class="input-field" id="cezaGorev">
+            <option value="SPORCU">Sporcu</option>
+            <option value="YÖNETİCİ">Yönetici</option>
+            <option value="ANTRENÖR">Antrenör</option>
+          </select>
+        </div>
+        <div class="col-span-1 sm:col-span-1">
+          <label class="text-xs text-slate-400 mb-1 block">Ceza</label>
+          <input type="text" class="input-field" id="cezaMiktar" placeholder="Örn: 2 MAÇ">
+        </div>
+        <div class="col-span-2 sm:col-span-6 mt-2">
+          <button class="btn w-full bg-red-600/80 hover:bg-red-500 text-white font-bold" onclick="cezaEkle()">🚨 Cezalı Listesine Ekle</button>
+        </div>
+      </div>
+
+      <!-- Ceza Listesi -->
+      <div class="space-y-2 max-h-96 overflow-y-auto" id="cezaListesi"></div>
+    </div>
   </main>
 </div>
 
