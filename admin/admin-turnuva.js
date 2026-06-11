@@ -115,6 +115,7 @@ function showApp() {
   if (USE_FIREBASE) {
     listenFirebase();
     checkAndSeedDatabase();
+    seedIkinciHaftaCezalar();
   }
   populateForm();
   renderStats();
@@ -640,6 +641,45 @@ async function checkAndSeedDatabase() {
     }
   } catch (err) {
     console.error("Seed hatası:", err);
+  }
+}
+
+async function seedIkinciHaftaCezalar() {
+  try {
+    const cezaSnap = await db.collection('cezalar').where('hafta', '==', 2).limit(1).get();
+    if (cezaSnap.empty) {
+      const ikinciHaftaCezalar = [
+        { takim: 'GÖÇÜK', isim: 'İLKEM EKER', gorev: 'SPORCU', ceza: '1 MAÇ', hafta: 2, grup: 'E' },
+        { takim: 'GÖÇÜK', isim: 'MURAT AYDIN', gorev: 'SPORCU', ceza: '2 MAÇ', hafta: 2, grup: 'E' },
+        { takim: 'TAŞKUYU', isim: 'SERKAN ÇETİN', gorev: 'SPORCU', ceza: '2 MAÇ', hafta: 2, grup: 'E' },
+        { takim: 'ALİBEYLİ', isim: 'BUĞRA BULUT', gorev: 'SPORCU', ceza: '2 MAÇ', hafta: 2, grup: 'B' },
+        { takim: 'ALİBEYLİ', isim: 'MEHMET ELVAN', gorev: 'SPORCU', ceza: '2 MAÇ', hafta: 2, grup: 'B' },
+        { takim: 'İNKÖY', isim: 'MERTCAN SIVACI', gorev: 'SPORCU', ceza: '2 MAÇ', hafta: 2, grup: 'A' },
+        { takim: 'İNKÖY', isim: 'SİNAN KARABACAK', gorev: 'YÖNETİCİ', ceza: '2 MAÇ', hafta: 2, grup: 'A' },
+        { takim: 'MEŞELİK', isim: 'FURKAN İNCİK', gorev: 'SPORCU', ceza: '1 MAÇ', hafta: 2, grup: 'F' },
+        { takim: 'KULAK', isim: 'ALİ CAN', gorev: 'SPORCU', ceza: '1 MAÇ', hafta: 2, grup: 'F' },
+        { takim: 'OLUKKOYAĞI', isim: 'SADULLAH KESEN', gorev: 'SPORCU', ceza: '1 MAÇ', hafta: 2, grup: 'A' },
+        { takim: 'OLUKKOYAĞI', isim: 'UĞUR SAĞIR', gorev: 'SPORCU', ceza: '2 MAÇ', hafta: 2, grup: 'A' },
+        { takim: 'EMİRLER', isim: 'ERMAN ŞAHİN', gorev: 'SPORCU', ceza: '1 MAÇ', hafta: 2, grup: 'G' },
+        { takim: 'KARADİKEN', isim: 'AHMET SARI', gorev: 'ANTRENÖR', ceza: '2 MAÇ', hafta: 2, grup: 'A' },
+        { takim: 'KÖSELERLİ', isim: 'MAHMUT ŞENATEŞ', gorev: 'SPORCU', ceza: '1 MAÇ', hafta: 2, grup: 'A' },
+        { takim: 'KÖSELERLİ', isim: 'BERAT AKDOĞAN', gorev: 'SPORCU', ceza: '2 MAÇ', hafta: 2, grup: 'A' },
+        { takim: 'KARADİKEN', isim: 'YİĞİT ÖZDEMİR', gorev: 'SPORCU', ceza: '2 MAÇ', hafta: 2, grup: 'A' },
+        { takim: 'ÇAVUŞLU', isim: 'HÜSEYİN ÖZYAŞAMIŞ', gorev: 'SPORCU', ceza: '1 MAÇ', hafta: 2, grup: 'D' },
+        { takim: 'YENİCE', isim: 'MUSTAFA ARSLANTAY', gorev: 'SPORCU', ceza: '1 MAÇ', hafta: 2, grup: 'F' },
+        { takim: 'YENİCE', isim: 'AHMET KURT', gorev: 'ANTRENÖR', ceza: '2 MAÇ', hafta: 2, grup: 'F' }
+      ];
+      const batch = db.batch();
+      ikinciHaftaCezalar.forEach(c => {
+        const ref = db.collection('cezalar').doc();
+        batch.set(ref, { ...c, olusturmaTarihi: firebase.firestore.FieldValue.serverTimestamp() });
+      });
+      await batch.commit();
+      console.log('2. Hafta cezaları yüklendi.');
+      showToast('2. Hafta disiplin cezaları otomatik yüklendi!', 'success');
+    }
+  } catch (err) {
+    console.error("2. Hafta Seed hatası:", err);
   }
 }
 
