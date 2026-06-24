@@ -201,6 +201,488 @@
             .standings-table tbody td { padding: 10px 4px; font-size: 12px; }
             .rank-badge { width: 22px; height: 22px; font-size: 10px; border-radius: 6px; }
         }
+
+        /* ═══ TOURNAMENT BRACKET TABS & PLAYOFF ═══ */
+        .bracket-tabs-nav {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            padding: 2px;
+        }
+        .bracket-tabs-nav::-webkit-scrollbar { display: none; }
+
+        .bracket-tab {
+            padding: 7px 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.3px;
+            border: 1.5px solid #e2e8f0;
+            background: #ffffff;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .bracket-tab:hover { border-color: #8b5cf6; color: #0f172a; }
+        .bracket-tab.active {
+            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 15px -4px rgba(139,92,246,0.4);
+        }
+
+        /* ═══ PLAYOFF PREMIUM CARDS ═══ */
+        .playoff-container {
+            padding: 20px 16px;
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        .playoff-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            border-radius: 12px;
+            color: #fff;
+        }
+        .playoff-header-bar h4 {
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .playoff-header-bar .playoff-count {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .playoff-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+        .po-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .po-card:hover {
+            border-color: #a78bfa;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -8px rgba(124,58,237,0.15);
+        }
+        .po-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 12px;
+            background: linear-gradient(90deg, #fef3c7, #fef9c3);
+            border-bottom: 1px solid #fde68a;
+        }
+        .po-card-top .po-label {
+            font-size: 9px;
+            font-weight: 800;
+            color: #92400e;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+        .po-card-top .po-dest {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            color: #059669;
+            background: #ecfdf5;
+            padding: 2px 8px;
+            border-radius: 20px;
+            border: 1px solid #a7f3d0;
+        }
+        .po-card-body {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            gap: 0;
+        }
+        .po-team {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            text-align: center;
+        }
+        .po-team-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 12px;
+            color: #fff;
+            box-shadow: 0 4px 8px -2px rgba(0,0,0,0.1);
+        }
+        .po-team-badge.pos-2 { background: linear-gradient(135deg, #d97706, #f59e0b); }
+        .po-team-badge.pos-3 { background: linear-gradient(135deg, #ea580c, #f97316); }
+        .po-team-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1e293b;
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.2;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .po-team-name.unknown {
+            color: #94a3b8;
+            font-style: italic;
+            font-weight: 500;
+            font-size: 11px;
+        }
+        .po-vs {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 900;
+            color: #64748b;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .po-card-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #f8fafc;
+            border-top: 1px solid #f1f5f9;
+            font-size: 9px;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+
+        @media (max-width: 640px) {
+            .playoff-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .po-team-badge { width: 30px; height: 30px; font-size: 10px; }
+            .po-team-name { font-size: 11px; max-width: 90px; }
+            .po-vs { width: 30px; height: 30px; font-size: 9px; }
+        }
+
+        /* Bracket tab/tree re-used badge classes */
+        .bracket-pos-1 { background: linear-gradient(135deg, #059669, #10b981); color: #fff; }
+        .bracket-pos-2 { background: linear-gradient(135deg, #d97706, #f59e0b); color: #fff; }
+        .bracket-pos-3 { background: linear-gradient(135deg, #ea580c, #f97316); color: #fff; }
+        .bracket-pos-unknown { background: #e2e8f0; color: #94a3b8; border: 1px dashed #cbd5e1; }
+
+        /* ═══ TOURNAMENT TREE (SON 16 - FINAL) ═══ */
+        .bracket-tree-scroll-container {
+            width: 100%;
+            overflow-x: auto;
+            padding: 12px 8px;
+            background: radial-gradient(circle at 50% 50%, rgba(248, 250, 252, 0.98) 0%, rgba(241, 245, 249, 0.98) 100%);
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.03);
+            -ms-overflow-style: auto;
+            scrollbar-width: auto;
+        }
+        .bracket-tree-scroll-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        .bracket-tree-scroll-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .bracket-tree-scroll-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .bracket-tree-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            padding: 10px 0;
+            gap: 0;
+        }
+
+        .bracket-tree-side {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .bracket-tree-left { justify-content: flex-end; }
+        .bracket-tree-right { justify-content: flex-start; }
+
+        .tree-branch {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        .tree-children {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            gap: 20px;
+            position: relative;
+        }
+
+        .level-qf > .tree-children { gap: 30px; }
+        .level-yf > .tree-children { gap: 100px; }
+
+        .tree-parent {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .tree-match-card {
+            width: 155px;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.01);
+            overflow: hidden;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 2;
+        }
+        .tree-match-card:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -8px rgba(124,58,237,0.15);
+        }
+
+        .tree-match-card-header {
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 5px 8px;
+            font-size: 9px;
+            font-weight: 850;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .tree-team-row {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            gap: 8px;
+        }
+        .tree-team-row:not(:last-child) {
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .tree-badge {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            font-size: 9px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tree-team-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #334155;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            font-family: 'Roboto', sans-serif;
+        }
+        .tree-team-name.unknown {
+            color: #94a3b8;
+            font-style: italic;
+            font-weight: 500;
+            font-size: 11px;
+        }
+
+        .bracket-tree-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 180px;
+            min-width: 160px;
+            padding: 0 8px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .champion-display {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .trophy-wrapper {
+            background: linear-gradient(135deg, #fef08a, #fde047);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px -4px rgba(250, 204, 21, 0.4);
+            margin-bottom: 6px;
+            border: 2px solid #ffffff;
+        }
+        .champion-tag {
+            font-size: 10px;
+            font-weight: 900;
+            color: #854d0e;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .champion-team {
+            font-size: 14px;
+            font-weight: 900;
+            color: #1e293b;
+            margin-top: 2px;
+            background: linear-gradient(90deg, #b45309, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .tree-match-card.final-card {
+            border-color: #eab308;
+            background: linear-gradient(135deg, #ffffff, #fefdf0);
+            box-shadow: 0 8px 25px -6px rgba(234, 179, 8, 0.15);
+        }
+        .tree-match-card.final-card:hover {
+            border-color: #ca8a04;
+            box-shadow: 0 12px 30px -8px rgba(234, 179, 8, 0.3);
+        }
+        .tree-match-card.final-card .tree-match-card-header {
+            background: #fef9c3;
+            color: #a16207;
+            border-bottom: 1px solid #fef08a;
+        }
+
+        .tree-match-card.ucunculuk-card {
+            margin-top: 20px;
+            border-style: dashed;
+            border-color: #cbd5e1;
+            width: 140px;
+            opacity: 0.85;
+        }
+        .tree-match-card.ucunculuk-card .tree-match-card-header {
+            background: #f8fafc;
+            color: #64748b;
+        }
+
+        /* Connecting Lines */
+        .bracket-tree-left .tree-children::after {
+            content: '';
+            position: absolute;
+            right: -18px;
+            top: calc(25% + 0px);
+            height: 50%;
+            width: 18px;
+            border: 2px solid #cbd5e1;
+            border-left: none;
+            z-index: 1;
+        }
+        .bracket-tree-left .tree-parent::before {
+            content: '';
+            position: absolute;
+            left: -18px;
+            top: 50%;
+            width: 18px;
+            height: 2px;
+            background: #cbd5e1;
+            z-index: 1;
+        }
+
+        .bracket-tree-right .tree-children::after {
+            content: '';
+            position: absolute;
+            left: -18px;
+            top: calc(25% + 0px);
+            height: 50%;
+            width: 18px;
+            border: 2px solid #cbd5e1;
+            border-right: none;
+            z-index: 1;
+        }
+        .bracket-tree-right .tree-parent::before {
+            content: '';
+            position: absolute;
+            right: -18px;
+            top: 50%;
+            width: 18px;
+            height: 2px;
+            background: #cbd5e1;
+            z-index: 1;
+        }
+
+        /* Connectors to center final card */
+        .bracket-tree-left .level-yf > .tree-parent::after {
+            content: '';
+            position: absolute;
+            right: -24px;
+            top: 50%;
+            width: 24px;
+            height: 2px;
+            background: #eab308;
+            z-index: 1;
+        }
+        .bracket-tree-right .level-yf > .tree-parent::after {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 50%;
+            width: 24px;
+            height: 2px;
+            background: #eab308;
+            z-index: 1;
+        }
+
+        @media (max-width: 640px) {
+            .bracket-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                padding: 12px;
+            }
+            .bracket-tab { padding: 6px 10px; font-size: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -225,7 +707,21 @@
     </header>
 
     <!-- ========== MAIN ========== -->
-    <main class="max-w-4xl mx-auto px-4 -mt-4 relative z-20 pb-12">
+    <!-- TURNUVA BRACKET (Tam Genişlik) -->
+    <section class="relative z-20 -mt-4 mb-4" id="bracketSection" style="max-width: 100%; padding: 0 12px;">
+        <div class="glass-card overflow-hidden">
+            <div class="px-4 py-3 border-b border-slate-200 flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="git-merge" class="w-4 h-4 text-violet-500"></i>
+                    <h3 class="text-sm font-bold text-slate-800">Turnuva Eleme Ağacı</h3>
+                </div>
+                <div class="bracket-tabs-nav" id="bracketTabs"></div>
+            </div>
+            <div id="bracketContent"></div>
+        </div>
+    </section>
+
+    <main class="max-w-4xl mx-auto px-4 relative z-20 pb-12">
 
         <!-- GROUP TABS -->
         <nav class="tabs-scroll flex gap-2 py-4 mb-6" id="groupTabs"></nav>
@@ -513,6 +1009,7 @@
                 takimlar[doc.id] = { id: doc.id, ...doc.data() };
             });
             renderPuanTablosu();
+            renderBracket();
         });
         // Tüm maçları dinle
         db.collection('maclar').orderBy('olusturmaTarihi','desc').onSnapshot(snapshot => {
@@ -726,6 +1223,7 @@
     function renderAll() {
         renderPuanTablosu();
         renderMacSonuclari();
+        renderBracket();
     }
 
     // ═══════════════════════════════════════
@@ -894,6 +1392,369 @@
                 closeExportModal();
             }
         }, 100);
+    }
+
+    // ═══════════════════════════════════════
+    //  BRACKET — TURNUVA ELEME AĞACI
+    // ═══════════════════════════════════════
+    let seciliBracketTab = 'tree';
+
+    const PLAYOFF_ESLESMELERI = [
+        { id: 'PO1', ev: { grup: 'A', sira: 2 }, dep: { grup: 'C', sira: 3 }, label: 'A2 vs C3' },
+        { id: 'PO2', ev: { grup: 'C', sira: 2 }, dep: { grup: 'A', sira: 3 }, label: 'C2 vs A3' },
+        { id: 'PO3', ev: { grup: 'B', sira: 2 }, dep: { grup: 'D', sira: 3 }, label: 'B2 vs D3' },
+        { id: 'PO4', ev: { grup: 'D', sira: 2 }, dep: { grup: 'B', sira: 3 }, label: 'D2 vs B3' },
+        { id: 'PO5', ev: { grup: 'E', sira: 2 }, dep: { grup: 'G', sira: 3 }, label: 'E2 vs G3' },
+        { id: 'PO6', ev: { grup: 'G', sira: 2 }, dep: { grup: 'E', sira: 3 }, label: 'G2 vs E3' },
+        { id: 'PO7', ev: { grup: 'F', sira: 2 }, dep: { grup: 'H', sira: 3 }, label: 'F2 vs H3' },
+        { id: 'PO8', ev: { grup: 'H', sira: 2 }, dep: { grup: 'F', sira: 3 }, label: 'H2 vs F3' },
+    ];
+
+    const SON16_ESLESMELERI = [
+        { id: 'S1', ev: { grup: 'A', sira: 1 }, depPO: 'PO8', label: 'A1 vs H2/F3 Galibi' },
+        { id: 'S2', ev: { grup: 'B', sira: 1 }, depPO: 'PO7', label: 'B1 vs F2/H3 Galibi' },
+        { id: 'S3', ev: { grup: 'C', sira: 1 }, depPO: 'PO6', label: 'C1 vs G2/E3 Galibi' },
+        { id: 'S4', ev: { grup: 'D', sira: 1 }, depPO: 'PO5', label: 'D1 vs E2/G3 Galibi' },
+        { id: 'S5', ev: { grup: 'E', sira: 1 }, depPO: 'PO4', label: 'E1 vs D2/B3 Galibi' },
+        { id: 'S6', ev: { grup: 'F', sira: 1 }, depPO: 'PO3', label: 'F1 vs B2/D3 Galibi' },
+        { id: 'S7', ev: { grup: 'G', sira: 1 }, depPO: 'PO2', label: 'G1 vs C2/A3 Galibi' },
+        { id: 'S8', ev: { grup: 'H', sira: 1 }, depPO: 'PO1', label: 'H1 vs A2/C3 Galibi' },
+    ];
+
+    const CEYREK_FINAL_ESLESMELERI = [
+        { id: 'QF1', evS16: 'S1', depS16: 'S3', evGrup: 'A', depGrup: 'C', label: '1. Çeyrek Final' },
+        { id: 'QF2', evS16: 'S2', depS16: 'S4', evGrup: 'B', depGrup: 'D', label: '2. Çeyrek Final' },
+        { id: 'QF3', evS16: 'S5', depS16: 'S7', evGrup: 'E', depGrup: 'G', label: '3. Çeyrek Final' },
+        { id: 'QF4', evS16: 'S6', depS16: 'S8', evGrup: 'F', depGrup: 'H', label: '4. Çeyrek Final' },
+    ];
+
+    function getGrupSiralamasi(grup) {
+        let grupTakimlar = Object.values(takimlar).filter(t => t.grup === grup);
+        const aktifler = grupTakimlar.filter(t => !t.durum || t.durum === 'aktif');
+        aktifler.sort((a, b) => {
+            if (b.p !== a.p) return b.p - a.p;
+            if (b.av !== a.av) return b.av - a.av;
+            if (b.ag !== a.ag) return b.ag - a.ag;
+            return a.ad.localeCompare(b.ad, 'tr');
+        });
+        return aktifler;
+    }
+
+    function getTurnuvaTakimi(grup, sira) {
+        const siralama = getGrupSiralamasi(grup);
+        if (sira <= siralama.length) {
+            return siralama[sira - 1];
+        }
+        return null;
+    }
+
+    function renderBracketTabs() {
+        const tabs = [
+            { id: 'tree', label: '🏆 Turnuva Ağacı' },
+            { id: 'playoff', label: '⚽ Play-off' },
+        ];
+        const container = document.getElementById('bracketTabs');
+        if (!container) return;
+        container.innerHTML = tabs.map(t =>
+            `<button class="bracket-tab ${t.id === seciliBracketTab ? 'active' : ''}" onclick="bracketTabSec('${t.id}')">${t.label}</button>`
+        ).join('');
+    }
+
+    function bracketTabSec(tab) {
+        seciliBracketTab = tab;
+        renderBracketTabs();
+        renderBracketContent();
+    }
+
+    function renderBracket() {
+        renderBracketTabs();
+        renderBracketContent();
+    }
+
+    function renderBracketContent() {
+        const container = document.getElementById('bracketContent');
+        if (!container) return;
+        switch (seciliBracketTab) {
+            case 'playoff': renderPlayoffBracket(container); break;
+            case 'tree': renderTreeBracket(container); break;
+        }
+        lucide.createIcons();
+    }
+
+    function renderPlayoffBracket(container) {
+        // Son 16 eşleşme haritası: hangi playoff galibi hangi grup birincisiyle oynuyor
+        const poSon16Map = {
+            'PO1': 'H1', 'PO2': 'G1', 'PO3': 'F1', 'PO4': 'E1',
+            'PO5': 'D1', 'PO6': 'C1', 'PO7': 'B1', 'PO8': 'A1'
+        };
+
+        let html = `<div class="playoff-container">
+            <div class="playoff-header-bar">
+                <i data-lucide="swords" class="w-4 h-4"></i>
+                <h4>Play-off Eşleşmeleri</h4>
+                <span class="playoff-count">8 Maç</span>
+            </div>
+            <div class="playoff-grid">`;
+
+        PLAYOFF_ESLESMELERI.forEach((po, i) => {
+            const evTeam = getTurnuvaTakimi(po.ev.grup, po.ev.sira);
+            const depTeam = getTurnuvaTakimi(po.dep.grup, po.dep.sira);
+            const evAd = evTeam ? evTeam.ad : '?';
+            const depAd = depTeam ? depTeam.ad : '?';
+            const evBadge = po.ev.grup + po.ev.sira;
+            const depBadge = po.dep.grup + po.dep.sira;
+
+            // Son 16'da kimin karşısına çıkacağını bul
+            const son16Rakip = poSon16Map[po.id];
+            let son16RakipAd = son16Rakip || '';
+            if (son16Rakip) {
+                const grup = son16Rakip.charAt(0);
+                const rakipTeam = getTurnuvaTakimi(grup, 1);
+                son16RakipAd = rakipTeam ? rakipTeam.ad : (grup + ' Gr. 1.si');
+            }
+
+            html += `
+            <div class="po-card fade-in" style="animation-delay:${i * 60}ms">
+                <div class="po-card-top">
+                    <span class="po-label">⚽ ${po.label}</span>
+                    <span class="po-dest"><i data-lucide="arrow-right" class="w-3 h-3"></i> Son 16</span>
+                </div>
+                <div class="po-card-body">
+                    <div class="po-team">
+                        <span class="po-team-badge pos-2">${evBadge}</span>
+                        <span class="po-team-name ${evTeam ? '' : 'unknown'}">${evAd}</span>
+                    </div>
+                    <div class="po-vs">VS</div>
+                    <div class="po-team">
+                        <span class="po-team-badge pos-3">${depBadge}</span>
+                        <span class="po-team-name ${depTeam ? '' : 'unknown'}">${depAd}</span>
+                    </div>
+                </div>
+                ${son16RakipAd ? `<div class="po-card-bottom">
+                    <i data-lucide="target" class="w-3 h-3"></i>
+                    <span>Galip → Son 16'da <strong style="color:#1e293b">${son16RakipAd}</strong> ile eşleşir</span>
+                </div>` : ''}
+            </div>`;
+        });
+
+        html += '</div></div>';
+        container.innerHTML = html;
+    }
+
+    function getMatchDisplayInfo(matchId) {
+        if (matchId.startsWith('PO')) {
+            const po = PLAYOFF_ESLESMELERI.find(p => p.id === matchId);
+            if (!po) return null;
+            const evTeam = getTurnuvaTakimi(po.ev.grup, po.ev.sira);
+            const depTeam = getTurnuvaTakimi(po.dep.grup, po.dep.sira);
+            return {
+                ev: {
+                    ad: evTeam ? evTeam.ad : (po.ev.grup + po.ev.sira),
+                    badge: po.ev.grup + po.ev.sira,
+                    badgeClass: 'bracket-pos-2',
+                    known: !!evTeam
+                },
+                dep: {
+                    ad: depTeam ? depTeam.ad : (po.dep.grup + po.dep.sira),
+                    badge: po.dep.grup + po.dep.sira,
+                    badgeClass: 'bracket-pos-3',
+                    known: !!depTeam
+                },
+                label: po.label
+            };
+        }
+        
+        if (matchId.startsWith('S')) {
+            const s16 = SON16_ESLESMELERI.find(s => s.id === matchId);
+            if (!s16) return null;
+            const evTeam = getTurnuvaTakimi(s16.ev.grup, s16.ev.sira);
+            const po = PLAYOFF_ESLESMELERI.find(p => p.id === s16.depPO);
+            let depName = 'Play-off Galibi';
+            if (po) {
+                const poEv = getTurnuvaTakimi(po.ev.grup, po.ev.sira);
+                const poDep = getTurnuvaTakimi(po.dep.grup, po.dep.sira);
+                const evN = poEv ? poEv.ad : (po.ev.grup + po.ev.sira);
+                const depN = poDep ? poDep.ad : (po.dep.grup + po.dep.sira);
+                depName = evN + ' / ' + depN + ' Galibi';
+            }
+            return {
+                ev: {
+                    ad: evTeam ? evTeam.ad : (s16.ev.grup + '1'),
+                    badge: s16.ev.grup + '1',
+                    badgeClass: 'bracket-pos-1',
+                    known: !!evTeam
+                },
+                dep: {
+                    ad: depName,
+                    badge: 'PO',
+                    badgeClass: 'bracket-pos-unknown',
+                    known: false
+                },
+                label: s16.label
+            };
+        }
+        
+        if (matchId.startsWith('QF')) {
+            const cf = CEYREK_FINAL_ESLESMELERI.find(c => c.id === matchId);
+            if (!cf) return null;
+            const evBirinci = getTurnuvaTakimi(cf.evGrup, 1);
+            const depBirinci = getTurnuvaTakimi(cf.depGrup, 1);
+            const evName = evBirinci ? evBirinci.ad + ' tarafı' : cf.evGrup + '1 tarafı';
+            const depName = depBirinci ? depBirinci.ad + ' tarafı' : cf.depGrup + '1 tarafı';
+            return {
+                ev: { ad: evName, badge: 'ÇF', badgeClass: 'bracket-pos-unknown', known: false },
+                dep: { ad: depName, badge: 'ÇF', badgeClass: 'bracket-pos-unknown', known: false },
+                label: cf.label
+            };
+        }
+        
+        if (matchId === 'YF1') {
+            return {
+                ev: { ad: '1. ÇF Galibi', badge: 'YF', badgeClass: 'bracket-pos-unknown', known: false },
+                dep: { ad: '2. ÇF Galibi', badge: 'YF', badgeClass: 'bracket-pos-unknown', known: false },
+                label: '1. Yarı Final'
+            };
+        }
+        
+        if (matchId === 'YF2') {
+            return {
+                ev: { ad: '3. ÇF Galibi', badge: 'YF', badgeClass: 'bracket-pos-unknown', known: false },
+                dep: { ad: '4. ÇF Galibi', badge: 'YF', badgeClass: 'bracket-pos-unknown', known: false },
+                label: '2. Yarı Final'
+            };
+        }
+        
+        if (matchId === 'FINAL') {
+            return {
+                ev: { ad: '1. YF Galibi', badge: '🏆', badgeClass: 'bracket-pos-1', known: false },
+                dep: { ad: '2. YF Galibi', badge: '🏆', badgeClass: 'bracket-pos-1', known: false },
+                label: '🏆 FİNAL'
+            };
+        }
+        
+        if (matchId === 'UCUNCULUK') {
+            return {
+                ev: { ad: '1. YF Mağlubu', badge: '3.', badgeClass: 'bracket-pos-unknown', known: false },
+                dep: { ad: '2. YF Mağlubu', badge: '4.', badgeClass: 'bracket-pos-unknown', known: false },
+                label: '3.lük Maçı'
+            };
+        }
+        
+        return null;
+    }
+
+    function treeMatchCardHTML(matchId) {
+        const info = getMatchDisplayInfo(matchId);
+        if (!info) return '';
+        const ev = info.ev;
+        const dep = info.dep;
+        
+        let cardClass = 'tree-match-card';
+        if (matchId === 'FINAL') cardClass += ' final-card';
+        if (matchId === 'UCUNCULUK') cardClass += ' ucunculuk-card';
+        
+        const isEvUnknown = ev.ad === '?' || ev.ad.includes('Galibi') || ev.ad.includes('tarafı') || ev.ad.includes('Mağlubu');
+        const isDepUnknown = dep.ad === '?' || dep.ad.includes('Galibi') || dep.ad.includes('tarafı') || dep.ad.includes('Mağlubu');
+        
+        return `
+        <div class="${cardClass}" id="match-card-${matchId}">
+            <div class="tree-match-card-header">${info.label}</div>
+            <div class="tree-team-row">
+                <span class="tree-badge ${ev.badgeClass}">${ev.badge}</span>
+                <span class="tree-team-name ${isEvUnknown ? 'unknown' : ''}" title="${ev.ad}">${ev.ad}</span>
+            </div>
+            <div class="tree-team-row">
+                <span class="tree-badge ${dep.badgeClass}">${dep.badge}</span>
+                <span class="tree-team-name ${isDepUnknown ? 'unknown' : ''}" title="${dep.ad}">${dep.ad}</span>
+            </div>
+        </div>`;
+    }
+
+    function renderTreeBracket(container) {
+        let html = `
+        <div class="bracket-tree-scroll-container">
+            <div class="bracket-tree-wrapper">
+                
+                <!-- LEFT SIDE -->
+                <div class="bracket-tree-side bracket-tree-left">
+                    <div class="tree-branch level-yf">
+                        <div class="tree-children">
+                            <!-- QF1 Branch -->
+                            <div class="tree-branch level-qf">
+                                <div class="tree-children">
+                                    ${treeMatchCardHTML('S1')}
+                                    ${treeMatchCardHTML('S3')}
+                                </div>
+                                <div class="tree-parent">
+                                    ${treeMatchCardHTML('QF1')}
+                                </div>
+                            </div>
+                            
+                            <!-- QF2 Branch -->
+                            <div class="tree-branch level-qf">
+                                <div class="tree-children">
+                                    ${treeMatchCardHTML('S2')}
+                                    ${treeMatchCardHTML('S4')}
+                                </div>
+                                <div class="tree-parent">
+                                    ${treeMatchCardHTML('QF2')}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tree-parent">
+                            ${treeMatchCardHTML('YF1')}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CENTER -->
+                <div class="bracket-tree-center">
+                    <div class="champion-display">
+                        <div class="trophy-wrapper">
+                            <i data-lucide="trophy" class="w-8 h-8 text-yellow-600 animate-bounce"></i>
+                        </div>
+                        <div class="champion-tag">ŞAMPİYON</div>
+                        <div class="champion-team" id="champion-team-name">?</div>
+                    </div>
+                    ${treeMatchCardHTML('FINAL')}
+                    ${treeMatchCardHTML('UCUNCULUK')}
+                </div>
+                
+                <!-- RIGHT SIDE -->
+                <div class="bracket-tree-side bracket-tree-right">
+                    <div class="tree-branch level-yf">
+                        <div class="tree-parent">
+                            ${treeMatchCardHTML('YF2')}
+                        </div>
+                        <div class="tree-children">
+                            <!-- QF3 Branch -->
+                            <div class="tree-branch level-qf">
+                                <div class="tree-parent">
+                                    ${treeMatchCardHTML('QF3')}
+                                </div>
+                                <div class="tree-children">
+                                    ${treeMatchCardHTML('S5')}
+                                    ${treeMatchCardHTML('S7')}
+                                </div>
+                            </div>
+                            
+                            <!-- QF4 Branch -->
+                            <div class="tree-branch level-qf">
+                                <div class="tree-parent">
+                                    ${treeMatchCardHTML('QF4')}
+                                </div>
+                                <div class="tree-children">
+                                    ${treeMatchCardHTML('S6')}
+                                    ${treeMatchCardHTML('S8')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>`;
+        container.innerHTML = html;
     }
 
     // ═══════════════════════════════════════
