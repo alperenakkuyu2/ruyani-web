@@ -978,8 +978,33 @@ async function hukmenMaclarOlustur(takimAd, grup, takimId) {
     if (rakipTakim && (rakipTakim.durum === 'cekildi' || rakipTakim.durum === 'ihrac')) continue;
     if (!rakipTakim) continue;
 
+    // Bu maç için uygun bir hafta bulalım (her iki takımın da o hafta maçı olmadığı boş haftayı arar)
+    let uygunHafta = aktifHafta;
+    for (let h = 1; h <= toplamHafta; h++) {
+      const haftaMaclari = maclar.filter(m => m.grup === grup && m.hafta === h);
+      const takimMaciVar = haftaMaclari.some(m => m.evSahibiAd === takimAd || m.deplasmanAd === takimAd);
+      const rakipMaciVar = haftaMaclari.some(m => m.evSahibiAd === rakipAd || m.deplasmanAd === rakipAd);
+
+      if (!takimMaciVar && !rakipMaciVar) {
+        uygunHafta = h;
+        break;
+      }
+    }
+
     // Hükmen maç: rakip 3-0 galip
-    await firebaseMacKaydet(aktifHafta, grup, rakipAd, takimAd, 3, 0, 'hukmen');
+    await firebaseMacKaydet(uygunHafta, grup, rakipAd, takimAd, 3, 0, 'hukmen');
+    
+    // Geçici olarak local listeye ekle ki sonraki döngüde bu hafta dolu görünsün
+    maclar.push({
+      grup,
+      hafta: uygunHafta,
+      evSahibiAd: rakipAd,
+      deplasmanAd: takimAd,
+      evSahibiSkor: 3,
+      deplasmanSkor: 0,
+      durum: 'hukmen'
+    });
+
     hukmenSayisi++;
   }
   if (hukmenSayisi > 0) {
