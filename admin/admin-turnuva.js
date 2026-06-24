@@ -33,7 +33,7 @@ let takimlar = {};
 let maclar = [];
 let cezalar = [];
 let aktifHafta = 1;
-let toplamHafta = 6;
+let toplamHafta = 7;
 let _seedRunning = false;
 let _cleanupDone = false;
 
@@ -133,10 +133,13 @@ async function showApp() {
 //  FIREBASE LISTENERS
 // ═══════════════════════════════════════
 function listenFirebase() {
+  // Firebase'deki toplamHafta'yı 7'ye güncelle (eski 6 ise)
+  db.collection('ayarlar').doc('turnuva').set({ toplamHafta: 7 }, { merge: true });
+
   db.collection('ayarlar').doc('turnuva').onSnapshot(doc => {
     if (doc.exists) {
       aktifHafta = doc.data().aktifHafta || 1;
-      toplamHafta = doc.data().toplamHafta || 6;
+      toplamHafta = doc.data().toplamHafta || 7;
       document.getElementById('aktifHaftaLabel').textContent = aktifHafta;
     }
   });
@@ -611,7 +614,7 @@ async function checkAndSeedDatabase() {
       // Ayarları oluştur
       batch.set(db.collection('ayarlar').doc('turnuva'), {
         aktifHafta: 1,
-        toplamHafta: 6,
+        toplamHafta: 7,
         turnuvaAdi: "Tarsus Köyler Arası Futbol Turnuvası"
       });
 
