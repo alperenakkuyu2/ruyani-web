@@ -148,6 +148,7 @@ function listenFirebase() {
     takimlar = {};
     snap.forEach(d => { takimlar[d.id] = { id: d.id, ...d.data() }; });
     renderStats();
+    renderDurumListesi();
   });
 
   db.collection('maclar').orderBy('olusturmaTarihi','desc').onSnapshot(snap => {
@@ -189,11 +190,16 @@ function populateForm() {
 
   grupSecildi();
   cezaTakimlariDoldur();
+  durumTakimlariDoldur();
 }
 
 function grupSecildi() {
   const grup = document.getElementById('macGrup').value;
-  const takimAdlari = GRUPLAR[grup] || [];
+  // Çekilmiş/ihraç edilmiş takımları maç girişinden filtrele
+  const takimAdlari = (GRUPLAR[grup] || []).filter(ad => {
+    const takim = Object.values(takimlar).find(t => t.ad === ad && t.grup === grup);
+    return !takim || !takim.durum || takim.durum === 'aktif';
+  });
   const evSel = document.getElementById('macEv');
   const depSel = document.getElementById('macDep');
   evSel.innerHTML = '<option value="">Takım Seç</option>' + takimAdlari.map(a => `<option value="${a}">${a}</option>`).join('');
@@ -255,8 +261,8 @@ async function firebaseMacKaydet(hafta, grup, evAd, depAd, evSkor, depSkor, duru
     olusturmaTarihi: firebase.firestore.FieldValue.serverTimestamp()
   });
 
-  // Sadece maç oynanmışsa istatistikleri güncelle
-  if (!durum || durum === 'oynandi') {
+  // Maç oynanmışsa veya hükmen ise istatistikleri güncelle
+  if (!durum || durum === 'oynandi' || durum === 'hukmen') {
     const evRef = db.collection('takimlar').doc(evTakim.id);
     const depRef = db.collection('takimlar').doc(depTakim.id);
     const evUp = { o: inc(1), ag: inc(evSkor), yg: inc(depSkor), av: inc(evSkor - depSkor) };
@@ -402,7 +408,7 @@ async function firebaseMacGuncelle(mac, yeniEvSkor, yeniDepSkor, yeniDurum) {
   let dDepO=0, dDepG=0, dDepB=0, dDepM=0, dDepAg=0, dDepYg=0, dDepP=0;
 
   // 1. Eski etkiyi çıkar
-  if (!mac.durum || mac.durum === 'oynandi') {
+  if (!mac.durum || mac.durum === 'oynandi' || mac.durum === 'hukmen') {
     dEvO -= 1; dEvAg -= mac.evSahibiSkor; dEvYg -= mac.deplasmanSkor;
     dDepO -= 1; dDepAg -= mac.deplasmanSkor; dDepYg -= mac.evSahibiSkor;
     if (mac.evSahibiSkor > mac.deplasmanSkor) { dEvG -= 1; dEvP -= 3; dDepM -= 1; }
@@ -411,7 +417,7 @@ async function firebaseMacGuncelle(mac, yeniEvSkor, yeniDepSkor, yeniDurum) {
   }
 
   // 2. Yeni etkiyi ekle
-  if (yeniDurum === 'oynandi') {
+  if (yeniDurum === 'oynandi' || yeniDurum === 'hukmen') {
     dEvO += 1; dEvAg += yeniEvSkor; dEvYg += yeniDepSkor;
     dDepO += 1; dDepAg += yeniDepSkor; dDepYg += yeniEvSkor;
     if (yeniEvSkor > yeniDepSkor) { dEvG += 1; dEvP += 3; dDepM += 1; }
@@ -444,7 +450,7 @@ function mockMacGuncelle(mac, yeniEvSkor, yeniDepSkor, yeniDurum) {
   if (!ev || !dep) return;
 
   // Eski etkiyi geri al
-  if (!mac.durum || mac.durum === 'oynandi') {
+  if (!mac.durum || mac.durum === 'oynandi' || mac.durum === 'hukmen') {
     ev.o--; ev.ag -= mac.evSahibiSkor; ev.yg -= mac.deplasmanSkor;
     dep.o--; dep.ag -= mac.deplasmanSkor; dep.yg -= mac.evSahibiSkor;
     if (mac.evSahibiSkor > mac.deplasmanSkor) { ev.g--; ev.p -= 3; dep.m--; }
@@ -453,7 +459,7 @@ function mockMacGuncelle(mac, yeniEvSkor, yeniDepSkor, yeniDurum) {
   }
 
   // Yeni etkiyi uygula
-  if (yeniDurum === 'oynandi') {
+  if (yeniDurum === 'oynandi' || yeniDurum === 'hukmen') {
     ev.o++; ev.ag += yeniEvSkor; ev.yg += yeniDepSkor;
     dep.o++; dep.ag += yeniDepSkor; dep.yg += yeniEvSkor;
     if (yeniEvSkor > yeniDepSkor) { ev.g++; ev.p += 3; dep.m++; }
@@ -489,7 +495,7 @@ async function macSil(macId) {
 
 async function firebaseMacSil(mac) {
   const batch = db.batch();
-  if (!mac.durum || mac.durum === 'oynandi') {
+  if (!mac.durum || mac.durum === 'oynandi' || mac.durum === 'hukmen') {
     const inc = firebase.firestore.FieldValue.increment;
     const evRef = db.collection('takimlar').doc(mac.evSahibiId);
     const depRef = db.collection('takimlar').doc(mac.deplasmanId);
@@ -510,7 +516,7 @@ async function firebaseMacSil(mac) {
 function mockMacSil(mac) {
   const ev = Object.values(takimlar).find(t => t.ad === mac.evSahibiAd);
   const dep = Object.values(takimlar).find(t => t.ad === mac.deplasmanAd);
-  if (ev && dep && (!mac.durum || mac.durum === 'oynandi')) {
+  if (ev && dep && (!mac.durum || mac.durum === 'oynandi' || mac.durum === 'hukmen')) {
     ev.o--; ev.ag -= mac.evSahibiSkor; ev.yg -= mac.deplasmanSkor;
     dep.o--; dep.ag -= mac.deplasmanSkor; dep.yg -= mac.evSahibiSkor;
     if (mac.evSahibiSkor > mac.deplasmanSkor) { ev.g--; ev.p -= 3; dep.m--; }
@@ -571,12 +577,13 @@ function renderMacListesi() {
           <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-700 text-slate-300 flex-shrink-0">${m.hafta}. Hafta</span>
           <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex-shrink-0">${m.grup} Grubu</span>
           <span class="text-sm text-slate-300 truncate">
-            <span class="${(!m.durum || m.durum === 'oynandi') && m.evSahibiSkor > m.deplasmanSkor ? 'font-bold text-white' : ''}">${m.evSahibiAd}</span>
+            <span class="${(!m.durum || m.durum === 'oynandi' || m.durum === 'hukmen') && m.evSahibiSkor > m.deplasmanSkor ? 'font-bold text-white' : ''}">${m.evSahibiAd}</span>
             ${m.durum === 'iptal' ? '<span class="text-red-400 font-bold mx-2 text-[10px] px-1.5 py-0.5 border border-red-400/30 rounded bg-red-400/10">İPTAL</span>' : 
               m.durum === 'ertelendi' ? '<span class="text-amber-400 font-bold mx-2 text-[10px] px-1.5 py-0.5 border border-amber-400/30 rounded bg-amber-400/10">ERT.</span>' :
               m.durum === 'bay' ? '<span class="text-indigo-400 font-bold mx-2 text-[10px] px-1.5 py-0.5 border border-indigo-400/30 rounded bg-indigo-400/10">BAY GEÇTİ</span>' :
+              m.durum === 'hukmen' ? `<span class="text-orange-400 font-bold mx-1">${m.evSahibiSkor}-${m.deplasmanSkor}</span><span class="text-orange-400 text-[8px] font-bold ml-0.5">HÜK.</span>` :
               `<span class="text-emerald-400 font-bold mx-1">${m.evSahibiSkor}-${m.deplasmanSkor}</span>`}
-            <span class="${(!m.durum || m.durum === 'oynandi') && m.deplasmanSkor > m.evSahibiSkor ? 'font-bold text-white' : ''}">${m.deplasmanAd}</span>
+            <span class="${(!m.durum || m.durum === 'oynandi' || m.durum === 'hukmen') && m.deplasmanSkor > m.evSahibiSkor ? 'font-bold text-white' : ''}">${m.deplasmanAd}</span>
           </span>
         </div>
         <div class="flex gap-1 flex-shrink-0">
@@ -899,4 +906,143 @@ function renderCezaListesi() {
         </div>
       </div>
     </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+//  TAKIM DURUMU (ÇEKİLME / İHRAÇ)
+// ═══════════════════════════════════════
+function durumTakimlariDoldur() {
+  const grupEl = document.getElementById('durumGrup');
+  if (!grupEl) return;
+  const grup = grupEl.value;
+  const takimAdlari = (GRUPLAR[grup] || []).filter(ad => {
+    const takim = Object.values(takimlar).find(t => t.ad === ad && t.grup === grup);
+    return !takim || !takim.durum || takim.durum === 'aktif';
+  });
+  const sec = document.getElementById('durumTakim');
+  sec.innerHTML = '<option value="">Takım Seç</option>' + takimAdlari.map(a => `<option value="${a}">${a}</option>`).join('');
+}
+
+async function takimDurumuDegistir() {
+  const grup = document.getElementById('durumGrup').value;
+  const takimAd = document.getElementById('durumTakim').value;
+  const sebep = document.getElementById('durumSebep').value;
+
+  if (!takimAd) return showToast('Takım seçiniz!', 'error');
+  const etiket = sebep === 'ihrac' ? 'İHRAÇ' : 'ÇEKİLDİ';
+  if (!confirm(`${takimAd} takımını "${etiket}" olarak işaretlemek istediğinize emin misiniz?\nKalan maçlar hükmen 3-0 yazılacak.`)) return;
+
+  try {
+    const takim = Object.values(takimlar).find(t => t.ad === takimAd && t.grup === grup);
+    if (!takim) throw new Error('Takım bulunamadı');
+
+    // 1. Takım durumunu güncelle
+    await db.collection('takimlar').doc(takim.id).update({
+      durum: sebep,
+      durumTarihi: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    // 2. Kalan maçlar için hükmen sonuç oluştur
+    await hukmenMaclarOlustur(takimAd, grup, takim.id);
+
+    showToast(`${takimAd} — ${etiket} olarak işaretlendi! Kalan maçlar hükmen yazıldı.`, 'success');
+    durumTakimlariDoldur();
+  } catch(e) {
+    showToast('Hata: ' + e.message, 'error');
+  }
+}
+
+async function hukmenMaclarOlustur(takimAd, grup, takimId) {
+  const gruptakiTakimlar = GRUPLAR[grup] || [];
+  const rakipler = gruptakiTakimlar.filter(ad => ad !== takimAd);
+
+  // Bu takımın mevcut maçlarını kontrol et (bay hariç)
+  const mevcutMaclar = maclar.filter(m =>
+    m.grup === grup &&
+    (m.evSahibiAd === takimAd || m.deplasmanAd === takimAd) &&
+    m.durum !== 'bay'
+  );
+
+  const oynadigiRakipler = new Set();
+  mevcutMaclar.forEach(m => {
+    if (m.evSahibiAd === takimAd) oynadigiRakipler.add(m.deplasmanAd);
+    else oynadigiRakipler.add(m.evSahibiAd);
+  });
+
+  let hukmenSayisi = 0;
+  for (const rakipAd of rakipler) {
+    if (oynadigiRakipler.has(rakipAd)) continue;
+
+    // Rakip de çekilmiş/ihraç mı?
+    const rakipTakim = Object.values(takimlar).find(t => t.ad === rakipAd && t.grup === grup);
+    if (rakipTakim && (rakipTakim.durum === 'cekildi' || rakipTakim.durum === 'ihrac')) continue;
+    if (!rakipTakim) continue;
+
+    // Hükmen maç: rakip 3-0 galip
+    await firebaseMacKaydet(aktifHafta, grup, rakipAd, takimAd, 3, 0, 'hukmen');
+    hukmenSayisi++;
+  }
+  if (hukmenSayisi > 0) {
+    console.log(`${hukmenSayisi} hükmen maç oluşturuldu.`);
+  }
+}
+
+async function takimDurumuGeriAl(takimId) {
+  if (!confirm('Bu takımın durumunu aktif olarak geri almak istediğinize emin misiniz?\nHükmen yazılmış maçlar silinecek.')) return;
+
+  try {
+    const takim = takimlar[takimId];
+    if (!takim) throw new Error('Takım bulunamadı');
+
+    // Hükmen maçları sil
+    const hukmenMaclar = maclar.filter(m =>
+      m.durum === 'hukmen' &&
+      (m.evSahibiAd === takim.ad || m.deplasmanAd === takim.ad) &&
+      m.grup === takim.grup
+    );
+
+    for (const mac of hukmenMaclar) {
+      await firebaseMacSil(mac);
+    }
+
+    // Durumu aktif yap
+    await db.collection('takimlar').doc(takimId).update({
+      durum: 'aktif',
+      durumTarihi: firebase.firestore.FieldValue.delete()
+    });
+
+    showToast(`${takim.ad} tekrar aktif edildi! Hükmen maçlar silindi.`, 'success');
+    durumTakimlariDoldur();
+  } catch(e) {
+    showToast('Hata: ' + e.message, 'error');
+  }
+}
+
+function renderDurumListesi() {
+  const container = document.getElementById('durumListesi');
+  if (!container) return;
+
+  const isaretlenen = Object.values(takimlar).filter(t => t.durum === 'cekildi' || t.durum === 'ihrac');
+
+  if (isaretlenen.length === 0) {
+    container.innerHTML = '<p class="text-slate-500 text-sm text-center py-4">Henüz çekilmiş veya ihraç edilmiş takım yok.</p>';
+    return;
+  }
+
+  container.innerHTML = isaretlenen.map((t, i) => {
+    const isIhrac = t.durum === 'ihrac';
+    const etiketRenk = isIhrac ? 'text-red-400 bg-red-500/10 border-red-500/20' : 'text-amber-400 bg-amber-500/10 border-amber-500/20';
+    const etiketText = isIhrac ? 'İHRAÇ' : 'ÇEKİLDİ';
+    return `
+      <div class="match-item fade-in" style="animation-delay:${i * 20}ms">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2 flex-1 min-w-0">
+            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex-shrink-0">${t.grup} Grubu</span>
+            <span class="text-sm font-bold text-white">${t.ad}</span>
+            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded border ${etiketRenk} flex-shrink-0">${etiketText}</span>
+          </div>
+          <button onclick="takimDurumuGeriAl('${t.id}')" class="p-1.5 rounded-lg hover:bg-slate-700 text-slate-400 hover:text-emerald-400 transition-colors text-xs" title="Geri Al">↩️ Geri Al</button>
+        </div>
+      </div>`;
+  }).join('');
 }

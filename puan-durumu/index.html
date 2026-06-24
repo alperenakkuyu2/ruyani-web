@@ -587,19 +587,49 @@
         document.getElementById('standingsTitle').textContent = seciliGrup + ' Grubu Puan Durumu';
 
         let grupTakimlar = Object.values(takimlar).filter(t => t.grup === seciliGrup);
-        grupTakimlar.sort((a, b) => {
+
+        // Aktif ve devre dışı takımları ayır
+        const aktifTakimlar = grupTakimlar.filter(t => !t.durum || t.durum === 'aktif');
+        const devreDisiTakimlar = grupTakimlar.filter(t => t.durum === 'cekildi' || t.durum === 'ihrac');
+
+        const sirala = (arr) => arr.sort((a, b) => {
             if (b.p !== a.p) return b.p - a.p;
             if (b.av !== a.av) return b.av - a.av;
             if (b.ag !== a.ag) return b.ag - a.ag;
             return a.ad.localeCompare(b.ad, 'tr');
         });
 
+        sirala(aktifTakimlar);
+        sirala(devreDisiTakimlar);
+
+        const hepsi = [...aktifTakimlar, ...devreDisiTakimlar];
+        const aktifSayisi = aktifTakimlar.length;
+
         const tbody = document.getElementById('standingsBody');
-        tbody.innerHTML = grupTakimlar.map((t, i) => {
+        tbody.innerHTML = hepsi.map((t, i) => {
+            const isDevreDisi = t.durum === 'cekildi' || t.durum === 'ihrac';
+            const avStr = t.av > 0 ? '+' + t.av : t.av.toString();
+
+            if (isDevreDisi) {
+                const isIhrac = t.durum === 'ihrac';
+                const etiket = isIhrac ? 'İHRAÇ' : 'ÇEKİLDİ';
+                const etiketCls = isIhrac
+                    ? 'text-[9px] font-bold px-1.5 py-0.5 rounded bg-red-100 text-red-600 border border-red-200 ml-1'
+                    : 'text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-600 border border-amber-200 ml-1';
+                const rowBg = isIhrac ? 'background:rgba(239,68,68,0.06);' : 'background:rgba(245,158,11,0.06);';
+                return `<tr class="fade-in" style="animation-delay:${i*40}ms; ${rowBg} opacity:0.55;">
+                    <td><span class="rank-badge rank-other">—</span></td>
+                    <td style="text-decoration:line-through;">${t.ad} <span class="${etiketCls}">${etiket}</span></td>
+                    <td>${t.o}</td><td>${t.g}</td><td>${t.b}</td><td>${t.m}</td>
+                    <td>${t.ag}</td><td>${t.yg}</td>
+                    <td>${avStr}</td>
+                    <td>${t.p}</td>
+                </tr>`;
+            }
+
             const rank = i + 1;
             const badgeCls = rank === 1 ? 'rank-1' : (rank === 2 || rank === 3) ? 'rank-2' : 'rank-other';
             const rowCls = rank === 1 ? 'row-qualified' : (rank === 2 || rank === 3) ? 'row-playoff' : '';
-            const avStr = t.av > 0 ? '+' + t.av : t.av.toString();
             return `<tr class="fade-in ${rowCls}" style="animation-delay:${i*40}ms">
                 <td><span class="rank-badge ${badgeCls}">${rank}</span></td>
                 <td>${t.ad}</td>
@@ -634,8 +664,8 @@
         }
 
         container.innerHTML = filtered.map((m, i) => {
-            const evKazandi = (!m.durum || m.durum === 'oynandi') && (m.evSahibiSkor > m.deplasmanSkor);
-            const depKazandi = (!m.durum || m.durum === 'oynandi') && (m.deplasmanSkor > m.evSahibiSkor);
+            const evKazandi = (!m.durum || m.durum === 'oynandi' || m.durum === 'hukmen') && (m.evSahibiSkor > m.deplasmanSkor);
+            const depKazandi = (!m.durum || m.durum === 'oynandi' || m.durum === 'hukmen') && (m.deplasmanSkor > m.evSahibiSkor);
             
             let skorHtml = '';
             if (m.durum === 'iptal') {
@@ -644,6 +674,13 @@
                 skorHtml = '<span class="text-[10px] sm:text-xs font-bold text-amber-600 bg-amber-100 border border-amber-200 px-2 py-0.5 rounded">ERTELENDİ</span>';
             } else if (m.durum === 'bay') {
                 skorHtml = '<span class="text-[10px] sm:text-xs font-bold text-indigo-600 bg-indigo-100 border border-indigo-200 px-2 py-0.5 rounded">BAY GEÇTİ</span>';
+            } else if (m.durum === 'hukmen') {
+                skorHtml = `
+                    <span class="text-lg font-900 ${evKazandi?'text-emerald-500':'text-slate-800'}">${m.evSahibiSkor}</span>
+                    <span class="text-slate-400 text-xs">—</span>
+                    <span class="text-lg font-900 ${depKazandi?'text-emerald-500':'text-slate-800'}">${m.deplasmanSkor}</span>
+                    <span class="text-[8px] font-bold text-orange-500 bg-orange-50 border border-orange-200 px-1 py-0.5 rounded ml-1">HÜK.</span>
+                `;
             } else {
                 skorHtml = `
                     <span class="text-lg font-900 ${evKazandi?'text-emerald-500':'text-slate-800'}">${m.evSahibiSkor}</span>
@@ -816,13 +853,14 @@
             document.getElementById('expMatches').innerHTML = `<div style="text-align:center; color:#94a3b8; font-size:20px; padding:20px;">Bu haftada oynanmış maç bulunmuyor.</div>`;
         } else {
             document.getElementById('expMatches').innerHTML = haftaninMaclari.map(m => {
-                const evKazandi = (!m.durum || m.durum === 'oynandi') && (m.evSahibiSkor > m.deplasmanSkor);
-                const depKazandi = (!m.durum || m.durum === 'oynandi') && (m.deplasmanSkor > m.evSahibiSkor);
+                const evKazandi = (!m.durum || m.durum === 'oynandi' || m.durum === 'hukmen') && (m.evSahibiSkor > m.deplasmanSkor);
+                const depKazandi = (!m.durum || m.durum === 'oynandi' || m.durum === 'hukmen') && (m.deplasmanSkor > m.evSahibiSkor);
                 
                 let skorHtml = '';
                 if (m.durum === 'iptal') skorHtml = '<span style="color:#f87171; font-size:24px;">İPTAL</span>';
                 else if (m.durum === 'ertelendi') skorHtml = '<span style="color:#fbbf24; font-size:24px;">ERT.</span>';
                 else if (m.durum === 'bay') skorHtml = '<span style="color:#8b5cf6; font-size:24px;">BAY</span>';
+                else if (m.durum === 'hukmen') skorHtml = `${m.evSahibiSkor} - ${m.deplasmanSkor} <span style="color:#f97316; font-size:16px; font-weight:bold; vertical-align:middle; margin-left:4px;">(HÜK.)</span>`;
                 else skorHtml = `${m.evSahibiSkor} - ${m.deplasmanSkor}`;
 
                 return `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(15,23,42,0.6); border-radius: 16px; padding: 20px 30px; font-size: 24px;">

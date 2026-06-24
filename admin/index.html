@@ -165,6 +165,44 @@ select.input-field{cursor:pointer}
       <div class="space-y-2 max-h-96 overflow-y-auto" id="cezaListesi"></div>
     </div>
 
+    <!-- TAKIM DURUMU YÖNETİMİ (ÇEKİLME / İHRAÇ) -->
+    <div class="glass p-5">
+      <div class="flex items-center gap-2 mb-4"><i data-lucide="user-minus" class="w-4 h-4 text-orange-400"></i><span class="text-sm font-bold">Takım Durumu (Çekilme / İhraç)</span></div>
+      
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4 bg-slate-800/30 p-3 rounded-xl border border-slate-700">
+        <div>
+          <label class="text-xs text-slate-400 mb-1 block">Grup</label>
+          <select class="input-field" id="durumGrup" onchange="durumTakimlariDoldur()">
+            <option value="A">A Grubu</option>
+            <option value="B">B Grubu</option>
+            <option value="C">C Grubu</option>
+            <option value="D">D Grubu</option>
+            <option value="E">E Grubu</option>
+            <option value="F">F Grubu</option>
+            <option value="G">G Grubu</option>
+            <option value="H">H Grubu</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-slate-400 mb-1 block">Takım</label>
+          <select class="input-field" id="durumTakim"></select>
+        </div>
+        <div>
+          <label class="text-xs text-slate-400 mb-1 block">Sebep</label>
+          <select class="input-field" id="durumSebep">
+            <option value="cekildi">Çekildi</option>
+            <option value="ihrac">İhraç Edildi</option>
+          </select>
+        </div>
+        <div class="flex items-end">
+          <button class="btn w-full bg-orange-600/80 hover:bg-orange-500 text-white font-bold" onclick="takimDurumuDegistir()">⚠️ İşaretle</button>
+        </div>
+      </div>
+
+      <!-- İşaretlenmiş Takımlar -->
+      <div class="space-y-2 max-h-64 overflow-y-auto" id="durumListesi"></div>
+    </div>
+
     <!-- MAÇ LİSTESİ -->
     <div class="glass p-5">
       <div class="flex items-center justify-between mb-4">
