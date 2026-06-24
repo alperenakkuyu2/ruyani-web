@@ -34,6 +34,8 @@ let maclar = [];
 let cezalar = [];
 let aktifHafta = 1;
 let toplamHafta = 6;
+let _seedRunning = false;
+let _cleanupDone = false;
 
 // ═══════════════════════════════════════
 //  INIT
@@ -66,7 +68,11 @@ function initMockMode() {
 }
 
 function generateId(ad) {
-  return ad.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9ğüşıöçĞÜŞİÖÇ_]/gi,'') + '_' + Math.random().toString(36).substr(2,4);
+  return ad.toLowerCase()
+    .replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ş/g,'s')
+    .replace(/ı/g,'i').replace(/ö/g,'o').replace(/ç/g,'c')
+    .replace(/\s+/g,'_')
+    .replace(/[^a-z0-9_]/gi,'');
 }
 
 // ═══════════════════════════════════════
@@ -107,15 +113,16 @@ function doLogout() {
   document.getElementById('app').classList.add('hidden');
 }
 
-function showApp() {
+async function showApp() {
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
   document.getElementById('userEmail').textContent = document.getElementById('loginEmail').value;
 
   if (USE_FIREBASE) {
+    // ÖNCE seed ve temizlik, SONRA listener — race condition önlenir
+    await checkAndSeedDatabase();
+    await seedIkinciHaftaCezalar();
     listenFirebase();
-    checkAndSeedDatabase();
-    seedIkinciHaftaCezalar();
   }
   populateForm();
   renderStats();
@@ -591,6 +598,10 @@ function showToast(msg, type) {
 //  İLK KURULUM (SEED)
 // ═══════════════════════════════════════
 async function checkAndSeedDatabase() {
+  // Çift çalışma kilidi — aynı anda birden fazla seed çalışmasını engeller
+  if (_seedRunning) return;
+  _seedRunning = true;
+
   try {
     const snap = await db.collection('takimlar').limit(1).get();
     if (snap.empty) {
@@ -604,7 +615,7 @@ async function checkAndSeedDatabase() {
         turnuvaAdi: "Tarsus Köyler Arası Futbol Turnuvası"
       });
 
-      // Takımları oluştur
+      // Takımları oluştur — deterministik ID ile
       Object.entries(GRUPLAR).forEach(([grup, adlar]) => {
         adlar.forEach(ad => {
           const id = generateId(ad);
@@ -615,6 +626,9 @@ async function checkAndSeedDatabase() {
       
       await batch.commit();
       showToast('Kurulum tamamlandı!', 'success');
+    } else {
+      // Veritabanı boş değil — kopya takımları temizle (tek seferlik)
+      await cleanupDuplicateTeams();
     }
 
     // 1. Hafta Cezalılarını Ekle (Eğer boşsa)
@@ -641,6 +655,131 @@ async function checkAndSeedDatabase() {
     }
   } catch (err) {
     console.error("Seed hatası:", err);
+  } finally {
+    _seedRunning = false;
+  }
+}
+
+// ═══════════════════════════════════════
+//  KOPYA TAKIM TEMİZLEME (TEK SEFERLİK)
+// ═══════════════════════════════════════
+async function cleanupDuplicateTeams() {
+  if (_cleanupDone) return;
+  _cleanupDone = true;
+
+  try {
+    const allSnap = await db.collection('takimlar').get();
+    const tümTakimlar = [];
+    allSnap.forEach(doc => {
+      tümTakimlar.push({ docId: doc.id, ...doc.data() });
+    });
+
+    // Takım adı + grup bazında grupla
+    const grouped = {};
+    tümTakimlar.forEach(t => {
+      const key = t.ad + '|' + t.grup;
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(t);
+    });
+
+    // Kopyaları bul
+    const silinecekler = [];
+    const idGuncellemeleri = {}; // eskiId -> yeniId eşleşmesi
+
+    for (const [key, copies] of Object.entries(grouped)) {
+      if (copies.length <= 1) continue;
+
+      // En çok maç oynamış olanı tut (o değeri en yüksek)
+      copies.sort((a, b) => (b.o || 0) - (a.o || 0));
+      const tutulan = copies[0];
+      const yeniId = generateId(tutulan.ad);
+
+      for (let i = 1; i < copies.length; i++) {
+        const kopya = copies[i];
+        silinecekler.push(kopya.docId);
+        idGuncellemeleri[kopya.docId] = tutulan.docId;
+      }
+
+      // Tutulan takımın ID'si deterministik değilse güncelle
+      if (tutulan.docId !== yeniId) {
+        idGuncellemeleri[tutulan.docId] = yeniId;
+      }
+    }
+
+    if (silinecekler.length === 0) {
+      console.log('Kopya takım bulunamadı, temiz.');
+      return;
+    }
+
+    console.log(`${silinecekler.length} kopya takım bulundu, temizleniyor...`);
+    showToast(`${silinecekler.length} kopya takım tespit edildi, temizleniyor...`, 'success');
+
+    // Maçlardaki eski ID referanslarını güncelle
+    const macSnap = await db.collection('maclar').get();
+    const macGuncelBatch = db.batch();
+    let macGuncelSayisi = 0;
+
+    macSnap.forEach(doc => {
+      const mac = doc.data();
+      let guncelle = {};
+      let degisti = false;
+
+      if (idGuncellemeleri[mac.evSahibiId]) {
+        guncelle.evSahibiId = idGuncellemeleri[mac.evSahibiId];
+        degisti = true;
+      }
+      if (idGuncellemeleri[mac.deplasmanId]) {
+        guncelle.deplasmanId = idGuncellemeleri[mac.deplasmanId];
+        degisti = true;
+      }
+
+      if (degisti) {
+        macGuncelBatch.update(db.collection('maclar').doc(doc.id), guncelle);
+        macGuncelSayisi++;
+      }
+    });
+
+    if (macGuncelSayisi > 0) {
+      await macGuncelBatch.commit();
+      console.log(`${macGuncelSayisi} maç referansı güncellendi.`);
+    }
+
+    // Tutulanların ID'si değişecekse: yeni doküman oluştur, eskisini sil
+    const idMigrateBatch = db.batch();
+    let migreSayisi = 0;
+
+    for (const t of tümTakimlar) {
+      const yeniId = generateId(t.ad);
+      if (t.docId !== yeniId && !silinecekler.includes(t.docId)) {
+        // Bu tutulan bir takım ama ID'si eski format — yeni ID ile taşı
+        const { docId, ...data } = t;
+        data.id = yeniId;
+        idMigrateBatch.set(db.collection('takimlar').doc(yeniId), data);
+        idMigrateBatch.delete(db.collection('takimlar').doc(docId));
+        migreSayisi++;
+      }
+    }
+
+    if (migreSayisi > 0) {
+      await idMigrateBatch.commit();
+      console.log(`${migreSayisi} takım ID'si yeni formata taşındı.`);
+    }
+
+    // Kopyaları sil (Firestore batch max 500 işlem)
+    for (let i = 0; i < silinecekler.length; i += 400) {
+      const silBatch = db.batch();
+      const dilim = silinecekler.slice(i, i + 400);
+      dilim.forEach(id => {
+        silBatch.delete(db.collection('takimlar').doc(id));
+      });
+      await silBatch.commit();
+    }
+
+    console.log('Temizlik tamamlandı!');
+    showToast(`Temizlik tamamlandı! ${silinecekler.length} kopya silindi.`, 'success');
+  } catch (err) {
+    console.error('Temizlik hatası:', err);
+    showToast('Temizlik sırasında hata: ' + err.message, 'error');
   }
 }
 
